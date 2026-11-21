@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NAESOAU – Entrepreneurship Students, OAU</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f3ec;--surface:#fff;--ink:#1e1458;--muted:#55507a;--accent:#2a1a77;--accent-ink:#fff;--gold:#b88a1e;--line:#ddd6c4;--glow:rgba(42,26,119,.22);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#150f3a;--surface:#1f1650;--ink:#f4efe0;--muted:#b4aed6;--accent:#e3b94f;--accent-ink:#1b1240;--gold:#e3b94f;--line:#33287a;--glow:rgba(227,185,79,.28);color-scheme:dark}}
+html{scroll-behavior:smooth}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+.wrap{max-width:640px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);max-width:640px;margin:0 auto}
+.logo{width:44px;height:44px;border-radius:50%}.brand{font-weight:800;font-size:20px;flex:1}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 16px;font:600 15px "Bricolage Grotesque",system-ui,sans-serif;cursor:pointer}
+.btn:disabled{opacity:.6}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.pill{display:inline-block;margin-top:28px;padding:10px 18px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--gold);font-weight:600;font-size:15px}
+h1{font-size:clamp(40px,11vw,60px);line-height:1.05;letter-spacing:-.02em;margin:22px 0 18px;font-weight:800}
+.lead{color:var(--muted);font-size:19px;max-width:34ch;margin:0 0 28px}
+.cta{display:block;text-align:center;text-decoration:none;font-weight:600;font-size:17px;padding:16px;border-radius:12px;margin-bottom:12px}
+.primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 8px 28px var(--glow)}
+.secondary{border:1.5px solid var(--gold);color:var(--gold)}
+h2{font-size:24px;margin:48px 0 14px}
+.grid{display:grid;gap:12px}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.feat b{display:block;font-size:17px}.feat span{color:var(--muted);font-size:15px}
+form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:14px}
+label{font-weight:600;font-size:15px;display:grid;gap:6px}
+input,select{font:inherit;font-size:16px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.msg{padding:14px 16px;border-radius:12px;font-size:15px;display:none;background:var(--surface)}
+.msg.ok{display:block;border:1.5px solid var(--gold)}.msg.err{display:block;border:1.5px solid #c0392b}
+.hint{color:var(--muted);font-size:14px;margin:0}
+.admin{display:none;margin-top:48px}.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+footer{margin:48px 0 24px;color:var(--muted);font-size:14px}
+@media (min-width:600px){.grid{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header>
+  <img class="logo" alt="NAESOAU logo" src="logo.png">
+  <div class="brand">NAESOAU</div>
+  <button class="btn" id="manage" type="button">Manage</button>
+</header>
+<main class="wrap">
+  <span class="pill">The home of Entrepreneurship students at Great Ife</span>
+  <h1>Your association, in one place</h1>
+  <p class="lead">Register as a fresher, pay dues, get event tickets and share ideas with the executives. No more chasing anyone.</p>
+  <a class="cta primary" href="#register">Freshers’ registration</a>
+  <a class="cta secondary" href="#features">See what’s inside</a>
+
+  <h2 id="register">Freshers’ registration</h2>
+  <form id="f" novalidate>
+    <label>Full name<input id="fullName" autocomplete="name" required></label>
+    <label>Registration number<input id="reg" required></label>
+    <label>Date of birth (no year)<span style="display:flex;gap:10px"><select id="dobMonth" aria-label="Month"></select><select id="dobDay" aria-label="Day"></select></span></label>
+    <label>WhatsApp number<input id="phone" type="tel" autocomplete="tel" required></label>
+    <label>Email<input id="email" type="email" autocomplete="email" required></label>
+    <label>Level<select id="level"><option>100 Level</option><option>200 Level</option><option>300 Level</option><option>400 Level</option></select></label>
+    <label>Passport photo<input id="photo" type="file" accept="image/*"></label>
+    <img id="prev" alt="Photo preview" style="display:none;width:96px;height:96px;object-fit:cover;border-radius:50%">
+    <button class="btn" id="submit" type="submit">Submit registration</button>
+    <div class="msg" id="msg" role="status"></div>
+  </form>
+
+  <section class="admin" id="admin">
+    <h2>Executives <span id="count"></span></h2>
+    <form id="login" novalidate>
+      <label>Email<input id="aEmail" type="email" autocomplete="username"></label>
+      <label>Password<input id="aPass" type="password" autocomplete="current-password"></label>
+      <button class="btn" type="submit">Sign in</button>
+      <div class="msg" id="amsg" role="status"></div>
+    </form>
+    <div id="data" style="display:none">
+      <button class="btn" id="csv" type="button">Download CSV</button>
+      <button class="btn" id="out" type="button">Sign out</button>
+      <div class="scroll" style="margin-top:14px"><table><thead><tr><th>Photo</th><th>Name</th><th>Reg no.</th><th>Birthday</th><th>WhatsApp</th><th>Email</th><th>Level</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </div>
+  </section>
+
+  <h2 id="features">What’s coming</h2>
+  <div class="grid">
+    <div class="feat"><b>Registration</b><span>Live now. Join NAESOAU in two minutes.</span></div>
+    <div class="feat"><b>Pay dues</b><span>Pay online and get your receipt instantly.</span></div>
+    <div class="feat"><b>Event tickets</b><span>Book seats for seminars, pitch nights and socials.</span></div>
+    <div class="feat"><b>Speak up</b><span>Send feedback or ideas to the executives.</span></div>
+  </div>
+  <footer>© NAESOAU · Obafemi Awolowo University, Ile-Ife</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL="https://lxjvllxdtedeahmduknc.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY="sb_publishable_k7IcGeX_gtGwTuUDixipUg_BV2B3Brh";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const $=i=>document.getElementById(i);
+const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+let photoBlob=null,rows=[];
+const say=(id,t,c)=>{const m=$(id);m.textContent=t;m.className="msg "+c};
+const bday=r=>MON[r.dob_month-1]?r.dob_day+" "+MON[r.dob_month-1]:"";
+
+$("dobMonth").add(new Option("Month",""));MON.forEach((n,i)=>$("dobMonth").add(new Option(n,i+1)));
+$("dobDay").add(new Option("Day",""));for(let i=1;i<=31;i++)$("dobDay").add(new Option(i,i));
+
+$("photo").addEventListener("change",function(){
+  const f=this.files[0];if(!f)return;
+  const img=new Image(),u=URL.createObjectURL(f);
+  img.onload=()=>{const k=Math.min(1,480/Math.max(img.width,img.height)),c=document.createElement("canvas");
+    c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    c.toBlob(b=>{photoBlob=b;$("prev").src=URL.createObjectURL(b);$("prev").style.display="block"},"image/jpeg",.85);
+    URL.revokeObjectURL(u)};
+  img.onerror=()=>say("msg","That file is not a readable image.","err");
+  img.src=u;
+});
+
+$("f").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const v={full_name:$("fullName").value.trim(),reg_no:$("reg").value.trim(),dob_month:+$("dobMonth").value,dob_day:+$("dobDay").value,phone:$("phone").value.trim(),email:$("email").value.trim(),level:$("level").value};
+  if(!v.full_name||!v.reg_no||!v.dob_month||!v.dob_day||!v.phone||!/^\S+@\S+\.\S+$/.test(v.email)||!photoBlob){say("msg","Fill in every field, add your photo and use a valid email.","err");return}
+  $("submit").disabled=true;
+  try{
+    const path=crypto.randomUUID()+".jpg";
+    const up=await sb.storage.from("photos").upload(path,photoBlob,{contentType:"image/jpeg"});
+    if(up.error)throw up.error;
+    v.photo_path=path;
+    const ins=await sb.from("registrations").insert(v);
+    if(ins.error){await sb.storage.from("photos").remove([path]).catch(()=>{});throw ins.error}
+    say("msg","Registration received. Welcome to NAESOAU, "+v.full_name.split(" ")[0]+"!","ok");
+    $("f").reset();photoBlob=null;$("prev").style.display="none";
+  }catch(err){
+    say("msg",err.code==="23505"?"This registration number is already registered.":"Could not save your registration. Check your connection and try again.","err");
+  }
+  $("submit").disabled=false;
+});
+
+async function loadAdmin(){
+  const {data,error}=await sb.from("registrations").select("*").order("created_at",{ascending:false});
+  if(error){say("amsg","Could not load registrations.","err");return}
+  rows=data;$("login").style.display="none";$("data").style.display="block";
+  $("count").textContent="("+rows.length+")";
+  if(!rows.length)say("amsg","No registrations yet, or this account is not an admin.","err");
+  const urls=rows.length?(await sb.storage.from("photos").createSignedUrls(rows.map(r=>r.photo_path),3600)).data||[]:[];
+  const byPath={};urls.forEach(u=>byPath[u.path]=u.signedUrl);
+  const b=$("rows");b.textContent="";
+  rows.forEach(r=>{
+    const tr=document.createElement("tr"),pt=document.createElement("td");
+    if(byPath[r.photo_path]){const im=document.createElement("img");im.src=byPath[r.photo_path];im.alt="";pt.appendChild(im)}
+    tr.appendChild(pt);
+    [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level].forEach(x=>{const td=document.createElement("td");td.textContent=x||"";tr.appendChild(td)});
+    b.appendChild(tr);
+  });
+}
+$("manage").addEventListener("click",async()=>{
+  $("admin").style.display="block";$("admin").scrollIntoView();
+  const {data}=await sb.auth.getSession();if(data.session)loadAdmin();
+});
+$("login").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const {error}=await sb.auth.signInWithPassword({email:$("aEmail").value.trim(),password:$("aPass").value});
+  if(error){say("amsg","Wrong email or password.","err");return}
+  $("amsg").className="msg";loadAdmin();
+});
+$("out").addEventListener("click",async()=>{await sb.auth.signOut();location.reload()});
+$("csv").addEventListener("click",()=>{
+  const q=x=>'"'+String(x??"").replace(/"/g,'""')+'"';
+  const out=["Name,Reg No,Birthday,WhatsApp,Email,Level"].concat(rows.map(r=>[r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level].map(q).join(","))).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out],{type:"text/csv"}));a.download="naesoau-registrations.csv";a.click();
+});
+</script>
+</body></html>
