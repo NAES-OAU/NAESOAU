@@ -62,7 +62,7 @@ async function loadAdmin(){
   allPays.forEach(p=>{if(p.session===session&&!pays[p.reg_no])pays[p.reg_no]=p});
   $("login").style.display="none";$("data").style.display="block";
   await signUrls();
-  renderRegs();
+  renderRegs();renderSummary();
   const fb=await fetchAll("feedback");
   renderFeedback(fb.data||[]);
   if(!regs.length)say("dmsg","No registrations yet, or this account is not an executive.","err");
@@ -83,7 +83,7 @@ function renderRegs(){
   list.forEach(r=>{
     const p=pays[r.reg_no],tr=document.createElement("tr"),pt=document.createElement("td");
     const src=r.photo_data||pu[r.photo_path];
-    if(src){const im=document.createElement("img");im.src=src;im.alt="";im.title="Click to see the full image";im.style.cursor="pointer";im.onclick=()=>openFull(r.photo_path);pt.appendChild(im)}
+    if(src){const im=document.createElement("img");im.src=src;im.alt="";im.loading="lazy";im.decoding="async";im.title="Click to see the full image";im.style.cursor="pointer";im.onclick=()=>openFull(r.photo_path);pt.appendChild(im)}
     tr.appendChild(pt);
     [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level,naira(r.amount_due),statusOf(r),p&&p.status==="approved"?recNo(p):"",p&&p.reviewed_by?p.reviewed_by:""].forEach(x=>td(tr,x));
     if(dups.has(r.id)){const s=document.createElement("small");s.textContent="Possible duplicate";s.style.cssText="display:block;color:#c0392b;font-weight:600";tr.children[1].appendChild(s)}
@@ -99,7 +99,30 @@ function renderRegs(){
     body.appendChild(tr);
   });
 }
-["q","fLevel","fDues","fDup"].forEach(i=>$(i).addEventListener("input",renderRegs));
+let rt;["q","fLevel","fDues","fDup"].forEach(i=>$(i).addEventListener("input",()=>{clearTimeout(rt);rt=setTimeout(renderRegs,150)}));
+
+/* ---------- Dues summary for the treasurer ---------- */
+const LEVELS=["100 Level","200 Level (Regular)","200 Level (DE)","300 Level","400 Level"];
+function renderSummary(){
+  const box=$("summary");box.textContent="";
+  const h=document.createElement("b");h.textContent="Dues Summary"+(session?" ("+session+")":"");box.appendChild(h);
+  const wrap=document.createElement("div");wrap.className="scroll";
+  const t=document.createElement("table"),hd=document.createElement("tr");
+  ["Level","Registered","Paid","Pending","Unpaid","Collected","Outstanding"].forEach(x=>{const c=document.createElement("th");c.textContent=x;hd.appendChild(c)});
+  const th=document.createElement("thead");th.appendChild(hd);t.appendChild(th);
+  const tb=document.createElement("tbody"),T=[0,0,0,0,0,0];
+  const line=(name,v,bold)=>{const tr=document.createElement("tr");td(tr,name);v.forEach((x,i)=>td(tr,i>=4?naira(x):String(x)));if(bold)tr.style.fontWeight="800";tb.appendChild(tr)};
+  LEVELS.forEach(lv=>{
+    const rs=regs.filter(r=>r.level===lv);if(!rs.length)return;
+    const v=[rs.length,0,0,0,0,0];
+    rs.forEach(r=>{const p=pays[r.reg_no];
+      if(p&&p.status==="approved"){v[1]++;v[4]+=p.amount_due}
+      else{if(p&&p.status==="pending")v[2]++;else v[3]++;v[5]+=r.amount_due}});
+    v.forEach((x,i)=>T[i]+=x);line(lv,v);
+  });
+  line("Total",T,true);
+  t.appendChild(tb);wrap.appendChild(t);box.appendChild(wrap);
+}
 async function setPay(id,status){
   const {data,error}=await sb.from("payments").update({status}).eq("id",id).select();
   if(error||!data||!data.length){say("dmsg","Could not update. Try again.","err");return}
@@ -241,6 +264,11 @@ function download(name,rows){
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"}));a.download=name;a.click();
 }
 $("csv").addEventListener("click",()=>download("naesoau-registrations.csv",[["Name","Reg/Matric No","Birthday","WhatsApp","Email","Level","Amount Due","Dues ("+session+")","Receipt No"]].concat(regs.map(r=>{const p=pays[r.reg_no];return [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level,r.amount_due,statusOf(r),p&&p.status==="approved"?recNo(p):""]}))));
+$("csvUnpaid").addEventListener("click",()=>{
+  const list=regs.filter(r=>{const x=statusOf(r);return x==="Unpaid"||x==="Rejected"});
+  if(!list.length){say("dmsg","Everyone has paid or has a receipt waiting.","ok");return}
+  download("naesoau-unpaid.csv",[["Name","Reg/Matric No","WhatsApp","Email","Level","Amount Due","Dues ("+session+")"]].concat(list.map(r=>[r.full_name,r.reg_no,r.phone,r.email,r.level,r.amount_due,statusOf(r)])));
+});
 $("csvPay").addEventListener("click",()=>{
   const byReg={};regs.forEach(r=>byReg[r.reg_no]=r);
   download("naesoau-payments.csv",[["Receipt No","Reg/Matric No","Name","Amount","Method","Session","Status","Name on Transfer","Submitted","Reviewed","Reviewed By"]].concat(allPays.map(p=>[recNo(p),p.reg_no,byReg[p.reg_no]?byReg[p.reg_no].full_name:"",p.amount_due,p.method,p.session,p.status,p.sender_name||"",p.created_at,p.reviewed_at||"",p.reviewed_by||""])));

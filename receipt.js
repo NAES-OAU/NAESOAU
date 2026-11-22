@@ -46,15 +46,16 @@ $("rf").addEventListener("submit",async e=>{
   e.preventDefault();
   const reg=normReg($("rcReg").value),ph=$("rcPhone").value.trim();
   if(!reg||ph.replace(/\D/g,"").length<10){say("rmsg","Enter your registration or matric number and the WhatsApp number you registered with.","err");return}
-  $("rcBtn").disabled=true;$("rcv").style.display="none";$("rcDl").style.display="none";
+  lock("rcBtn","Checking…");$("rcv").style.display="none";$("rcDl").style.display="none";
   const {data,error}=await sb.rpc("get_receipt",{p_reg_no:reg,p_phone:ph});
   const d=first(data);
-  if(error&&String(error.message||"").includes("TOO_MANY_ATTEMPTS")){say("rmsg",LOCK,"err");$("rcBtn").disabled=false;return}
-  if(error||!d){say("rmsg","No confirmed payment found for these details. Check them, or wait until the executives approve your receipt.","err");$("rcBtn").disabled=false;return}
-  await drawReceipt(d);receiptReg=reg;if($("keepRc").checked)setStudent(reg,ph);
+  if(error&&String(error.message||"").includes("TOO_MANY_ATTEMPTS")){say("rmsg",LOCK,"err");unlock("rcBtn");return}
+  if(error||!d){say("rmsg","No confirmed payment found for these details. Check them, or wait until the executives approve your receipt.","err");unlock("rcBtn");return}
+  try{await drawReceipt(d)}catch(e){say("rmsg","Could not draw your receipt. Please try again.","err");unlock("rcBtn");return}
+  receiptReg=reg;if($("keepRc").checked)setStudent(reg,ph);
   $("rcv").style.display="block";$("rcDl").style.display="block";
   say("rmsg","Payment confirmed. Download your receipt below.","ok");
-  $("rcBtn").disabled=false;
+  unlock("rcBtn");
 });
 $("rcDl").addEventListener("click",()=>{
   $("rcv").toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="NAESOAU-Receipt-"+receiptReg.replace(/[^A-Z0-9]/gi,"-")+".png";a.click()},"image/png");

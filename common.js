@@ -16,6 +16,8 @@ function normReg(s){
 let photoBlob=null,photoThumb=null,receiptBlob=null,receiptReg="";
 let regs=[],allPays=[],pays={},fbList=[],pu={},ru={},session="",editing=null;
 const say=(id,t,c)=>{const m=$(id);m.textContent=t;m.className="msg "+c};
+const lock=(id,t)=>{const b=$(id);if(!b.dataset.t)b.dataset.t=b.textContent;b.textContent=t;b.disabled=true};
+const unlock=id=>{const b=$(id);if(b.dataset.t)b.textContent=b.dataset.t;b.disabled=false};
 const bday=r=>MON[r.dob_month-1]?r.dob_day+" "+MON[r.dob_month-1]:"";
 const naira=n=>"₦"+Number(n).toLocaleString("en-NG");
 const first=d=>Array.isArray(d)?d[0]:d;
