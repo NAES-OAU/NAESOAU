@@ -7,8 +7,8 @@ function clearStudent(){try{localStorage.removeItem(STUDENT_KEY);sessionStorage.
   if(!getStudent())return;
   const h=document.querySelector("header");if(!h)return;
   const w=document.createElement("span");w.className="who";
-  const t=document.createElement("span");t.textContent="Signed in";
-  const b=document.createElement("button");b.type="button";b.textContent="Sign out";
+  const t=document.createElement("span");t.textContent="Saved on this device";
+  const b=document.createElement("button");b.type="button";b.textContent="Forget";
   b.addEventListener("click",function(){clearStudent();location.reload()});
   w.appendChild(t);w.appendChild(b);h.appendChild(w);
 })();

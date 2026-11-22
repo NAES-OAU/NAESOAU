@@ -33,9 +33,22 @@ async function signAll(bucket,paths){
 }
 async function signUrls(){
   pu={};ru={};
-  const pp=await signAll("photos",regs.map(r=>r.photo_path));
+  const pp=await signAll("photos",regs.filter(r=>!r.photo_data).map(r=>r.photo_path));
   const rr=await signAll("receipts",allPays.map(p=>p.receipt_path).filter(Boolean));
   pp.forEach(u=>pu[u.path]=u.signedUrl);rr.forEach(u=>ru[u.path]=u.signedUrl);
+}
+async function openFull(path){
+  const {data,error}=await sb.storage.from("photos").createSignedUrl(path,300);
+  if(error||!data){say("dmsg","Could not open the full image.","err");return}
+  const l=document.createElement("a");l.href=data.signedUrl;l.target="_blank";l.rel="noopener";l.click();
+}
+const last10=s=>String(s||"").replace(/\D/g,"").slice(-10);
+const nameKey=s=>String(s||"").toLowerCase().replace(/[^a-z]/g,"");
+function findDups(){
+  const byPhone={},byName={},dup=new Set();
+  regs.forEach(r=>{const p=last10(r.phone),n=nameKey(r.full_name);if(p.length>=10)(byPhone[p]=byPhone[p]||[]).push(r.id);if(n)(byName[n]=byName[n]||[]).push(r.id)});
+  [byPhone,byName].forEach(m=>Object.values(m).forEach(g=>{if(g.length>1)g.forEach(id=>dup.add(id))}));
+  return dup;
 }
 async function loadAdmin(){
   const a=await fetchAll("registrations");
@@ -55,22 +68,25 @@ async function loadAdmin(){
   if(!regs.length)say("dmsg","No registrations yet, or this account is not an executive.","err");
 }
 function renderRegs(){
-  const q=$("q").value.trim().toUpperCase(),lv=$("fLevel").value,du=$("fDues").value;
+  const q=$("q").value.trim().toUpperCase(),lv=$("fLevel").value,du=$("fDues").value,dp=$("fDup").value,dups=findDups();
   const paid=regs.filter(r=>statusOf(r)==="Paid").length,pend=regs.filter(r=>statusOf(r)==="Pending").length;
   const list=regs.filter(r=>{
     if(lv!=="all"&&r.level!==lv)return false;
+    if(dp==="dup"&&!dups.has(r.id))return false;
     if(du!=="all"&&statusOf(r)!==du)return false;
     if(!q)return true;
     const p=pays[r.reg_no];
     return [r.full_name,r.reg_no,r.phone,r.email,p&&p.status==="approved"?recNo(p):""].join(" ").toUpperCase().includes(q);
   });
-  $("count").textContent="("+regs.length+" registered, "+paid+" paid, "+pend+" pending, "+list.length+" shown)";
+  $("count").textContent="("+regs.length+" registered, "+paid+" paid, "+pend+" pending, "+list.length+" shown"+(dups.size?", "+dups.size+" possible duplicates":"")+")";
   const body=$("rows");body.textContent="";
   list.forEach(r=>{
     const p=pays[r.reg_no],tr=document.createElement("tr"),pt=document.createElement("td");
-    if(pu[r.photo_path]){const im=document.createElement("img");im.src=pu[r.photo_path];im.alt="";pt.appendChild(im)}
+    const src=r.photo_data||pu[r.photo_path];
+    if(src){const im=document.createElement("img");im.src=src;im.alt="";im.title="Click to see the full image";im.style.cursor="pointer";im.onclick=()=>openFull(r.photo_path);pt.appendChild(im)}
     tr.appendChild(pt);
     [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level,naira(r.amount_due),statusOf(r),p&&p.status==="approved"?recNo(p):"",p&&p.reviewed_by?p.reviewed_by:""].forEach(x=>td(tr,x));
+    if(dups.has(r.id)){const s=document.createElement("small");s.textContent="Possible duplicate";s.style.cssText="display:block;color:#c0392b;font-weight:600";tr.children[1].appendChild(s)}
     const rc=td(tr,""),ac=td(tr,"");
     if(p&&p.receipt_path&&ru[p.receipt_path]){const l=document.createElement("a");l.href=ru[p.receipt_path];l.target="_blank";l.rel="noopener";l.textContent="View";rc.appendChild(l)}
     else if(p&&p.method==="cash")rc.textContent="Cash";
@@ -83,7 +99,7 @@ function renderRegs(){
     body.appendChild(tr);
   });
 }
-["q","fLevel","fDues"].forEach(i=>$(i).addEventListener("input",renderRegs));
+["q","fLevel","fDues","fDup"].forEach(i=>$(i).addEventListener("input",renderRegs));
 async function setPay(id,status){
   const {data,error}=await sb.from("payments").update({status}).eq("id",id).select();
   if(error||!data||!data.length){say("dmsg","Could not update. Try again.","err");return}

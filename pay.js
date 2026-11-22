@@ -5,7 +5,7 @@ async function loadSession(){
   try{const {data}=await sb.from("app_settings").select("value").eq("key","session").maybeSingle();if(data){session=data.value;$("sessTxt").textContent=session}}catch(e){}
 }
 loadSession();
-try{const st=getStudent();const r=sessionStorage.getItem("naes_reg")||(st?st.reg:""),p=sessionStorage.getItem("naes_phone")||(st?st.phone:"");if(r)$("payReg").value=r;if(p)$("payPhone").value=p;if(sessionStorage.getItem("naes_keep")==="0")$("keepPay").checked=false;sessionStorage.removeItem("naes_reg");sessionStorage.removeItem("naes_phone");sessionStorage.removeItem("naes_keep")}catch(e){}
+try{const st=getStudent();const r=sessionStorage.getItem("naes_reg")||(st?st.reg:""),p=sessionStorage.getItem("naes_phone")||(st?st.phone:"");if(r)$("payReg").value=r;if(p)$("payPhone").value=p;if(st||sessionStorage.getItem("naes_keep")==="1")$("keepPay").checked=true;sessionStorage.removeItem("naes_reg");sessionStorage.removeItem("naes_phone");sessionStorage.removeItem("naes_keep")}catch(e){}
 $("receipt").addEventListener("change",async function(){
   const f=this.files[0];if(!f)return;
   try{receiptBlob=await shrink(f,1200,.8)}catch(e){receiptBlob=null;say("pmsg","That file is not a readable image.","err")}
