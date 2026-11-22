@@ -18,7 +18,7 @@ $("f").addEventListener("submit",async e=>{
   try{
     const path=uuid()+".jpg";
     const up=await sb.storage.from("photos").upload(path,photoBlob,{contentType:"image/jpeg"});
-    if(up.error)throw up.error;
+    if(up.error){up.error.where="upload";throw up.error}
     v.photo_path=path;v.photo_data=photoThumb;
     const ins=await sb.from("registrations").insert(v);
     if(ins.error){await sb.storage.from("photos").remove([path]).catch(()=>{});throw ins.error}
@@ -27,7 +27,7 @@ $("f").addEventListener("submit",async e=>{
     $("f").reset();photoBlob=null;photoThumb=null;$("prev").style.display="none";
     setTimeout(()=>{location.href="pay.html"},1500);
   }catch(err){
-    say("msg",err.code==="23505"?"This registration or matric number is already registered.":busy(err&&err.message)?"The site is busy. Try again in a few minutes.":"Could not save your registration. Check your connection and try again.","err");
+    console.error("Registration error:",err);say("msg",err.code==="23505"?"This registration or matric number is already registered.":err.where==="upload"?"Could not upload your image. Try a different photo. If it keeps failing, tell an executive.":busy(err&&err.message)?"The site is busy. Try again in a few minutes.":"Could not save your registration. Check your connection and try again.","err");
   }
   $("submit").disabled=false;
 });

@@ -28,14 +28,14 @@ $("pf").addEventListener("submit",async e=>{
     if(row.status==="pending"){say("pmsg","Your receipt is already waiting for approval.","ok");return}
     const path=uuid()+".jpg";
     const up=await sb.storage.from("receipts").upload(path,receiptBlob,{contentType:"image/jpeg"});
-    if(up.error)throw up.error;
+    if(up.error){up.error.where="upload";throw up.error}
     const ins=await sb.rpc("submit_receipt",{p_reg_no:reg,p_phone:ph,p_sender:sender,p_receipt_path:path});
     if(ins.error||ins.data===false){await sb.storage.from("receipts").remove([path]).catch(()=>{});throw ins.error||{message:"REG_NOT_FOUND"}}
     say("pmsg","Receipt received for "+naira(row.amount_due)+". Executives will approve it after checking the account. Use Check My Status later.","ok");
     $("receipt").value="";receiptBlob=null;
   }catch(err){
-    const m=String(err&&err.message||"");
-    say("pmsg",(m.includes("ALREADY_SUBMITTED")||(err&&err.code==="23505"))?"A receipt for this registration or matric number is already waiting or approved.":m.includes("TOO_MANY_ATTEMPTS")?LOCK:m.includes("REG_NOT_FOUND")?"We could not match this matric number and WhatsApp number. Check them, or register first.":busy(m)?"The site is busy. Try again in a few minutes.":"Could not submit your receipt. Check your connection and try again.","err");
+    console.error("Receipt error:",err);const m=String(err&&err.message||"");
+    say("pmsg",err&&err.where==="upload"?"Could not upload your receipt image. Try a different screenshot. If it keeps failing, tell an executive.":(m.includes("ALREADY_SUBMITTED")||(err&&err.code==="23505"))?"A receipt for this registration or matric number is already waiting or approved.":m.includes("TOO_MANY_ATTEMPTS")?LOCK:m.includes("REG_NOT_FOUND")?"We could not match this matric number and WhatsApp number. Check them, or register first.":busy(m)?"The site is busy. Try again in a few minutes.":"Could not submit your receipt. Check your connection and try again.","err");
   }finally{$("payBtn").disabled=false}
 });
 $("statusBtn").addEventListener("click",async()=>{
