@@ -201,6 +201,8 @@ const LABEL={approved:"Paid",pending:"Pending",rejected:"Rejected"};
 const recNo=p=>"NAES-"+p.id.slice(0,8).toUpperCase();
 const fmtDate=s=>s?new Date(s).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):"";
 const busy=m=>String(m||"").includes("TOO_MANY_REQUESTS");
+const DIM=[31,29,31,30,31,30,31,31,30,31,30,31];
+const okDob=(m,d)=>m>=1&&m<=12&&d>=1&&d<=DIM[m-1];
 const LOCK="Too many wrong attempts for this matric number. Please wait 15 minutes and try again.";
 
 $("acctNum").textContent=ACCOUNT_NUMBER;$("acctName").textContent=ACCOUNT_NAME;$("acctBank").textContent=BANK_NAME;
@@ -241,6 +243,7 @@ $("f").addEventListener("submit",async e=>{
   if($("rWeb").value){say("msg","Registration received. Thank you.","ok");return}
   const v={full_name:$("fullName").value.trim(),reg_no:$("reg").value.trim().toUpperCase(),dob_month:+$("dobMonth").value,dob_day:+$("dobDay").value,phone:$("phone").value.trim(),email:$("email").value.trim(),level:$("level").value};
   if(!v.full_name||!v.reg_no||!v.dob_month||!v.dob_day||!v.phone||!/^\S+@\S+\.\S+$/.test(v.email)||!photoBlob){say("msg","Fill in every field, add your image and use a valid email.","err");return}
+  if(!okDob(v.dob_month,v.dob_day)){say("msg","That birthday does not exist. Check the month and day.","err");return}
   if(!REGEX.test(v.reg_no)){say("msg","Check your registration or matric number. Use letters, numbers, / and - only.","err");return}
   if(!$("consent").checked){say("msg","Tick the box to agree to the Privacy Notice.","err");return}
   $("submit").disabled=true;
@@ -389,17 +392,35 @@ function waLink(r,p){
   else t="Hello "+fn+", a reminder to pay your NAESOAU dues of "+naira(r.amount_due)+" to "+BANK_NAME+", "+ACCOUNT_NAME+", "+ACCOUNT_NUMBER+". Then upload your receipt here: "+url+"#pay";
   return "https://wa.me/"+d+"?text="+encodeURIComponent(t);
 }
+async function fetchAll(table){
+  const out=[];
+  for(let from=0;;from+=1000){
+    const {data,error}=await sb.from(table).select("*").order("created_at",{ascending:false}).order("id").range(from,from+999);
+    if(error)return {data:null,error};
+    out.push(...data);
+    if(data.length<1000)break;
+  }
+  return {data:out,error:null};
+}
+async function signAll(bucket,paths){
+  const out=[];
+  for(let i=0;i<paths.length;i+=500){
+    const r=await sb.storage.from(bucket).createSignedUrls(paths.slice(i,i+500),3600);
+    out.push(...(r.data||[]));
+  }
+  return out;
+}
 async function signUrls(){
   pu={};ru={};
-  const pp=regs.length?(await sb.storage.from("photos").createSignedUrls(regs.map(r=>r.photo_path),3600)).data||[]:[];
-  const rp=allPays.map(p=>p.receipt_path).filter(Boolean);
-  const rr=rp.length?(await sb.storage.from("receipts").createSignedUrls(rp,3600)).data||[]:[];
+  const pp=await signAll("photos",regs.map(r=>r.photo_path));
+  const rr=await signAll("receipts",allPays.map(p=>p.receipt_path).filter(Boolean));
   pp.forEach(u=>pu[u.path]=u.signedUrl);rr.forEach(u=>ru[u.path]=u.signedUrl);
 }
 async function loadAdmin(){
-  const a=await sb.from("registrations").select("*").order("created_at",{ascending:false});
+  const a=await fetchAll("registrations");
   if(a.error){say("amsg","Could not load registrations.","err");return}
-  const b=await sb.from("payments").select("*").order("created_at",{ascending:false});
+  const b=await fetchAll("payments");
+  if(b.error){say("dmsg","Could not load payments.","err");return}
   const s=await sb.from("app_settings").select("value").eq("key","session").maybeSingle();
   if(s.data){session=s.data.value;$("sessTxt").textContent=session}
   $("sessInput").value=session;
@@ -408,7 +429,7 @@ async function loadAdmin(){
   $("login").style.display="none";$("data").style.display="block";
   await signUrls();
   renderRegs();
-  const fb=await sb.from("feedback").select("*").order("created_at",{ascending:false});
+  const fb=await fetchAll("feedback");
   renderFeedback(fb.data||[]);
   if(!regs.length)say("dmsg","No registrations yet, or this account is not an executive.","err");
 }
@@ -467,6 +488,7 @@ $("eCancel").addEventListener("click",()=>{$("ef").style.display="none";editing=
 $("ef").addEventListener("submit",async e=>{
   e.preventDefault();if(!editing)return;
   const v={full_name:$("eName").value.trim(),reg_no:$("eReg").value.trim().toUpperCase(),phone:$("ePhone").value.trim(),email:$("eEmail").value.trim(),level:$("eLevel").value,dob_month:+$("eMonth").value,dob_day:+$("eDay").value};
+  if(v.dob_month&&v.dob_day&&!okDob(v.dob_month,v.dob_day)){say("dmsg","That birthday does not exist. Check the month and day.","err");return}
   if(!v.full_name||!v.phone||!v.dob_month||!v.dob_day||!/^\S+@\S+\.\S+$/.test(v.email)||!REGEX.test(v.reg_no)){say("dmsg","Check every field. The registration or matric number may use letters, numbers, / and - only.","err");return}
   const {data,error}=await sb.from("registrations").update(v).eq("id",editing.id).select();
   if(error||!data||!data.length){say("dmsg",error&&error.code==="23505"?"That registration or matric number is already used.":"Could not save the changes.","err");return}
