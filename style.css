@@ -60,5 +60,14 @@ a.feat b{color:var(--ink)}
 .prose p{color:var(--muted);font-size:16px;max-width:60ch}
 footer a{color:var(--gold)}
 body.wide header,body.wide .nav,body.wide .wrap{max-width:1200px}
+.timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line);display:grid;gap:20px}
+.timeline li{position:relative;padding-left:16px}
+.timeline li::before{content:"";position:absolute;left:-25px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--gold)}
+.timeline b{display:block;font-size:17px}
+.timeline p{margin:4px 0 0;color:var(--muted);font-size:15px;max-width:60ch}
+.role{display:block;color:var(--gold);font-weight:600;font-size:14px;margin-top:2px}
+.contact{display:grid;gap:10px}
+.contact p{margin:0}.contact small{display:block;color:var(--muted);font-size:13px}
+.contact a{color:var(--gold);font-weight:600}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
