@@ -20,8 +20,20 @@
 <header>
   <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
   <a class="brand" href="index.html">NAESOAU</a>
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
-<div class="navbar"><nav class="nav" aria-label="Pages"><a href="index.html" aria-current="page">Home</a><a href="welcome.html">Welcome</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="speak.html">Speak Up</a><a href="about.html">About</a></nav></div>
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="menu" aria-label="Pages">
+  <div class="drawer-top"><b>Menu</b><button class="drawer-close" id="menuClose" type="button" aria-label="Close menu">&times;</button></div>
+  <a href="index.html" aria-current="page">Home</a>
+  <a href="welcome.html">Welcome</a>
+  <a href="register.html">Register</a>
+  <a href="pay.html">Pay Dues</a>
+  <a href="receipt.html">Receipt</a>
+  <a href="speak.html">Speak Up</a>
+  <a href="about.html">About</a>
+  <div class="drawer-foot" id="menuWho"></div>
+</nav>
 <main class="wrap">
   <span class="pill">The Home of Entrepreneurship Students in OAU</span>
   <h1>Your Association, in One Place</h1>
@@ -29,24 +41,10 @@
   <a class="cta primary" href="register.html">Register</a>
   <a class="cta secondary" href="pay.html">Pay Dues</a>
 
-  <h2>How It Works</h2>
-  <ol class="steps">
-    <li><b>Register</b><span>Fill in your details and add your image. It takes two minutes.</span></li>
-    <li><b>Pay Your Dues</b><span>Transfer to the association account, then upload your receipt screenshot.</span></li>
-    <li><b>Get Your Receipt</b><span>Once the executives confirm, download your receipt here.</span></li>
-  </ol>
-
-  <h2>What’s Available</h2>
-  <div class="grid">
-    <a class="feat" href="welcome.html"><b>Welcome</b><span>What NAESOAU is, what we do, our vision and mission.</span></a>
-    <a class="feat" href="register.html"><b>Registration</b><span>Live now. Join NAESOAU in two minutes.</span></a>
-    <a class="feat" href="pay.html"><b>Pay Dues</b><span>Live now. Transfer and upload your receipt.</span></a>
-    <a class="feat" href="receipt.html"><b>Receipt</b><span>Live now. Download your receipt after approval.</span></a>
-    <a class="feat" href="speak.html"><b>Speak Up</b><span>Live now. Send feedback or ideas without your name.</span></a>
-    <div class="feat soon"><b>Event Tickets</b><span>Coming soon. Book seats for seminars, pitch nights and socials.</span></div>
-    <a class="feat" href="about.html"><b>About</b><span>Our story, staff advisers, past and present presidents, and contact details.</span></a>
-  </div>
+  <h2>Coming Soon</h2>
+  <div class="feat soon"><b>Event Tickets</b><span>Book seats for seminars, pitch nights and socials.</span></div>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="student.js"></script>
+<script src="menu.js"></script>
 </body></html>

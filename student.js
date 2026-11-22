@@ -5,7 +5,7 @@ function setStudent(reg,phone){try{localStorage.setItem(STUDENT_KEY,JSON.stringi
 function clearStudent(){try{localStorage.removeItem(STUDENT_KEY);sessionStorage.removeItem("naes_reg");sessionStorage.removeItem("naes_phone");sessionStorage.removeItem("naes_keep")}catch(e){}}
 (function(){
   if(!getStudent())return;
-  const h=document.querySelector("header");if(!h)return;
+  const h=document.getElementById("menuWho")||document.querySelector("header");if(!h)return;
   const w=document.createElement("span");w.className="who";
   const t=document.createElement("span");t.textContent="Saved on this device";
   const b=document.createElement("button");b.type="button";b.textContent="Forget";
