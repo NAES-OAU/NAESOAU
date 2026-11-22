@@ -95,6 +95,7 @@ footer{margin:32px 0 24px;color:var(--muted);font-size:14px}
   <form id="pf" novalidate>
     <p class="hint">Dues for the <b id="sessTxt">current</b> session. 100 Level and 200 Level (DE) pay ₦17,000. 200 Level (Regular), 300 Level and 400 Level pay ₦4,000. Register first, transfer, then upload your receipt screenshot here. Executives approve it after checking the account.</p>
     <label>Registration Number/Matric Number<input id="payReg"></label>
+    <label>WhatsApp Number (the one you registered with)<input id="payPhone" type="tel" autocomplete="tel"></label>
     <label>Name on the Transfer<input id="paySender"></label>
     <label>Receipt Screenshot<input id="receipt" type="file" accept="image/*"></label>
     <button class="btn" id="payBtn" type="submit">Submit Receipt</button>
@@ -249,7 +250,7 @@ $("f").addEventListener("submit",async e=>{
     const ins=await sb.from("registrations").insert(v);
     if(ins.error){await sb.storage.from("photos").remove([path]).catch(()=>{});throw ins.error}
     say("msg","Registration received. Welcome to NAESOAU, "+v.full_name.split(" ")[0]+"! Now pay your dues below.","ok");
-    $("payReg").value=v.reg_no;
+    $("payReg").value=v.reg_no;$("payPhone").value=v.phone;
     $("f").reset();photoBlob=null;photoThumb=null;$("prev").style.display="none";
     $("pay").scrollIntoView();
   }catch(err){
@@ -258,38 +259,38 @@ $("f").addEventListener("submit",async e=>{
   $("submit").disabled=false;
 });
 
-async function info(reg){
-  const {data,error}=await sb.rpc("get_payment_info",{p_reg_no:reg});
+async function info(reg,phone){
+  const {data,error}=await sb.rpc("get_payment_info",{p_reg_no:reg,p_phone:phone});
   return error?null:first(data);
 }
 $("pf").addEventListener("submit",async e=>{
   e.preventDefault();
-  const reg=$("payReg").value.trim().toUpperCase(),sender=$("paySender").value.trim();
-  if(!reg||!sender||!receiptBlob){say("pmsg","Enter your registration or matric number, the name on the transfer and your receipt screenshot.","err");return}
+  const reg=$("payReg").value.trim().toUpperCase(),ph=$("payPhone").value.trim(),sender=$("paySender").value.trim();
+  if(!reg||ph.replace(/\D/g,"").length<10||!sender||!receiptBlob){say("pmsg","Enter your registration or matric number, the WhatsApp number you registered with, the name on the transfer and your receipt screenshot.","err");return}
   $("payBtn").disabled=true;
   try{
-    const row=await info(reg);
-    if(!row){say("pmsg","Registration or matric number not found. Register above first.","err");return}
+    const row=await info(reg,ph);
+    if(!row){say("pmsg","We could not match this matric number and WhatsApp number. Check them, or register above first.","err");return}
     if(row.status==="approved"){say("pmsg","Your dues are already confirmed. Get your receipt in the Download Receipt section.","ok");return}
     if(row.status==="pending"){say("pmsg","Your receipt is already waiting for approval.","ok");return}
     const path=crypto.randomUUID()+".jpg";
     const up=await sb.storage.from("receipts").upload(path,receiptBlob,{contentType:"image/jpeg"});
     if(up.error)throw up.error;
-    const ins=await sb.from("payments").insert({reg_no:reg,sender_name:sender,receipt_path:path});
+    const ins=await sb.rpc("submit_receipt",{p_reg_no:reg,p_phone:ph,p_sender:sender,p_receipt_path:path});
     if(ins.error){await sb.storage.from("receipts").remove([path]).catch(()=>{});throw ins.error}
     say("pmsg","Receipt received for "+naira(row.amount_due)+". Executives will approve it after checking the account. Use Check My Status later.","ok");
     $("receipt").value="";receiptBlob=null;
   }catch(err){
     const m=String(err&&err.message||"");
-    say("pmsg",m.includes("ALREADY_SUBMITTED")?"A receipt for this registration or matric number is already waiting or approved.":m.includes("REG_NOT_FOUND")?"Registration or matric number not found. Register above first.":busy(m)?"The site is busy. Try again in a few minutes.":"Could not submit your receipt. Check your connection and try again.","err");
+    say("pmsg",m.includes("ALREADY_SUBMITTED")?"A receipt for this registration or matric number is already waiting or approved.":m.includes("REG_NOT_FOUND")?"We could not match this matric number and WhatsApp number. Check them, or register above first.":busy(m)?"The site is busy. Try again in a few minutes.":"Could not submit your receipt. Check your connection and try again.","err");
   }
   $("payBtn").disabled=false;
 });
 $("statusBtn").addEventListener("click",async()=>{
-  const reg=$("payReg").value.trim().toUpperCase();
-  if(!reg){say("pmsg","Enter your registration or matric number first.","err");return}
-  const row=await info(reg);
-  if(!row){say("pmsg","Registration or matric number not found.","err");return}
+  const reg=$("payReg").value.trim().toUpperCase(),ph=$("payPhone").value.trim();
+  if(!reg||ph.replace(/\D/g,"").length<10){say("pmsg","Enter your registration or matric number and the WhatsApp number you registered with.","err");return}
+  const row=await info(reg,ph);
+  if(!row){say("pmsg","We could not match this matric number and WhatsApp number.","err");return}
   const s=row.status;
   say("pmsg",s==="approved"?"Dues confirmed. Thank you! Get your receipt in the Download Receipt section.":s==="pending"?"Receipt received. Waiting for approval.":s==="rejected"?"Your receipt was not accepted. Upload a clear receipt again.":"No receipt yet. You owe "+naira(row.amount_due)+".",s==="rejected"?"err":"ok");
 });
