@@ -44,7 +44,7 @@ async function drawReceipt(d){
 }
 $("rf").addEventListener("submit",async e=>{
   e.preventDefault();
-  const reg=$("rcReg").value.trim().toUpperCase(),ph=$("rcPhone").value.trim();
+  const reg=normReg($("rcReg").value),ph=$("rcPhone").value.trim();
   if(!reg||ph.replace(/\D/g,"").length<10){say("rmsg","Enter your registration or matric number and the WhatsApp number you registered with.","err");return}
   $("rcBtn").disabled=true;$("rcv").style.display="none";$("rcDl").style.display="none";
   const {data,error}=await sb.rpc("get_receipt",{p_reg_no:reg,p_phone:ph});

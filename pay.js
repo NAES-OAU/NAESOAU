@@ -17,7 +17,7 @@ async function info(reg,phone){
 }
 $("pf").addEventListener("submit",async e=>{
   e.preventDefault();
-  const reg=$("payReg").value.trim().toUpperCase(),ph=$("payPhone").value.trim(),sender=$("paySender").value.trim();
+  const reg=normReg($("payReg").value),ph=$("payPhone").value.trim(),sender=$("paySender").value.trim();
   if(!reg||ph.replace(/\D/g,"").length<10||!sender||!receiptBlob){say("pmsg","Enter your registration or matric number, the WhatsApp number you registered with, the name on the transfer and your receipt screenshot.","err");return}
   $("payBtn").disabled=true;
   try{
@@ -39,7 +39,7 @@ $("pf").addEventListener("submit",async e=>{
   }finally{$("payBtn").disabled=false}
 });
 $("statusBtn").addEventListener("click",async()=>{
-  const reg=$("payReg").value.trim().toUpperCase(),ph=$("payPhone").value.trim();
+  const reg=normReg($("payReg").value),ph=$("payPhone").value.trim();
   if(!reg||ph.replace(/\D/g,"").length<10){say("pmsg","Enter your registration or matric number and the WhatsApp number you registered with.","err");return}
   const row=await info(reg,ph);
   if(row&&row.locked){say("pmsg",LOCK,"err");return}

@@ -6,7 +6,13 @@ const ACCOUNT_NUMBER="2046465467";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const $=i=>document.getElementById(i);
 const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
-const REGEX=/^[A-Z0-9][A-Z0-9\/ _-]{4,24}$/;
+const REGEX=/^(?:[A-Z]{3}\/\d{4}\/\d{3,4}|\d{8,12}[A-Z]{1,2})$/;
+const REGMSG="Use your matric number like ERT/2022/041, or your JAMB registration number (8 to 12 digits followed by letters).";
+function normReg(s){
+  const t=String(s||"").toUpperCase().trim().replace(/\s*[\/\\]\s*/g,"/");
+  const m=t.match(/^([A-Z]{3})[\s\/-]+(\d{4})[\s\/-]+(\d{3,4})$/);
+  return m?m[1]+"/"+m[2]+"/"+m[3]:t.replace(/\s+/g,"");
+}
 let photoBlob=null,photoThumb=null,receiptBlob=null,receiptReg="";
 let regs=[],allPays=[],pays={},fbList=[],pu={},ru={},session="",editing=null;
 const say=(id,t,c)=>{const m=$(id);m.textContent=t;m.className="msg "+c};

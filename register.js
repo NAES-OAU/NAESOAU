@@ -8,11 +8,11 @@ $("photo").addEventListener("change",async function(){
 $("f").addEventListener("submit",async e=>{
   e.preventDefault();
   if($("rWeb").value){say("msg","Registration received. Thank you.","ok");return}
-  const v={full_name:$("fullName").value.trim(),reg_no:$("reg").value.trim().toUpperCase(),dob_month:+$("dobMonth").value,dob_day:+$("dobDay").value,phone:$("phone").value.trim(),email:$("email").value.trim(),level:$("level").value};
+  const v={full_name:$("fullName").value.trim(),reg_no:normReg($("reg").value),dob_month:+$("dobMonth").value,dob_day:+$("dobDay").value,phone:$("phone").value.trim(),email:$("email").value.trim(),level:$("level").value};
   if(!v.full_name||!v.reg_no||!v.dob_month||!v.dob_day||!v.phone||!/^\S+@\S+\.\S+$/.test(v.email)||!photoBlob){say("msg","Fill in every field, add your image and use a valid email.","err");return}
   if(v.phone.replace(/\D/g,"").length<10){say("msg","Enter a valid WhatsApp number with at least 10 digits. You will need it to get your receipt.","err");return}
   if(!okDob(v.dob_month,v.dob_day)){say("msg","That birthday does not exist. Check the month and day.","err");return}
-  if(!REGEX.test(v.reg_no)){say("msg","Check your registration or matric number. Use letters, numbers, / and - only.","err");return}
+  if(!REGEX.test(v.reg_no)){say("msg","Check your registration or matric number. "+REGMSG,"err");return}
   if(!$("consent").checked){say("msg","Tick the box to agree to the Privacy Notice.","err");return}
   $("submit").disabled=true;
   try{

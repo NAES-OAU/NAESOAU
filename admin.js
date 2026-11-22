@@ -108,10 +108,10 @@ function startEdit(r){
 $("eCancel").addEventListener("click",()=>{$("ef").style.display="none";editing=null});
 $("ef").addEventListener("submit",async e=>{
   e.preventDefault();if(!editing)return;
-  const v={full_name:$("eName").value.trim(),reg_no:$("eReg").value.trim().toUpperCase(),phone:$("ePhone").value.trim(),email:$("eEmail").value.trim(),level:$("eLevel").value,dob_month:+$("eMonth").value,dob_day:+$("eDay").value};
+  const v={full_name:$("eName").value.trim(),reg_no:normReg($("eReg").value),phone:$("ePhone").value.trim(),email:$("eEmail").value.trim(),level:$("eLevel").value,dob_month:+$("eMonth").value,dob_day:+$("eDay").value};
   if(v.phone.replace(/\D/g,"").length<10){say("dmsg","The WhatsApp number needs at least 10 digits.","err");return}
   if(v.dob_month&&v.dob_day&&!okDob(v.dob_month,v.dob_day)){say("dmsg","That birthday does not exist. Check the month and day.","err");return}
-  if(!v.full_name||!v.phone||!v.dob_month||!v.dob_day||!/^\S+@\S+\.\S+$/.test(v.email)||!REGEX.test(v.reg_no)){say("dmsg","Check every field. The registration or matric number may use letters, numbers, / and - only.","err");return}
+  if(!v.full_name||!v.phone||!v.dob_month||!v.dob_day||!/^\S+@\S+\.\S+$/.test(v.email)||!REGEX.test(v.reg_no)){say("dmsg","Check every field. "+REGMSG,"err");return}
   const {data,error}=await sb.from("registrations").update(v).eq("id",editing.id).select();
   if(error||!data||!data.length){say("dmsg",error&&error.code==="23505"?"That registration or matric number is already used.":"Could not save the changes.","err");return}
   $("ef").style.display="none";editing=null;say("dmsg","Changes saved.","ok");loadAdmin();
