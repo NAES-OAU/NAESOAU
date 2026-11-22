@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Speak Up – NAESOAU</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html">NAESOAU</a>
+</header>
+<div class="navbar"><nav class="nav" aria-label="Pages"><a href="index.html">Home</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="speak.html" aria-current="page">Speak Up</a></nav></div>
+<main class="wrap">
+  <h1 class="page-title">Speak Up</h1>
+  <form id="sf" novalidate>
+    <p class="hint">Tell the executives what you think. Your name is not collected, so they will not know who sent it. Executives review every message.</p>
+    <label>Category<select id="sCat"><option>Suggestion</option><option>Complaint</option><option>Question</option><option>Appreciation</option></select></label>
+    <label>Your Message<textarea id="sMsg" maxlength="1000"></textarea></label>
+    <label>Contact (Only if You Want a Reply)<input id="sContact" maxlength="100" autocomplete="off"></label>
+    <input id="sWeb" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+    <button class="btn" id="sBtn" type="submit">Send Message</button>
+    <div class="msg" id="smsg" role="status"></div>
+  </form>
+</main>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="common.js"></script>
+<script src="speak.js"></script>
+</body></html>

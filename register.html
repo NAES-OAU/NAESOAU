@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Register – NAESOAU</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html">NAESOAU</a>
+</header>
+<div class="navbar"><nav class="nav" aria-label="Pages"><a href="index.html">Home</a><a href="register.html" aria-current="page">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="speak.html">Speak Up</a></nav></div>
+<main class="wrap">
+  <h1 class="page-title">Register</h1>
+  <p class="sub">Join NAESOAU. After you submit, we take you to the payment page.</p>
+  <form id="f" novalidate>
+    <label>Full Name<input id="fullName" autocomplete="name" required></label>
+    <label>Registration Number/Matric Number<input id="reg" required></label>
+    <label>Date of Birth (No Year)<span style="display:flex;gap:10px"><select id="dobMonth" aria-label="Month"></select><select id="dobDay" aria-label="Day"></select></span></label>
+    <label>WhatsApp Number<input id="phone" type="tel" autocomplete="tel" required></label>
+    <label>Email<input id="email" type="email" autocomplete="email" required></label>
+    <label>Level<select id="level"><option>100 Level</option><option>200 Level (Regular)</option><option>200 Level (DE)</option><option>300 Level</option><option>400 Level</option></select></label>
+    <label>Image<input id="photo" type="file" accept="image/*"></label>
+    <img id="prev" alt="Image preview" style="display:none;width:96px;height:96px;object-fit:cover;border-radius:50%">
+    <label class="check"><input type="checkbox" id="consent"><span>I agree that NAESOAU may store my details, image and phone number to manage membership, dues and receipts. See the <a href="privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span></label>
+    <input id="rWeb" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+    <button class="btn" id="submit" type="submit">Submit Registration</button>
+    <div class="msg" id="msg" role="status"></div>
+  </form>
+</main>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="common.js"></script>
+<script src="register.js"></script>
+</body></html>

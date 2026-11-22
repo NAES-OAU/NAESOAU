@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Executives – NAESOAU</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="wide">
+<header>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html">NAESOAU</a>
+</header>
+<div class="navbar"><nav class="nav" aria-label="Pages"><a href="index.html">Home</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="speak.html">Speak Up</a></nav></div>
+<main class="wrap">
+  <section id="admin">
+    <h2>Executives <span id="count"></span></h2>
+    <form id="login" novalidate>
+      <label>Email<input id="aEmail" type="email" autocomplete="username"></label>
+      <label>Password<input id="aPass" type="password" autocomplete="current-password"></label>
+      <button class="btn" type="submit">Sign In</button>
+      <div class="msg" id="amsg" role="status"></div>
+    </form>
+    <div id="data" style="display:none">
+      <div class="bar">
+        <button class="btn" id="csv" type="button">Download Registrations CSV</button>
+        <button class="btn" id="csvPay" type="button">Download Payments CSV</button>
+        <button class="btn alt" id="clean" type="button">Clean Up Unused Files</button>
+        <button class="btn alt" id="out" type="button">Sign Out</button>
+      </div>
+      <label style="max-width:340px">Current Session<span style="display:flex;gap:8px"><input id="sessInput" placeholder="2026/2027"><button class="btn" id="sessSave" type="button">Save</button></span></label>
+      <div class="msg" id="dmsg" role="status" style="margin-top:12px"></div>
+      <div class="bar">
+        <input id="q" placeholder="Search name, matric, phone, email or receipt no." aria-label="Search" style="flex:2 1 260px">
+        <select id="fLevel" aria-label="Level"><option value="all">All Levels</option><option>100 Level</option><option>200 Level (Regular)</option><option>200 Level (DE)</option><option>300 Level</option><option>400 Level</option></select>
+        <select id="fDues" aria-label="Dues"><option value="all">All Dues</option><option>Paid</option><option>Pending</option><option>Unpaid</option><option>Rejected</option></select>
+      </div>
+      <form id="ef" style="display:none;margin-bottom:14px" novalidate>
+        <b>Edit Registration</b>
+        <label>Full Name<input id="eName"></label>
+        <label>Registration Number/Matric Number<input id="eReg"></label>
+        <label>WhatsApp Number<input id="ePhone" type="tel"></label>
+        <label>Email<input id="eEmail" type="email"></label>
+        <label>Level<select id="eLevel"><option>100 Level</option><option>200 Level (Regular)</option><option>200 Level (DE)</option><option>300 Level</option><option>400 Level</option></select></label>
+        <label>Date of Birth (No Year)<span style="display:flex;gap:10px"><select id="eMonth" aria-label="Month"></select><select id="eDay" aria-label="Day"></select></span></label>
+        <div><button class="btn" type="submit">Save Changes</button> <button class="btn alt" id="eCancel" type="button">Cancel</button></div>
+      </form>
+      <div class="scroll"><table><thead><tr><th>Image</th><th>Name</th><th>Reg/Matric No.</th><th>Birthday</th><th>WhatsApp</th><th>Email</th><th>Level</th><th>Amount</th><th>Dues</th><th>Receipt No.</th><th>Approved By</th><th>Receipt</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <h2 style="font-size:20px">Speak Up Messages <span id="fbCount"></span></h2>
+      <label style="max-width:240px;margin-bottom:10px">Show<select id="fbFilter"><option value="all">All</option><option value="new">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="resolved">Resolved</option></select></label>
+      <div class="scroll"><table><thead><tr><th>Date</th><th>Category</th><th>Message</th><th>Contact</th><th>Status</th><th>Action</th></tr></thead><tbody id="fbRows"></tbody></table></div>
+    </div>
+  </section>
+</main>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="common.js"></script>
+<script src="admin.js"></script>
+</body></html>

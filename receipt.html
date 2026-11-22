@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Receipt – NAESOAU</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html">NAESOAU</a>
+</header>
+<div class="navbar"><nav class="nav" aria-label="Pages"><a href="index.html">Home</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html" aria-current="page">Receipt</a><a href="speak.html">Speak Up</a></nav></div>
+<main class="wrap">
+  <h1 class="page-title">Download Receipt</h1>
+  <form id="rf" novalidate>
+    <p class="hint">After the executives confirm your payment, enter your details to get your receipt. Use the WhatsApp number you registered with.</p>
+    <label>Registration Number/Matric Number<input id="rcReg"></label>
+    <label>WhatsApp Number<input id="rcPhone" type="tel" autocomplete="tel"></label>
+    <button class="btn" id="rcBtn" type="submit">Get Receipt</button>
+    <div class="msg" id="rmsg" role="status"></div>
+    <canvas id="rcv" width="1000" height="1600" style="display:none;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"></canvas>
+    <button class="btn" id="rcDl" type="button" style="display:none">Download Receipt</button>
+  </form>
+</main>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="common.js"></script>
+<script src="receipt.js"></script>
+</body></html>

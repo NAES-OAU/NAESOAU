@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pay Dues – NAESOAU</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html">NAESOAU</a>
+</header>
+<div class="navbar"><nav class="nav" aria-label="Pages"><a href="index.html">Home</a><a href="register.html">Register</a><a href="pay.html" aria-current="page">Pay Dues</a><a href="receipt.html">Receipt</a><a href="speak.html">Speak Up</a></nav></div>
+<main class="wrap">
+  <h1 class="page-title">Pay Dues</h1>
+  <div class="feat acct">
+    <b>Transfer to This Account</b>
+    <div class="num" id="acctNum"></div>
+    <span id="acctName"></span><br><span id="acctBank"></span><br>
+    <button class="btn alt sm" id="copy" type="button" style="margin-top:10px">Copy Account Number</button>
+  </div>
+  <form id="pf" novalidate>
+    <p class="hint">Dues for the <b id="sessTxt">current</b> session. 100 Level and 200 Level (DE) pay ₦17,000. 200 Level (Regular), 300 Level and 400 Level pay ₦4,000. Register first, transfer, then upload your receipt screenshot here with the WhatsApp number you registered with. Executives approve it after checking the account.</p>
+    <label>Registration Number/Matric Number<input id="payReg"></label>
+    <label>WhatsApp Number (the one you registered with)<input id="payPhone" type="tel" autocomplete="tel"></label>
+    <label>Name on the Transfer<input id="paySender"></label>
+    <label>Receipt Screenshot<input id="receipt" type="file" accept="image/*"></label>
+    <button class="btn" id="payBtn" type="submit">Submit Receipt</button>
+    <button class="btn alt" id="statusBtn" type="button">Check My Status</button>
+    <div class="msg" id="pmsg" role="status"></div>
+  </form>
+</main>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="common.js"></script>
+<script src="pay.js"></script>
+</body></html>
