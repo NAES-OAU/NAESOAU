@@ -137,6 +137,7 @@ footer{margin:32px 0 24px;color:var(--muted);font-size:14px}
       <div class="bar">
         <button class="btn" id="csv" type="button">Download Registrations CSV</button>
         <button class="btn" id="csvPay" type="button">Download Payments CSV</button>
+        <button class="btn alt" id="clean" type="button">Clean Up Unused Files</button>
         <button class="btn alt" id="out" type="button">Sign Out</button>
       </div>
       <label style="max-width:340px">Current Session<span style="display:flex;gap:8px"><input id="sessInput" placeholder="2026/2027"><button class="btn" id="sessSave" type="button">Save</button></span></label>
@@ -532,8 +533,55 @@ $("login").addEventListener("submit",async e=>{
   $("amsg").className="msg";loadAdmin();
 });
 $("out").addEventListener("click",async()=>{await sb.auth.signOut();location.reload()});
+/* ---------- Clean up files nobody uses ---------- */
+async function listFiles(bucket){
+  const out=[];
+  for(let off=0;;off+=1000){
+    const {data,error}=await sb.storage.from(bucket).list("",{limit:1000,offset:off,sortBy:{column:"created_at",order:"asc"}});
+    if(error)throw error;
+    out.push(...data.filter(f=>f.id));
+    if(data.length<1000)break;
+  }
+  return out;
+}
+async function usedPaths(table,col){
+  const out=new Set();
+  for(let from=0;;from+=1000){
+    const {data,error}=await sb.from(table).select(col).order("id").range(from,from+999);
+    if(error)throw error;
+    data.forEach(r=>{if(r[col])out.add(r[col])});
+    if(data.length<1000)break;
+  }
+  return out;
+}
+$("clean").addEventListener("click",async()=>{
+  $("clean").disabled=true;say("dmsg","Checking files. This can take a moment.","ok");
+  try{
+    const [usedP,usedR,ph,rc]=await Promise.all([usedPaths("registrations","photo_path"),usedPaths("payments","receipt_path"),listFiles("photos"),listFiles("receipts")]);
+    if((ph.length&&!usedP.size)||(rc.length&&!usedR.size)){say("dmsg","Stopped. Could not read the registration or payment list, so nothing was deleted.","err");return}
+    const old=f=>Date.now()-new Date(f.created_at).getTime()>3600000;
+    const dp=ph.filter(f=>old(f)&&!usedP.has(f.name)).map(f=>f.name);
+    const dr=rc.filter(f=>old(f)&&!usedR.has(f.name)).map(f=>f.name);
+    if(!dp.length&&!dr.length){say("dmsg","No unused files found.","ok");return}
+    if(!confirm("Delete "+dp.length+" unused image(s) and "+dr.length+" unused receipt file(s)? Files linked to a registration or payment are never touched. This cannot be undone."))return;
+    let gone=0;
+    for(const [bucket,names] of [["photos",dp],["receipts",dr]]){
+      for(let i=0;i<names.length;i+=100){
+        const r=await sb.storage.from(bucket).remove(names.slice(i,i+100));
+        if(r.error)throw r.error;
+        gone+=(r.data||[]).length;
+      }
+    }
+    say("dmsg","Deleted "+gone+" unused file(s).","ok");
+  }catch(e){say("dmsg","Could not finish the cleanup. Try again.","err")}
+  finally{$("clean").disabled=false}
+});
+
+/* ---------- CSV ---------- */
 function download(name,rows){
-  const q=x=>'"'+String(x??"").replace(/"/g,'""')+'"';
+  // Stop spreadsheet formulas: text from students that starts with = @ + - is prefixed with '
+  const safe=x=>{const t=String(x??"");return /^[=@\t\r]/.test(t)||(/^[+-]/.test(t)&&!/^[+-]?[\d\s()-]+$/.test(t))?"'"+t:t};
+  const q=x=>'"'+safe(x).replace(/"/g,'""')+'"';
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"}));a.download=name;a.click();
 }
 $("csv").addEventListener("click",()=>download("naesoau-registrations.csv",[["Name","Reg/Matric No","Birthday","WhatsApp","Email","Level","Amount Due","Dues ("+session+")","Receipt No"]].concat(regs.map(r=>{const p=pays[r.reg_no];return [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level,r.amount_due,statusOf(r),p&&p.status==="approved"?recNo(p):""]}))));
