@@ -5,7 +5,7 @@ async function loadSession(){
   try{const {data}=await sb.from("app_settings").select("value").eq("key","session").maybeSingle();if(data){session=data.value;$("sessTxt").textContent=session}}catch(e){}
 }
 loadSession();
-try{const r=sessionStorage.getItem("naes_reg"),p=sessionStorage.getItem("naes_phone");if(r)$("payReg").value=r;if(p)$("payPhone").value=p;sessionStorage.removeItem("naes_reg");sessionStorage.removeItem("naes_phone")}catch(e){}
+try{const st=getStudent();const r=sessionStorage.getItem("naes_reg")||(st?st.reg:""),p=sessionStorage.getItem("naes_phone")||(st?st.phone:"");if(r)$("payReg").value=r;if(p)$("payPhone").value=p;if(sessionStorage.getItem("naes_keep")==="0")$("keepPay").checked=false;sessionStorage.removeItem("naes_reg");sessionStorage.removeItem("naes_phone");sessionStorage.removeItem("naes_keep")}catch(e){}
 $("receipt").addEventListener("change",async function(){
   const f=this.files[0];if(!f)return;
   try{receiptBlob=await shrink(f,1200,.8)}catch(e){receiptBlob=null;say("pmsg","That file is not a readable image.","err")}
@@ -13,7 +13,7 @@ $("receipt").addEventListener("change",async function(){
 async function info(reg,phone){
   const {data,error}=await sb.rpc("get_payment_info",{p_reg_no:reg,p_phone:phone});
   if(error)return String(error.message||"").includes("TOO_MANY_ATTEMPTS")?{locked:true}:null;
-  return first(data);
+  const row=first(data);if(row&&$("keepPay").checked)setStudent(reg,phone);return row;
 }
 $("pf").addEventListener("submit",async e=>{
   e.preventDefault();

@@ -26,12 +26,14 @@
     <img id="prev" alt="Image preview" style="display:none;width:96px;height:96px;object-fit:cover;border-radius:50%">
     <label class="check"><input type="checkbox" id="consent"><span>I agree that NAESOAU may store my details, image and phone number to manage membership, dues and receipts. See the <a href="privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span></label>
     <input id="rWeb" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+    <label class="check"><input type="checkbox" id="keep" checked><span>Keep me signed in on this device, so I do not have to type these again. Untick this on a shared phone or computer.</span></label>
     <button class="btn" id="submit" type="submit">Submit Registration</button>
     <div class="msg" id="msg" role="status"></div>
   </form>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="student.js"></script>
 <script src="common.js"></script>
 <script src="register.js"></script>
 </body></html>

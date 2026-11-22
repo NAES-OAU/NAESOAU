@@ -1,4 +1,5 @@
 /* Receipt page */
+{const st=getStudent();if(st){$("rcReg").value=st.reg;$("rcPhone").value=st.phone}}
 const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src});
 const FONT=(w,s)=>w+" "+s+"px 'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif";
 function fit(x,t,maxW,start,w){let s=start;x.font=FONT(w,s);while(x.measureText(t).width>maxW&&s>18){s-=2;x.font=FONT(w,s)}}
@@ -50,7 +51,7 @@ $("rf").addEventListener("submit",async e=>{
   const d=first(data);
   if(error&&String(error.message||"").includes("TOO_MANY_ATTEMPTS")){say("rmsg",LOCK,"err");$("rcBtn").disabled=false;return}
   if(error||!d){say("rmsg","No confirmed payment found for these details. Check them, or wait until the executives approve your receipt.","err");$("rcBtn").disabled=false;return}
-  await drawReceipt(d);receiptReg=reg;
+  await drawReceipt(d);receiptReg=reg;if($("keepRc").checked)setStudent(reg,ph);
   $("rcv").style.display="block";$("rcDl").style.display="block";
   say("rmsg","Payment confirmed. Download your receipt below.","ok");
   $("rcBtn").disabled=false;

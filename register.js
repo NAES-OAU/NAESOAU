@@ -23,7 +23,7 @@ $("f").addEventListener("submit",async e=>{
     const ins=await sb.from("registrations").insert(v);
     if(ins.error){await sb.storage.from("photos").remove([path]).catch(()=>{});throw ins.error}
     say("msg","Registration received. Welcome to NAESOAU, "+v.full_name.split(" ")[0]+"! Taking you to the payment page...","ok");
-    try{sessionStorage.setItem("naes_reg",v.reg_no);sessionStorage.setItem("naes_phone",v.phone)}catch(e){}
+    try{sessionStorage.setItem("naes_reg",v.reg_no);sessionStorage.setItem("naes_phone",v.phone);sessionStorage.setItem("naes_keep",$("keep").checked?"1":"0")}catch(e){}if($("keep").checked)setStudent(v.reg_no,v.phone);
     $("f").reset();photoBlob=null;photoThumb=null;$("prev").style.display="none";
     setTimeout(()=>{location.href="pay.html"},1500);
   }catch(err){

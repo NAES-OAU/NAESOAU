@@ -66,6 +66,11 @@ body.wide header,body.wide .nav,body.wide .wrap{max-width:1200px}
 .timeline b{display:block;font-size:17px}
 .timeline p{margin:4px 0 0;color:var(--muted);font-size:15px;max-width:60ch}
 .role{display:block;color:var(--gold);font-weight:600;font-size:14px;margin-top:2px}
+.person{display:flex;align-items:center;gap:14px}
+.person img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--gold);background:var(--bg)}
+.feat.current{border-color:var(--gold);border-width:2px}
+.who{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap}
+.who button{font:600 13px "Bricolage Grotesque",system-ui,sans-serif;color:var(--gold);background:none;border:1.5px solid var(--gold);border-radius:999px;padding:4px 10px;cursor:pointer}
 .contact{display:grid;gap:10px}
 .contact p{margin:0}.contact small{display:block;color:var(--muted);font-size:13px}
 .contact a{color:var(--gold);font-weight:600}
