@@ -81,7 +81,7 @@
         <label>WhatsApp Number<input id="ePhone" type="tel"></label>
         <label>Email<input id="eEmail" type="email"></label>
         <label>Level<select id="eLevel"><option>100 Level</option><option>200 Level (Regular)</option><option>200 Level (DE)</option><option>300 Level</option><option>400 Level</option></select></label>
-        <label>Date of Birth (No Year)<span style="display:flex;gap:10px"><select id="eMonth" aria-label="Month"></select><select id="eDay" aria-label="Day"></select></span></label>
+        <label>Date of Birth<span style="display:flex;gap:10px"><select id="eMonth" aria-label="Month"></select><select id="eDay" aria-label="Day"></select></span></label>
         <div><button class="btn" type="submit">Save Changes</button> <button class="btn alt" id="eCancel" type="button">Cancel</button></div>
       </form>
         <div class="scroll"><table><thead><tr><th>Image</th><th>Name</th><th>Reg/Matric No.</th><th>Birthday</th><th>WhatsApp</th><th>Email</th><th>Level</th><th>Amount</th><th>Dues</th><th>Receipt No.</th><th>Approved By</th><th>Receipt</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></div>
@@ -96,7 +96,7 @@
         <form id="execAdd" novalidate>
           <p class="hint">First create the person's login in Supabase under Authentication, then Users, then Add user (tick Auto Confirm User). Then add their email here and choose a role.</p>
           <label>Email of the Account<input id="xEmail" type="email" autocomplete="off"></label>
-          <label>Role<select id="xRole"><option value="super">Generals</option><option value="financial secretary/treasurer">Financial Secretary/Treasurer</option><option value="records">Public Relations Officer/Public Liasion Officer</option><option value="welfare">Welfare</option><option value="viewer">Viewer</option></select></label>
+          <label>Role<select id="xRole"><option value="Generals">Generals</option><option value="financial secretary/treasurer">Financial Secretary/Treasurer</option><option value="records">Public Relations Officer/Public Liasion Officer</option><option value="welfare">Welfare</option><option value="viewer">Viewer</option></select></label>
           <button class="btn" type="submit">Add Executive</button>
         </form>
         <div class="msg" id="xmsg" role="status" style="margin-top:12px"></div>
