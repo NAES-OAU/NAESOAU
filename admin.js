@@ -1,5 +1,10 @@
 /* Executives page */
 fillDob($("eMonth"),$("eDay"));
+const ROLES={super:"Super Admin",finance:"Finance",records:"Records",welfare:"Welfare",viewer:"Viewer"};
+const ALL_PERMS=["students_read","students_write","payments_read","payments_write","feedback_read","feedback_write","settings","admins"];
+let access={role:"",perms:[]},meId="",meEmail="",mfaFactor=null;
+const can=p=>access.perms.includes(p);
+const showEl=(id,on)=>{$(id).style.display=on?"":"none"};
 const td=(tr,t)=>{const c=document.createElement("td");c.textContent=t||"";tr.appendChild(c);return c};
 const statusOf=r=>pays[r.reg_no]?LABEL[pays[r.reg_no].status]:"Unpaid";
 function addBtn(cell,t,alt,fn){const b=document.createElement("button");b.type="button";b.className="btn sm"+(alt?" alt":"");b.textContent=t;b.onclick=fn;cell.appendChild(b)}
@@ -51,21 +56,35 @@ function findDups(){
   return dup;
 }
 async function loadAdmin(){
-  const a=await fetchAll("registrations");
-  if(a.error){say("amsg","Could not load registrations.","err");return}
-  const b=await fetchAll("payments");
-  if(b.error){say("dmsg","Could not load payments.","err");return}
+  const acc=await sb.rpc("my_access");
+  const row=first(acc.data);
+  const legacy=acc.error&&/my_access|PGRST202/.test(String(acc.error.message||"")+String(acc.error.code||""));
+  if(legacy)access={role:"super",perms:ALL_PERMS.slice()};
+  else if(acc.error||!row){
+    say("amsg","This account is not an executive, or its access has been switched off.","err");
+    showEl("login",true);showEl("mfaForm",false);showEl("data",false);
+    try{await sb.auth.signOut()}catch(e){}
+    return;
+  }else access={role:row.role,perms:row.perms||[]};
+  try{const u=await sb.auth.getUser();meId=u.data&&u.data.user?u.data.user.id:"";meEmail=u.data&&u.data.user?u.data.user.email:""}catch(e){}
+  $("who").textContent=(meEmail||"Signed in")+" · "+(ROLES[access.role]||access.role);
+  showEl("login",false);showEl("mfaForm",false);showEl("data",true);
+  showEl("secSettings",can("settings"));showEl("secStudents",can("students_read"));
+  showEl("secFeedback",can("feedback_read"));showEl("secExec",can("admins"));
+  showEl("csvPay",can("payments_read"));
   const s=await sb.from("app_settings").select("value").eq("key","session").maybeSingle();
   if(s.data)session=s.data.value;
   $("sessInput").value=session;
-  regs=a.data;allPays=b.data||[];pays={};
+  regs=[];allPays=[];pays={};
+  if(can("students_read")){const a=await fetchAll("registrations");if(a.error){say("dmsg","Could not load registrations.","err");return}regs=a.data}
+  if(can("payments_read")){const b=await fetchAll("payments");if(b.error){say("dmsg","Could not load payments.","err");return}allPays=b.data||[]}
   allPays.forEach(p=>{if(p.session===session&&!pays[p.reg_no])pays[p.reg_no]=p});
-  $("login").style.display="none";$("data").style.display="block";
   await signUrls();
   renderRegs();renderSummary();
-  const fb=await fetchAll("feedback");
-  renderFeedback(fb.data||[]);
-  if(!regs.length)say("dmsg","No registrations yet, or this account is not an executive.","err");
+  if(can("feedback_read")){const fb=await fetchAll("feedback");renderFeedback(fb.data||[])}
+  if(can("admins")){loadExecs();loadLog()}
+  refreshMfaUi();
+  if(!access.perms.length)say("dmsg","You are signed in but have no access yet. Ask a Super Admin to check your role.","err");
 }
 function renderRegs(){
   const q=$("q").value.trim().toUpperCase(),lv=$("fLevel").value,du=$("fDues").value,dp=$("fDup").value,dups=findDups();
@@ -91,11 +110,11 @@ function renderRegs(){
     if(p&&p.receipt_path&&ru[p.receipt_path]){const l=document.createElement("a");l.href=ru[p.receipt_path];l.target="_blank";l.rel="noopener";l.textContent="View";rc.appendChild(l)}
     else if(p&&p.method==="cash")rc.textContent="Cash";
     ac.style.whiteSpace="normal";ac.style.minWidth="260px";
-    if(p&&p.status==="pending"){addBtn(ac,"Approve",false,()=>approve(r,p));addBtn(ac,"Reject",true,()=>setPay(p.id,"rejected"))}
-    if(!p||p.status==="rejected")addBtn(ac,"Mark as Paid (Cash)",true,()=>cashPay(r));
-    const m=document.createElement("a");m.className="btn alt sm";m.href=waLink(r,p);m.target="_blank";m.rel="noopener";m.textContent="Message";ac.appendChild(m);
-    addBtn(ac,"Edit",true,()=>startEdit(r));
-    if(!p||p.status!=="approved")addBtn(ac,"Delete",true,()=>delReg(r));
+    if(can("payments_write")&&p&&p.status==="pending"){addBtn(ac,"Approve",false,()=>approve(r,p));addBtn(ac,"Reject",true,()=>setPay(p.id,"rejected"))}
+    if(can("payments_write")&&(!p||p.status==="rejected"))addBtn(ac,"Mark as Paid (Cash)",true,()=>cashPay(r));
+    const m=document.createElement("a");m.className="btn alt sm";m.href=waLink(r,p);m.target="_blank";m.rel="noopener";m.textContent="Message";if(can("students_write")||can("payments_write"))ac.appendChild(m);
+    if(can("students_write"))addBtn(ac,"Edit",true,()=>startEdit(r));
+    if(can("students_write")&&(!p||p.status!=="approved"))addBtn(ac,"Delete",true,()=>delReg(r));
     body.appendChild(tr);
   });
 }
@@ -186,9 +205,9 @@ function renderFeedback(list){
     const m=td(tr,f.message);m.style.whiteSpace="normal";m.style.minWidth="260px";
     td(tr,f.contact||"");td(tr,FB_LABEL[f.status]||f.status);
     const a=td(tr,"");
-    if(f.status==="new"){addBtn(a,"Approve",false,()=>setFeedback(f.id,"approved"));addBtn(a,"Reject",true,()=>setFeedback(f.id,"rejected"))}
-    if(f.status==="approved")addBtn(a,"Mark Resolved",false,()=>setFeedback(f.id,"resolved"));
-    addBtn(a,"Delete",true,()=>deleteFeedback(f.id));
+    if(can("feedback_write")&&f.status==="new"){addBtn(a,"Approve",false,()=>setFeedback(f.id,"approved"));addBtn(a,"Reject",true,()=>setFeedback(f.id,"rejected"))}
+    if(can("feedback_write")&&f.status==="approved")addBtn(a,"Mark Resolved",false,()=>setFeedback(f.id,"resolved"));
+    if(can("feedback_write"))addBtn(a,"Delete",true,()=>deleteFeedback(f.id));
     body.appendChild(tr);
   });
 }
@@ -209,7 +228,7 @@ $("login").addEventListener("submit",async e=>{
   e.preventDefault();
   const {error}=await sb.auth.signInWithPassword({email:$("aEmail").value.trim(),password:$("aPass").value});
   if(error){say("amsg","Wrong email or password.","err");return}
-  $("amsg").className="msg";loadAdmin();
+  $("amsg").className="msg";afterAuth();
 });
 $("out").addEventListener("click",async()=>{await sb.auth.signOut();location.reload()});
 /* ---------- Clean up files nobody uses ---------- */
@@ -273,6 +292,105 @@ $("csvPay").addEventListener("click",()=>{
   const byReg={};regs.forEach(r=>byReg[r.reg_no]=r);
   download("naesoau-payments.csv",[["Receipt No","Reg/Matric No","Name","Amount","Method","Session","Status","Name on Transfer","Submitted","Reviewed","Reviewed By"]].concat(allPays.map(p=>[recNo(p),p.reg_no,byReg[p.reg_no]?byReg[p.reg_no].full_name:"",p.amount_due,p.method,p.session,p.status,p.sender_name||"",p.created_at,p.reviewed_at||"",p.reviewed_by||""])));
 });
+/* ---------- 2-step verification ---------- */
+async function afterAuth(){
+  try{
+    const {data}=await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    if(data&&data.nextLevel==="aal2"&&data.currentLevel!=="aal2"){showEl("login",false);showEl("data",false);showEl("mfaForm",true);return}
+  }catch(e){}
+  loadAdmin();
+}
+$("mfaForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const f=await sb.auth.mfa.listFactors();
+  const fac=((f.data&&f.data.totp)||[]).find(x=>x.status==="verified");
+  if(!fac){say("mmsg","No 2-step device found. Sign in again.","err");return}
+  const {error}=await sb.auth.mfa.challengeAndVerify({factorId:fac.id,code:$("mfaCode").value.trim()});
+  if(error){say("mmsg","That code is not right. Check the app and try again.","err");return}
+  $("mfaCode").value="";$("mmsg").className="msg";loadAdmin();
+});
+async function refreshMfaUi(){
+  try{const f=await sb.auth.mfa.listFactors();const on=((f.data&&f.data.totp)||[]).some(x=>x.status==="verified");showEl("mfaSetup",!on);showEl("mfaOn",on)}catch(e){}
+}
+$("mfaSetup").addEventListener("click",async()=>{
+  try{
+    const lf=await sb.auth.mfa.listFactors();
+    for(const f of ((lf.data&&lf.data.all)||[])){if(f.status!=="verified")await sb.auth.mfa.unenroll({factorId:f.id})}
+    const {data,error}=await sb.auth.mfa.enroll({factorType:"totp",friendlyName:"NAESOAU "+Date.now()});
+    if(error||!data){say("dmsg","2-step verification could not start. In Supabase, open Authentication, find Multi-Factor, and switch on TOTP (authenticator app).","err");return}
+    mfaFactor=data.id;$("mfaQr").src=data.totp.qr_code;$("mfaSecret").textContent=data.totp.secret;$("mfaPanel").style.display="";
+  }catch(e){say("dmsg","2-step verification could not start. Try again.","err")}
+});
+$("mfaVerify").addEventListener("click",async()=>{
+  const code=$("mfaSetCode").value.trim();
+  if(!/^\d{6}$/.test(code)){say("dmsg","Enter the 6-digit code from your authenticator app.","err");return}
+  const {error}=await sb.auth.mfa.challengeAndVerify({factorId:mfaFactor,code});
+  if(error){say("dmsg","That code is not right. Check the app and try again.","err");return}
+  $("mfaPanel").style.display="none";$("mfaSetCode").value="";
+  say("dmsg","2-step verification is on for your account.","ok");refreshMfaUi();if(can("admins"))loadExecs();
+});
+
+/* ---------- Executive accounts (Super Admin) ---------- */
+function execErr(m){
+  m=String(m||"");
+  return m.includes("NO_SUCH_USER")?"No account with that email. Create it first in Supabase under Authentication, then Users, then add it here.":
+    m.includes("LAST_SUPER")?"At least one active Super Admin must remain.":
+    m.includes("NO_MFA_FACTOR")?"That person has not set up 2-step verification yet.":
+    m.includes("FORBIDDEN")?"Only a Super Admin can do this.":"Could not save. Try again.";
+}
+const tick=(cell,on,label)=>{const c=document.createElement("input");c.type="checkbox";c.checked=on;c.style.cssText="width:auto;padding:0;margin:0 6px 0 0";cell.appendChild(c);cell.appendChild(document.createTextNode(label));return c};
+async function loadExecs(){
+  const {data,error}=await sb.rpc("admin_list");
+  const body=$("execRows");body.textContent="";
+  if(error){say("xmsg","The executive list is not available yet. Run the roles SQL in Supabase first.","err");return}
+  (data||[]).forEach(a=>{
+    const tr=document.createElement("tr");
+    td(tr,a.email||"(unknown)");
+    const rc=td(tr,""),sel=document.createElement("select");sel.style.width="auto";
+    Object.entries(ROLES).forEach(([k,v])=>sel.add(new Option(v,k)));sel.value=a.role;rc.appendChild(sel);
+    const act=tick(td(tr,""),a.active," Active");
+    td(tr,a.mfa_enrolled?"Set up":"Not set up");
+    const req=tick(td(tr,""),a.require_mfa," Required");
+    td(tr,a.last_sign_in_at?new Date(a.last_sign_in_at).toLocaleString("en-GB"):"Never");
+    addBtn(td(tr,""),"Save",false,()=>saveExec(a.user_id,sel.value,act.checked,req.checked));
+    body.appendChild(tr);
+  });
+}
+async function saveExec(id,role,active,req){
+  const {error}=await sb.rpc("admin_update",{p_user_id:id,p_role:role,p_active:active,p_require_mfa:req});
+  if(error){say("xmsg",execErr(error.message),"err");loadExecs();return}
+  say("xmsg","Saved.","ok");loadExecs();loadLog();
+  if(id===meId)afterAuth();
+}
+$("execAdd").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const email=$("xEmail").value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(email)){say("xmsg","Enter the executive's email address.","err");return}
+  const {error}=await sb.rpc("admin_add",{p_email:email,p_role:$("xRole").value});
+  if(error){say("xmsg",execErr(error.message),"err");return}
+  $("xEmail").value="";say("xmsg","Executive added.","ok");loadExecs();loadLog();
+});
+
+/* ---------- Activity log (Super Admin) ---------- */
+const dv=v=>{if(v===null||v===undefined||v==="")return"empty";const s=typeof v==="object"?JSON.stringify(v):String(v);return s.length>40?s.slice(0,40)+"…":s};
+function fmtDetail(action,d){
+  if(!d)return"";
+  if(/ update$/.test(action))return Object.entries(d).map(([k,v])=>k+": "+dv(v.from)+" → "+dv(v.to)).join("; ");
+  const s=JSON.stringify(d);return s.length>180?s.slice(0,180)+"…":s;
+}
+async function loadLog(){
+  const {data,error}=await sb.from("audit_log").select("*").order("at",{ascending:false}).limit(200);
+  const body=$("logRows");body.textContent="";
+  if(error)return;
+  (data||[]).forEach(l=>{
+    const tr=document.createElement("tr");
+    td(tr,new Date(l.at).toLocaleString("en-GB"));td(tr,l.actor_email||"");td(tr,l.action);td(tr,l.target||"");
+    const d=td(tr,fmtDetail(l.action,l.detail));d.style.whiteSpace="normal";d.style.minWidth="260px";
+    body.appendChild(tr);
+  });
+}
+$("logRefresh").addEventListener("click",loadLog);
+
 /* Already signed in on this device? Go straight to the dashboard. */
-(async()=>{try{const {data}=await sb.auth.getSession();if(data.session)loadAdmin()}catch(e){}})();
+(async()=>{try{const {data}=await sb.auth.getSession();if(data.session)afterAuth()}catch(e){}})();
 
