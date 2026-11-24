@@ -30,6 +30,7 @@
   <a href="register.html">Register</a>
   <a href="pay.html">Pay Dues</a>
   <a href="receipt.html" aria-current="page">Receipt</a>
+  <a href="verify.html">Verify Receipt</a>
   <a href="speak.html">Speak Up</a>
   <a href="about.html">About</a>
   <div class="drawer-foot" id="menuWho"></div>
@@ -43,12 +44,13 @@
     <label class="check"><input type="checkbox" id="keepRc"><span>Remember my matric number and WhatsApp number on this device, so I do not have to type them again. Only tick this on your own phone.</span></label>
     <button class="btn" id="rcBtn" type="submit">Get Receipt</button>
     <div class="msg" id="rmsg" role="status"></div>
-    <canvas id="rcv" width="1000" height="1600" style="display:none;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"></canvas>
+    <canvas id="rcv" width="1000" height="1720" style="display:none;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"></canvas>
     <button class="btn" id="rcDl" type="button" style="display:none">Download Receipt</button>
   </form>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="student.js"></script>
 <script src="common.js"></script>
 <script src="receipt.js"></script>

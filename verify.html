@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verify Receipt – NAESOAU</title>
+<link rel="icon" href="logo.png">
+<meta name="description" content="Check that a NAESOAU payment receipt is genuine.">
+<meta name="theme-color" content="#2a1a77">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NAESOAU">
+<meta property="og:title" content="Verify Receipt – NAESOAU">
+<meta property="og:description" content="Check that a NAESOAU payment receipt is genuine.">
+<meta property="og:image" content="https://naesoau1.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html">NAESOAU</a>
+<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="menu" aria-label="Pages">
+  <div class="drawer-top"><b>Menu</b><button class="drawer-close" id="menuClose" type="button" aria-label="Close menu">&times;</button></div>
+  <a href="index.html">Home</a>
+  <a href="welcome.html">Welcome</a>
+  <a href="register.html">Register</a>
+  <a href="pay.html">Pay Dues</a>
+  <a href="receipt.html">Receipt</a>
+  <a href="verify.html" aria-current="page">Verify Receipt</a>
+  <a href="speak.html">Speak Up</a>
+  <a href="about.html">About</a>
+  <div class="drawer-foot" id="menuWho"></div>
+</nav>
+<main class="wrap">
+  <h1 class="page-title">Verify Receipt</h1>
+  <form id="vf" novalidate>
+    <p class="hint">Enter the receipt number printed on the receipt, or scan the QR code on it. We will show what NAESOAU has on record for that number so you can compare.</p>
+    <label>Receipt Number<input id="vNo" placeholder="NAES-1A2B3C4D" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
+    <button class="btn" id="vBtn" type="submit">Check Receipt</button>
+    <div class="msg" id="vmsg" role="status"></div>
+    <div class="feat" id="vres" style="display:none"></div>
+  </form>
+</main>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="common.js"></script>
+<script src="verify.js"></script>
+<script src="menu.js"></script>
+</body></html>
