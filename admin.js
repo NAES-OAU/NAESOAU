@@ -232,6 +232,15 @@ $("login").addEventListener("submit",async e=>{
   if(error){say("amsg","Wrong email or password.","err");return}
   $("amsg").className="msg";afterAuth();
 });
+$("aEye").addEventListener("click",()=>{
+  const p=$("aPass"),show=p.type==="password";
+  p.type=show?"text":"password";
+  $("aEye").setAttribute("aria-pressed",show?"true":"false");
+  $("aEye").setAttribute("aria-label",show?"Hide password":"Show password");
+  $("aEye").querySelector(".eye-on").style.display=show?"":"none";
+  $("aEye").querySelector(".eye-off").style.display=show?"none":"";
+  p.focus();
+});
 $("out").addEventListener("click",async()=>{await sb.auth.signOut();location.reload()});
 /* ---------- Clean up files nobody uses ---------- */
 async function listFiles(bucket){
