@@ -78,8 +78,8 @@ body.wide{--w:1200px}
 .drawer-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-left:6px}
 .drawer-top b{font-size:20px;font-weight:800}
 .drawer-close{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:none;color:var(--ink);font-size:28px;line-height:1;cursor:pointer}
-.drawer>a{display:block;text-decoration:none;color:var(--ink);font-weight:600;font-size:18px;padding:14px 16px;border-radius:12px}
-.drawer>a[aria-current=page]{background:var(--accent);color:var(--accent-ink)}
+.drawer a{display:block;text-decoration:none;color:var(--ink);font-weight:600;font-size:18px;padding:14px 16px;border-radius:12px}
+.drawer a[aria-current=page]{background:var(--accent);color:var(--accent-ink)}
 .drawer-foot{margin-top:auto;padding:14px 6px 0}
 .drawer-foot .who{flex-wrap:wrap;white-space:normal}
 html.menu-open,html.menu-open body{overflow:hidden}
@@ -100,3 +100,20 @@ body.home header{max-width:1100px}
 .hero-text .pill{margin-top:20px}
 .hero-img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:20px;border:2px solid var(--gold);box-shadow:0 12px 36px var(--glow)}
 @media (min-width:820px){.hero{grid-template-columns:1fr 1.2fr;gap:44px;padding-top:12px}.hero-text .lead{max-width:30ch;margin-bottom:0}}
+
+/* ---- fixes: overlay, overflow, grouped menu ---- */
+html,body{max-width:100%;overflow-x:clip}
+header{min-width:0}
+.brand{min-width:0;display:flex;flex-direction:column;line-height:1.15}
+.brand small{font-size:13px;font-weight:600;color:var(--muted)}
+.logo{flex:none}
+/* drawer must stay hidden unless html.menu-open is set */
+.drawer{pointer-events:none}
+html.menu-open .drawer{pointer-events:auto}
+.drawer a{display:block;text-decoration:none;color:var(--ink);font-weight:600;font-size:18px;padding:14px 16px;border-radius:12px}
+.drawer a[aria-current=page]{background:var(--accent);color:var(--accent-ink)}
+.drawer h3,.drawer .group-label,.drawer .nav-group>span,.drawer .nav-group>b{display:block;margin:14px 6px 4px;padding:0;background:none;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.drawer .btn{display:block;text-align:center;color:var(--accent-ink)}
+.drawer a *,.drawer a small{display:block}
+.drawer a small{font-weight:400;font-size:13px;color:var(--muted)}
+.drawer .signin{margin-top:12px;padding:14px 16px;font-size:18px;border-radius:12px}
