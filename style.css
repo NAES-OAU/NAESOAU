@@ -117,3 +117,8 @@ html.menu-open .drawer{pointer-events:auto}
 .drawer a *,.drawer a small{display:block}
 .drawer a small{font-weight:400;font-size:13px;color:var(--muted)}
 .drawer .signin{margin-top:12px;padding:14px 16px;font-size:18px;border-radius:12px}
+
+/* ---- header: only logo, brand and the three-line menu button ---- */
+header>:not(.menu-btn):not(.brand):not(a:has(.logo)){display:none!important}
+header>a:not(.brand):not(:has(.logo)){display:none!important}
+header .btn,header nav{display:none!important}
