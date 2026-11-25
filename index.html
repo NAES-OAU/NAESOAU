@@ -13,13 +13,19 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
   <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
-  <a class="brand" href="index.html">NAESOAU</a>
+  <a class="brand" href="index.html"><b>NAESOAU</b><small>Entrepreneurship Students · Ile-Ife</small></a>
+  <nav class="top" aria-label="Main">
+    <div class="dd"><button type="button" class="ddb">About</button><div class="ddm"><a href="welcome.html">Welcome</a><a href="about.html">About NAESOAU</a></div></div>
+    <div class="dd"><button type="button" class="ddb">Students</button><div class="ddm"><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="verify.html">Verify Receipt</a></div></div>
+    <a href="speak.html">Speak Up</a>
+    <a class="btn signin" href="admin.html">Sign in</a>
+  </nav>
 <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
@@ -35,15 +41,25 @@
   <a href="about.html">About</a>
   <div class="drawer-foot" id="menuWho"></div>
 </nav>
-<main class="wrap">
-  <span class="pill">The Home of Entrepreneurship Students in OAU</span>
-  <h1>Your Association, in One Place</h1>
-  <p class="lead">Register, pay your dues, get event tickets and share ideas with the executives. No more chasing anyone.</p>
-  <a class="cta primary" href="register.html">Register</a>
-  <a class="cta secondary" href="pay.html">Pay Dues</a>
-
-  <h2>Coming Soon</h2>
-  <div class="feat soon"><b>Event Tickets</b><span>Book seats for seminars, pitch nights and socials.</span></div>
+<main class="wide">
+  <section class="hero">
+    <div>
+      <span class="pill">The home of Entrepreneurship students at Great Ife</span>
+      <h1>Your Association, in one place</h1>
+      <p class="lead">Register, pay your dues, get your receipt and speak up. Everything NAESOAU offers, without chasing anyone.</p>
+      <p class="acts"><a class="btn" href="register.html">Register</a> <a class="btn alt" href="pay.html">Pay Dues</a></p>
+    </div>
+    <div class="hv" role="img" aria-label="Obafemi Awolowo University">
+      <div class="hc"><img class="logo" src="logo.png" alt=""><span>National Association of Entrepreneurship Students<b>Obafemi Awolowo University</b></span></div>
+    </div>
+  </section>
+  <section class="cards">
+    <a class="card" href="register.html"><b>Register</b><span>Join the association with your matric number.</span></a>
+    <a class="card" href="pay.html"><b>Pay Dues</b><span>Transfer, then upload your proof of payment.</span></a>
+    <a class="card" href="receipt.html"><b>Get Receipt</b><span>Download your confirmed receipt any time.</span></a>
+    <a class="card" href="speak.html"><b>Speak Up</b><span>Share ideas or concerns with the executives.</span></a>
+  </section>
+  <div class="feat soon"><b>Event Tickets · Coming Soon</b><span>Book seats for seminars, pitch nights and socials.</span></div>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="student.js"></script>

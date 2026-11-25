@@ -1,7 +1,7 @@
 /* Receipt page */
 {const st=getStudent();if(st){$("rcReg").value=st.reg;$("rcPhone").value=st.phone;$("keepRc").checked=true}}
 const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src});
-const FONT=(w,s)=>w+" "+s+"px 'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif";
+const FONT=(w,s)=>w+" "+s+"px 'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
 function fit(x,t,maxW,start,w){let s=start;x.font=FONT(w,s);while(x.measureText(t).width>maxW&&s>18){s-=2;x.font=FONT(w,s)}}
 function drawQR(x,text,px,py,size){
   if(typeof qrcode!=="function")return false;
