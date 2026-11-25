@@ -95,8 +95,7 @@ html.menu-open .drawer{transform:none;visibility:visible;transition:transform .2
 .exec.lead-exec img{width:128px;height:128px}
 .exec.lead-exec b{font-size:18px}
 @media (min-width:600px){.execs{grid-template-columns:repeat(3,1fr)}}
-body.home header{max-width:1100px}
-.hero{max-width:1100px;margin:0 auto;padding:0 20px;display:grid;gap:24px;align-items:center}
+.hero{max-width:var(--w);margin:0 auto;padding:0 20px;display:grid;gap:24px;align-items:center}
 .hero-text .pill{margin-top:20px}
 .hero-img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:20px;border:2px solid var(--gold);box-shadow:0 12px 36px var(--glow)}
 @media (min-width:820px){.hero{grid-template-columns:1fr 1.2fr;gap:44px;padding-top:12px}.hero-text .lead{max-width:30ch;margin-bottom:0}}
@@ -122,3 +121,38 @@ html.menu-open .drawer{pointer-events:auto}
 header>:not(.menu-btn):not(.brand):not(a:has(.logo)){display:none!important}
 header>a:not(.brand):not(:has(.logo)){display:none!important}
 header .btn,header nav{display:none!important}
+
+/* ---- home page: responsive layout (mobile -> tablet -> desktop) ---- */
+body.home{--w:1200px}
+body.home .wrap{padding-bottom:8px}
+.hero-text{min-width:0}
+.hero-img{max-height:560px}
+.execs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.exec{flex:0 0 calc(50% - 6px);min-width:0}
+.exec.lead-exec{flex:0 0 100%;max-width:none}
+.exec b{overflow-wrap:anywhere}
+body.home main h2{margin-top:56px}
+body.home main .sub{max-width:60ch}
+
+@media (min-width:600px){
+  .exec{flex:0 0 calc(33.333% - 8px)}
+  .exec.lead-exec{flex:0 0 100%}
+}
+@media (min-width:820px){
+  .hero{padding-top:28px;padding-bottom:12px}
+  .hero-text .pill{margin-top:0}
+  .hero-text h1{font-size:clamp(48px,5.4vw,72px)}
+  .hero-text .lead{font-size:21px;max-width:32ch}
+  .hero-img{aspect-ratio:5/4}
+  .exec.lead-exec{flex:0 0 100%;display:grid;grid-template-columns:auto 1fr;align-items:center;text-align:left;gap:4px 28px;padding:24px 32px;flex:0 0 640px;max-width:100%;margin-inline:max(0px,calc((100% - 640px)/2))}
+  .exec.lead-exec img{grid-row:1/3;margin:0}
+  .exec.lead-exec b{align-self:end;font-size:22px}
+  .exec.lead-exec span{align-self:start;font-size:15px}
+}
+@media (min-width:1000px){
+  .exec{flex:0 0 calc(25% - 9px)}
+  body.home main h2{font-size:30px}
+  .feat.soon{max-width:520px}
+}
+
+body.home footer{margin-top:56px}
