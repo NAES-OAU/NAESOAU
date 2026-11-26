@@ -171,3 +171,8 @@ body.home footer{margin-top:56px}
 }
 footer.wrap{margin:48px auto 0;padding-top:20px;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
 @media (max-width:420px){.brand small{font-size:12px}}
+footer.wrap a{display:inline-block;padding:6px 2px}
+@media (min-width:820px){
+  footer.wrap{max-width:1160px;text-align:center;margin-top:72px}
+}
+label.check a,.hint a,.sub a{color:var(--goldtext)}
