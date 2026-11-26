@@ -176,3 +176,5 @@ footer.wrap a{display:inline-block;padding:6px 2px}
   footer.wrap{max-width:1160px;text-align:center;margin-top:72px}
 }
 label.check a,.hint a,.sub a{color:var(--goldtext)}
+.page-title{margin-bottom:20px}
+.page-title:has(+ .sub){margin-bottom:8px}
