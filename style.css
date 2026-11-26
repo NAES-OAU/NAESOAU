@@ -3,7 +3,7 @@
 html{scroll-behavior:smooth;scroll-padding-top:84px}*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
 .wrap{max-width:var(--w);margin:0 auto;padding:0 20px}
-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;background:var(--bg);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) max(20px,calc((100% - (var(--w) - 40px))/2)) 10px}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;background:var(--bg);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) max(20px,calc((100% - 1160px)/2)) 10px}
 .logo{width:44px;height:44px;border-radius:50%}.brand{font-weight:800;font-size:20px;flex:1}
 .btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 16px;font:600 15px "Bricolage Grotesque",system-ui,sans-serif;cursor:pointer}
 .btn.alt{background:none;color:var(--goldtext);border:1.5px solid var(--gold)}
@@ -156,3 +156,18 @@ body.home main .sub{max-width:60ch}
 }
 
 body.home footer{margin-top:56px}
+
+/* ---- inner pages: desktop polish ---- */
+.page-title{margin-top:36px}
+@media (min-width:820px){
+  .cta{display:inline-block;min-width:220px;margin:0 12px 12px 0}
+  form{padding:28px}
+  .page-title{margin-top:48px}
+}
+@media (min-width:1000px){
+  body.wide .grid{grid-template-columns:repeat(3,1fr)}
+  body.wide .timeline{max-width:760px}
+  body.wide .feat.contact{max-width:640px}
+}
+footer.wrap{margin:48px auto 0;padding-top:20px;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+@media (max-width:420px){.brand small{font-size:12px}}
