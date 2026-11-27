@@ -1,4 +1,12 @@
-/* Register page */
+/* Register page: bind each membership record to the signed-in Supabase user. */
+let signedInUser=null;
+(async()=>{
+  const {data,error}=await sb.auth.getUser();
+  if(error||!data.user){location.replace("index.html");return;}
+  signedInUser=data.user;
+  const emailField=$("email");
+  if(emailField){emailField.value=data.user.email||"";emailField.readOnly=true;emailField.setAttribute("aria-readonly","true");}
+})();
 fillDob($("dobMonth"),$("dobDay"));
 $("photo").addEventListener("change",async function(){
   const f=this.files[0];if(!f)return;
@@ -8,8 +16,9 @@ $("photo").addEventListener("change",async function(){
 $("f").addEventListener("submit",async e=>{
   e.preventDefault();
   if($("submit").disabled)return;
+  if(!signedInUser){say("msg","Please sign in again before submitting your registration.","err");location.replace("index.html");return;}
   if($("rWeb").value){say("msg","Registration received. Thank you.","ok");return}
-  const v={full_name:$("fullName").value.trim(),reg_no:normReg($("reg").value),dob_month:+$("dobMonth").value,dob_day:+$("dobDay").value,phone:$("phone").value.trim(),email:$("email").value.trim(),level:$("level").value};
+  const v={user_id:signedInUser.id,full_name:$("fullName").value.trim(),reg_no:normReg($("reg").value),dob_month:+$("dobMonth").value,dob_day:+$("dobDay").value,phone:$("phone").value.trim(),email:signedInUser.email,level:$("level").value};
   if(!v.full_name||!v.reg_no||!v.dob_month||!v.dob_day||!v.phone||!/^\S+@\S+\.\S+$/.test(v.email)||!photoBlob){say("msg","Fill in every field, add your image and use a valid email.","err");return}
   if(v.phone.replace(/\D/g,"").length<10){say("msg","Enter a valid WhatsApp number with at least 10 digits. You will need it to get your receipt.","err");return}
   if(!okDob(v.dob_month,v.dob_day)){say("msg","That birthday does not exist. Check the month and day.","err");return}
