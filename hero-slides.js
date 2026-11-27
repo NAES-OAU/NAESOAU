@@ -11,12 +11,7 @@
     {src:"hero-7.jpg",alt:"NAESOAU members at an association event, photo 7"},
     {src:"hero-8.jpg",alt:"NAESOAU members at an association event, photo 8"},
     {src:"hero-9.jpg",alt:"NAESOAU members at an association event, photo 9"},
-    {src:"hero-10.jpg",alt:"NAESOAU members at an association event, photo 10"},
-    {src:"hero-11.jpg",alt:"NAESOAU members at an association event, photo 11"},
-    {src:"hero-12.jpg",alt:"NAESOAU members at an association event, photo 12"},
-    {src:"hero-13.jpg",alt:"NAESOAU members at an association event, photo 13"},
-    {src:"hero-14.jpg",alt:"NAESOAU members at an association event, photo 14"},
-    {src:"hero-15.jpg",alt:"NAESOAU members at an association event, photo 15"}
+    {src:"hero-10.jpg",alt:"NAESOAU members at an association event, photo 10"}
   ];
   var INTERVAL=5000; /* milliseconds each photo stays on screen */
 
