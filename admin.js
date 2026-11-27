@@ -358,7 +358,7 @@ async function loadExecs(){
 }
 async function saveExec(id,role,active,req){
   const {error}=await sb.rpc("admin_update",{p_user_id:id,p_role:role,p_active:active,p_require_mfa:req});
-  if(error){say("xmsg",execErr(error.message),"err");loadExecs();return}
+ if(error){say("xmsg","Save failed: "+error.message+" ["+(error.code||"no code")+"]","err");loadExecs();return}
   say("xmsg","Saved.","ok");loadExecs();loadLog();
   if(id===meId)afterAuth();
 }
