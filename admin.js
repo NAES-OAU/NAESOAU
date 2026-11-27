@@ -1,6 +1,6 @@
 /* Executives page */
 fillDob($("eMonth"),$("eDay"));
-const ROLES={super:"Super Admin",finance:"Finance",records:"Records",welfare:"Welfare",viewer:"Viewer"};
+const ROLES={super:"The General",finance:"Financial Secretary/Treasurer",records:"PRO/PLO",welfare:"Welfare",Special:"Special"};
 const ALL_PERMS=["students_read","students_write","payments_read","payments_write","feedback_read","feedback_write","settings","admins"];
 let access={role:"",perms:[]},meId="",meEmail="",mfaFactor=null;
 const can=p=>access.perms.includes(p);
