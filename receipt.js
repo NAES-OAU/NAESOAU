@@ -1,21 +1,10 @@
 /* Receipt page */
 {const st=getStudent();if(st){$("rcReg").value=st.reg;$("rcPhone").value=st.phone;$("keepRc").checked=true}}
 const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src});
-const FONT=(w,s)=>w+" "+s+"px 'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
+const FONT=(w,s)=>w+" "+s+"px 'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif";
 function fit(x,t,maxW,start,w){let s=start;x.font=FONT(w,s);while(x.measureText(t).width>maxW&&s>18){s-=2;x.font=FONT(w,s)}}
-function drawQR(x,text,px,py,size){
-  if(typeof qrcode!=="function")return false;
-  try{
-    const q=qrcode(0,"M");q.addData(text);q.make();
-    const n=q.getModuleCount(),cell=Math.max(2,Math.floor(size/(n+8))),tot=cell*(n+8);
-    x.fillStyle="#fff";x.fillRect(px,py,tot,tot);x.fillStyle="#000";
-    for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect(px+(k+4)*cell,py+(r+4)*cell,cell,cell);
-    x.strokeStyle="#ddd6c4";x.lineWidth=2;x.strokeRect(px,py,tot,tot);
-    return true;
-  }catch(e){return false}
-}
 async function drawReceipt(d){
-  const c=$("rcv"),x=c.getContext("2d"),W=1000,H=1720;c.width=W;c.height=H;
+  const c=$("rcv"),x=c.getContext("2d"),W=1000,H=1600;
   const NAVY="#2a1a77",GOLD="#b88a1e",INK="#1e1458",MUTED="#6a6590",LINE="#ddd6c4";
   try{await document.fonts.ready}catch(e){}
   x.fillStyle="#fff";x.fillRect(0,0,W,H);
@@ -48,16 +37,10 @@ async function drawReceipt(d){
   lab("Paid To",80,1260);val("National Association of Entrepreneurship Students",80,1306,840,34);
   lab("Status",80,1370);val("Confirmed by NAESOAU Executives",80,1416,840,34);
   x.strokeStyle=LINE;x.lineWidth=2;x.beginPath();x.moveTo(80,1470);x.lineTo(920,1470);x.stroke();
-  const code="NAES-"+d.receipt_no,vurl=location.origin+"/verify?r="+encodeURIComponent(code);
   x.fillStyle=MUTED;x.font=FONT("400",22);
-  x.fillText("This receipt is valid only for the person shown above.",80,1520);
-  x.fillText("Present it together with your student ID card.",80,1552);
-  x.fillStyle=INK;fit(x,"To check that it is genuine, scan the code or go to",600,22,"600");
-  x.fillText("To check that it is genuine, scan the code or go to",80,1610);
-  fit(x,location.host+"/verify and enter "+code,600,22,"800");
-  x.fillText(location.host+"/verify and enter "+code,80,1644);
-  drawQR(x,vurl,710,1490,210);
-  x.fillStyle=GOLD;x.fillRect(0,H-14,W,14);
+  x.fillText("This receipt is valid only for the person shown above.",80,1508);
+  x.fillText("Present it together with your student ID card.",80,1540);
+  x.fillStyle=GOLD;x.fillRect(0,1586,W,14);
 }
 $("rf").addEventListener("submit",async e=>{
   e.preventDefault();

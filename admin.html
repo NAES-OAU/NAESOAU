@@ -5,19 +5,13 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="logo.png">
 <meta name="theme-color" content="#2a1a77">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="wide">
 <header>
   <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
-  <a class="brand" href="index.html"><b>NAESOAU</b><small>Entrepreneurship Students · Ile-Ife</small></a>
-  <nav class="top" aria-label="Main">
-    <div class="dd"><button type="button" class="ddb">About</button><div class="ddm"><a href="welcome.html">Welcome</a><a href="about.html">About NAESOAU</a></div></div>
-    <div class="dd"><button type="button" class="ddb">Students</button><div class="ddm"><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="verify.html">Verify Receipt</a></div></div>
-    <a href="speak.html">Speak Up</a>
-    <a class="btn signin" href="admin.html">Sign in</a>
-  </nav>
+  <a class="brand" href="index.html">NAESOAU</a>
 <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
@@ -28,7 +22,6 @@
   <a href="register.html">Register</a>
   <a href="pay.html">Pay Dues</a>
   <a href="receipt.html">Receipt</a>
-  <a href="verify.html">Verify Receipt</a>
   <a href="speak.html">Speak Up</a>
   <a href="about.html">About</a>
   <div class="drawer-foot" id="menuWho"></div>
@@ -38,26 +31,35 @@
     <h2>Executives <span id="count"></span></h2>
     <form id="login" novalidate>
       <label>Email<input id="aEmail" type="email" autocomplete="username"></label>
-      <label>Password<span class="pw"><input id="aPass" type="password" autocomplete="current-password"><button class="eye" id="aEye" type="button" aria-label="Show password" aria-pressed="false"><svg class="eye-off" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94"/><path d="M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88"/><path d="M1 1l22 22"/></svg><svg class="eye-on" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></span></label>
+      <label>Password<input id="aPass" type="password" autocomplete="current-password"></label>
       <button class="btn" type="submit">Sign In</button>
       <div class="msg" id="amsg" role="status"></div>
+    </form>
+    <form id="mfaForm" style="display:none" novalidate>
+      <p class="hint">Enter the 6-digit code from your authenticator app.</p>
+      <label>Code<input id="mfaCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></label>
+      <button class="btn" type="submit">Verify</button>
+      <div class="msg" id="mmsg" role="status"></div>
     </form>
     <div id="data" style="display:none">
       <div class="bar" style="align-items:center">
         <span id="who" style="flex:2 1 260px;font-weight:600"></span>
+        <button class="btn alt" id="mfaSetup" type="button" style="display:none">Set Up 2-Step Verification</button>
+        <span id="mfaOn" style="display:none;color:var(--goldtext);font-weight:600">2-Step Verification: On</span>
         <button class="btn alt" id="out" type="button">Sign Out</button>
       </div>
       <div class="msg" id="dmsg" role="status" style="margin-top:12px"></div>
+      <div class="feat" id="mfaPanel" style="display:none;margin:12px 0">
+        <b>Set Up 2-Step Verification</b>
+        <p class="hint" style="margin:6px 0">1. Install an authenticator app (Google Authenticator, Microsoft Authenticator or Authy). 2. Scan this code, or type the key into the app. 3. Enter the 6-digit code it shows.</p>
+        <img id="mfaQr" alt="2-step verification QR code" width="180" height="180" style="background:#fff;padding:8px;border-radius:10px">
+        <p class="hint" style="margin:6px 0">Key: <span id="mfaSecret" style="font-family:monospace;word-break:break-all"></span></p>
+        <label style="max-width:240px">6-Digit Code<input id="mfaSetCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></label>
+        <button class="btn" id="mfaVerify" type="button" style="margin-top:10px">Turn On</button>
+      </div>
       <div id="secSettings" style="display:none">
         <label style="max-width:340px">Current Session<span style="display:flex;gap:8px"><input id="sessInput" placeholder="2026/2027"><button class="btn" id="sessSave" type="button">Save</button></span></label>
         <div class="bar"><button class="btn alt" id="clean" type="button">Clean Up Unused Files</button></div>
-      </div>
-      <div id="secPromote" style="display:none">
-        <div class="feat" style="margin:12px 0">
-          <b>Promote Students</b>
-          <p class="hint" id="promoteHint" style="margin:6px 0"></p>
-          <button class="btn alt" id="promoteBtn" type="button">Promote Students</button>
-        </div>
       </div>
       <div id="secStudents" style="display:none">
         <div class="bar">
@@ -94,21 +96,18 @@
         <form id="execAdd" novalidate>
           <p class="hint">First create the person's login in Supabase under Authentication, then Users, then Add user (tick Auto Confirm User). Then add their email here and choose a role.</p>
           <label>Email of the Account<input id="xEmail" type="email" autocomplete="off"></label>
-          <label>Role<select id="xRole"></select></label>
+          <label>Role<select id="xRole"><option value="super">Super Admin</option><option value="finance">Finance</option><option value="records">Records</option><option value="welfare">Welfare</option><option value="viewer">Viewer</option></select></label>
           <button class="btn" type="submit">Add Executive</button>
         </form>
         <div class="msg" id="xmsg" role="status" style="margin-top:12px"></div>
-        <div class="scroll"><table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Last Sign-In</th><th>Action</th></tr></thead><tbody id="execRows"></tbody></table></div>
-        <h2 style="font-size:20px">Roles and Access</h2>
-        <p class="hint">Tick what each role may do, then press Save on that row. The Generals can always do everything and cannot be changed. Other executives see a change the next time they open or refresh this page. Every change is written to the Activity Log below.</p>
-        <div class="scroll"><table><thead id="roleHead"></thead><tbody id="roleRows"></tbody></table></div>
+        <div class="scroll"><table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>2-Step</th><th>2-Step Required</th><th>Last Sign-In</th><th>Action</th></tr></thead><tbody id="execRows"></tbody></table></div>
         <h2 style="font-size:20px">Activity Log <button class="btn alt sm" id="logRefresh" type="button">Refresh</button></h2>
         <div class="scroll"><table><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Target</th><th>Details</th></tr></thead><tbody id="logRows"></tbody></table></div>
       </div>
     </div>
   </section>
 </main>
-<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a>
+<footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
 <script src="common.js"></script>
 <script src="admin.js"></script>

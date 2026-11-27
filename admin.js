@@ -1,10 +1,8 @@
 /* Executives page */
 fillDob($("eMonth"),$("eDay"));
-const ROLES={generals:"The Generals",treasurer:"Financial Secretary/Treasurer",pro:"Public Relations Officer/Public Liaison Officer (PRO/PLO)",welfare:"Welfare",special:"Special"};
-const ROLE_ORDER=["generals","treasurer","pro","welfare","special"];
-const PERMS=[["students_read","View Students"],["students_write","Edit Students"],["payments_read","View Payments"],["payments_write","Approve Payments"],["feedback_read","View Speak Up"],["feedback_write","Manage Speak Up"],["settings","Session and Clean-Up"],["promote","Promote Students"],["admins","Manage Executives"]];
-const ALL_PERMS=PERMS.map(p=>p[0]);
-let access={role:"",perms:[]},meId="",meEmail="";
+const ROLES={super:"Super Admin",finance:"Finance",records:"Records",welfare:"Welfare",viewer:"Viewer"};
+const ALL_PERMS=["students_read","students_write","payments_read","payments_write","feedback_read","feedback_write","settings","admins"];
+let access={role:"",perms:[]},meId="",meEmail="",mfaFactor=null;
 const can=p=>access.perms.includes(p);
 const showEl=(id,on)=>{$(id).style.display=on?"":"none"};
 const td=(tr,t)=>{const c=document.createElement("td");c.textContent=t||"";tr.appendChild(c);return c};
@@ -61,20 +59,19 @@ async function loadAdmin(){
   const acc=await sb.rpc("my_access");
   const row=first(acc.data);
   const legacy=acc.error&&/my_access|PGRST202/.test(String(acc.error.message||"")+String(acc.error.code||""));
-  if(legacy)access={role:"generals",perms:ALL_PERMS.slice()};
+  if(legacy)access={role:"super",perms:ALL_PERMS.slice()};
   else if(acc.error||!row){
     say("amsg","This account is not an executive, or its access has been switched off.","err");
-    showEl("login",true);showEl("data",false);
+    showEl("login",true);showEl("mfaForm",false);showEl("data",false);
     try{await sb.auth.signOut()}catch(e){}
     return;
   }else access={role:row.role,perms:row.perms||[]};
   try{const u=await sb.auth.getUser();meId=u.data&&u.data.user?u.data.user.id:"";meEmail=u.data&&u.data.user?u.data.user.email:""}catch(e){}
   $("who").textContent=(meEmail||"Signed in")+" · "+(ROLES[access.role]||access.role);
-  showEl("login",false);showEl("data",true);
+  showEl("login",false);showEl("mfaForm",false);showEl("data",true);
   showEl("secSettings",can("settings"));showEl("secStudents",can("students_read"));
   showEl("secFeedback",can("feedback_read"));showEl("secExec",can("admins"));
   showEl("csvPay",can("payments_read"));
-  showEl("secPromote",can("promote"));if(can("promote"))loadPromote();
   const s=await sb.from("app_settings").select("value").eq("key","session").maybeSingle();
   if(s.data)session=s.data.value;
   $("sessInput").value=session;
@@ -85,8 +82,9 @@ async function loadAdmin(){
   await signUrls();
   renderRegs();renderSummary();
   if(can("feedback_read")){const fb=await fetchAll("feedback");renderFeedback(fb.data||[])}
-  if(can("admins")){loadExecs();loadRoles();loadLog()}
-  if(!access.perms.length)say("dmsg","You are signed in but have no access yet. Ask one of The Generals to check your role.","err");
+  if(can("admins")){loadExecs();loadLog()}
+  refreshMfaUi();
+  if(!access.perms.length)say("dmsg","You are signed in but have no access yet. Ask a Super Admin to check your role.","err");
 }
 function renderRegs(){
   const q=$("q").value.trim().toUpperCase(),lv=$("fLevel").value,du=$("fDues").value,dp=$("fDup").value,dups=findDups();
@@ -232,15 +230,6 @@ $("login").addEventListener("submit",async e=>{
   if(error){say("amsg","Wrong email or password.","err");return}
   $("amsg").className="msg";afterAuth();
 });
-$("aEye").addEventListener("click",()=>{
-  const p=$("aPass"),show=p.type==="password";
-  p.type=show?"text":"password";
-  $("aEye").setAttribute("aria-pressed",show?"true":"false");
-  $("aEye").setAttribute("aria-label",show?"Hide password":"Show password");
-  $("aEye").querySelector(".eye-on").style.display=show?"":"none";
-  $("aEye").querySelector(".eye-off").style.display=show?"none":"";
-  p.focus();
-});
 $("out").addEventListener("click",async()=>{await sb.auth.signOut();location.reload()});
 /* ---------- Clean up files nobody uses ---------- */
 async function listFiles(bucket){
@@ -303,16 +292,51 @@ $("csvPay").addEventListener("click",()=>{
   const byReg={};regs.forEach(r=>byReg[r.reg_no]=r);
   download("naesoau-payments.csv",[["Receipt No","Reg/Matric No","Name","Amount","Method","Session","Status","Name on Transfer","Submitted","Reviewed","Reviewed By"]].concat(allPays.map(p=>[recNo(p),p.reg_no,byReg[p.reg_no]?byReg[p.reg_no].full_name:"",p.amount_due,p.method,p.session,p.status,p.sender_name||"",p.created_at,p.reviewed_at||"",p.reviewed_by||""])));
 });
-function afterAuth(){loadAdmin()}
+/* ---------- 2-step verification ---------- */
+async function afterAuth(){
+  try{
+    const {data}=await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    if(data&&data.nextLevel==="aal2"&&data.currentLevel!=="aal2"){showEl("login",false);showEl("data",false);showEl("mfaForm",true);return}
+  }catch(e){}
+  loadAdmin();
+}
+$("mfaForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const f=await sb.auth.mfa.listFactors();
+  const fac=((f.data&&f.data.totp)||[]).find(x=>x.status==="verified");
+  if(!fac){say("mmsg","No 2-step device found. Sign in again.","err");return}
+  const {error}=await sb.auth.mfa.challengeAndVerify({factorId:fac.id,code:$("mfaCode").value.trim()});
+  if(error){say("mmsg","That code is not right. Check the app and try again.","err");return}
+  $("mfaCode").value="";$("mmsg").className="msg";loadAdmin();
+});
+async function refreshMfaUi(){
+  try{const f=await sb.auth.mfa.listFactors();const on=((f.data&&f.data.totp)||[]).some(x=>x.status==="verified");showEl("mfaSetup",!on);showEl("mfaOn",on)}catch(e){}
+}
+$("mfaSetup").addEventListener("click",async()=>{
+  try{
+    const lf=await sb.auth.mfa.listFactors();
+    for(const f of ((lf.data&&lf.data.all)||[])){if(f.status!=="verified")await sb.auth.mfa.unenroll({factorId:f.id})}
+    const {data,error}=await sb.auth.mfa.enroll({factorType:"totp",friendlyName:"NAESOAU "+Date.now()});
+    if(error||!data){say("dmsg","2-step verification could not start. In Supabase, open Authentication, find Multi-Factor, and switch on TOTP (authenticator app).","err");return}
+    mfaFactor=data.id;$("mfaQr").src=data.totp.qr_code;$("mfaSecret").textContent=data.totp.secret;$("mfaPanel").style.display="";
+  }catch(e){say("dmsg","2-step verification could not start. Try again.","err")}
+});
+$("mfaVerify").addEventListener("click",async()=>{
+  const code=$("mfaSetCode").value.trim();
+  if(!/^\d{6}$/.test(code)){say("dmsg","Enter the 6-digit code from your authenticator app.","err");return}
+  const {error}=await sb.auth.mfa.challengeAndVerify({factorId:mfaFactor,code});
+  if(error){say("dmsg","That code is not right. Check the app and try again.","err");return}
+  $("mfaPanel").style.display="none";$("mfaSetCode").value="";
+  say("dmsg","2-step verification is on for your account.","ok");refreshMfaUi();if(can("admins"))loadExecs();
+});
 
-/* ---------- Executive accounts (The Generals) ---------- */
+/* ---------- Executive accounts (Super Admin) ---------- */
 function execErr(m){
   m=String(m||"");
   return m.includes("NO_SUCH_USER")?"No account with that email. Create it first in Supabase under Authentication, then Users, then add it here.":
-    m.includes("LAST_GENERAL")?"At least one active member of The Generals must remain.":
-    m.includes("LOCKED")?"The Generals row is locked and cannot be changed.":
-    m.includes("BAD_PERM")?"That permission cannot be given to this role.":
-    m.includes("FORBIDDEN")?"Only The Generals can do this.":"Could not save. Try again.";
+    m.includes("LAST_SUPER")?"At least one active Super Admin must remain.":
+    m.includes("NO_MFA_FACTOR")?"That person has not set up 2-step verification yet.":
+    m.includes("FORBIDDEN")?"Only a Super Admin can do this.":"Could not save. Try again.";
 }
 const tick=(cell,on,label)=>{const c=document.createElement("input");c.type="checkbox";c.checked=on;c.style.cssText="width:auto;padding:0;margin:0 6px 0 0";cell.appendChild(c);cell.appendChild(document.createTextNode(label));return c};
 async function loadExecs(){
@@ -325,18 +349,19 @@ async function loadExecs(){
     const rc=td(tr,""),sel=document.createElement("select");sel.style.width="auto";
     Object.entries(ROLES).forEach(([k,v])=>sel.add(new Option(v,k)));sel.value=a.role;rc.appendChild(sel);
     const act=tick(td(tr,""),a.active," Active");
+    td(tr,a.mfa_enrolled?"Set up":"Not set up");
+    const req=tick(td(tr,""),a.require_mfa," Required");
     td(tr,a.last_sign_in_at?new Date(a.last_sign_in_at).toLocaleString("en-GB"):"Never");
-    addBtn(td(tr,""),"Save",false,()=>saveExec(a.user_id,sel.value,act.checked));
+    addBtn(td(tr,""),"Save",false,()=>saveExec(a.user_id,sel.value,act.checked,req.checked));
     body.appendChild(tr);
   });
 }
-async function saveExec(id,role,active){
-  const {error}=await sb.rpc("admin_update",{p_user_id:id,p_role:role,p_active:active});
+async function saveExec(id,role,active,req){
+  const {error}=await sb.rpc("admin_update",{p_user_id:id,p_role:role,p_active:active,p_require_mfa:req});
   if(error){say("xmsg",execErr(error.message),"err");loadExecs();return}
   say("xmsg","Saved.","ok");loadExecs();loadLog();
   if(id===meId)afterAuth();
 }
-Object.entries(ROLES).forEach(([k,v])=>$("xRole").add(new Option(v,k)));$("xRole").value="special";
 $("execAdd").addEventListener("submit",async e=>{
   e.preventDefault();
   const email=$("xEmail").value.trim();
@@ -346,16 +371,11 @@ $("execAdd").addEventListener("submit",async e=>{
   $("xEmail").value="";say("xmsg","Executive added.","ok");loadExecs();loadLog();
 });
 
-/* ---------- Activity log (The Generals) ---------- */
+/* ---------- Activity log (Super Admin) ---------- */
 const dv=v=>{if(v===null||v===undefined||v==="")return"empty";const s=typeof v==="object"?JSON.stringify(v):String(v);return s.length>40?s.slice(0,40)+"…":s};
-function permDiff(a,b){
-  a=a||[];b=b||[];
-  const add=b.filter(x=>!a.includes(x)),rem=a.filter(x=>!b.includes(x));
-  return [add.length?"added "+add.join(", "):"",rem.length?"removed "+rem.join(", "):""].filter(Boolean).join("; ")||"no change";
-}
 function fmtDetail(action,d){
   if(!d)return"";
-  if(/ update$/.test(action))return Object.entries(d).map(([k,v])=>Array.isArray(v.from)&&Array.isArray(v.to)?k+": "+permDiff(v.from,v.to):k+": "+dv(v.from)+" → "+dv(v.to)).join("; ");
+  if(/ update$/.test(action))return Object.entries(d).map(([k,v])=>k+": "+dv(v.from)+" → "+dv(v.to)).join("; ");
   const s=JSON.stringify(d);return s.length>180?s.slice(0,180)+"…":s;
 }
 async function loadLog(){
@@ -370,66 +390,6 @@ async function loadLog(){
   });
 }
 $("logRefresh").addEventListener("click",loadLog);
-
-/* ---------- Roles and Access (The Generals) ---------- */
-async function loadRoles(){
-  const head=$("roleHead"),body=$("roleRows");head.textContent="";body.textContent="";
-  const hr=document.createElement("tr");
-  ["Role"].concat(PERMS.map(p=>p[1]),["Action"]).forEach(t=>{const c=document.createElement("th");c.textContent=t;hr.appendChild(c)});
-  head.appendChild(hr);
-  const {data,error}=await sb.from("role_access").select("*");
-  if(error){say("xmsg","The roles grid is not available yet. Run the roles SQL in Supabase first.","err");return}
-  const map={};(data||[]).forEach(r=>map[r.role]=r.perms||[]);
-  ROLE_ORDER.forEach(role=>{
-    const tr=document.createElement("tr"),isG=role==="generals";
-    const n=td(tr,ROLES[role]);n.style.whiteSpace="normal";n.style.minWidth="200px";n.style.fontWeight="600";
-    const boxes={};
-    PERMS.forEach(([k,label])=>{
-      const c=td(tr,"");c.style.textAlign="center";
-      if(k==="admins"&&!isG){c.textContent="—";c.title="Only The Generals can manage executives";return}
-      const cb=document.createElement("input");cb.type="checkbox";cb.style.cssText="width:auto;padding:0;margin:0";
-      cb.checked=isG||(map[role]||[]).includes(k);cb.disabled=isG;cb.setAttribute("aria-label",ROLES[role]+": "+label);
-      c.appendChild(cb);boxes[k]=cb;
-    });
-    const a=td(tr,"");
-    if(isG)a.textContent="Locked";else addBtn(a,"Save",false,()=>saveRole(role,boxes));
-    body.appendChild(tr);
-  });
-}
-async function saveRole(role,boxes){
-  const perms=Object.keys(boxes).filter(k=>boxes[k].checked);
-  const {error}=await sb.rpc("role_set_perms",{p_role:role,p_perms:perms});
-  if(error){say("xmsg",execErr(error.message),"err");loadRoles();return}
-  say("xmsg",ROLES[role]+" updated.","ok");loadLog();
-}
-
-/* ---------- Promote Students ---------- */
-async function loadPromote(){
-  const {data}=await sb.from("app_settings").select("key,value").in("key",["session","promoted_session"]);
-  const m={};(data||[]).forEach(r=>m[r.key]=r.value);
-  const cur=m.session||session,done=m.promoted_session||"",ready=!!cur&&cur!==done;
-  $("promoteHint").textContent=ready
-    ?"Ready. Students have not been promoted for "+cur+" yet. Do this before students pay for the new session, so they are charged the right amount. 400 Level students are not moved."
-    :"Students are already up to date for "+cur+". After you change the session above, you can promote them.";
-  $("promoteBtn").disabled=!ready;
-}
-$("promoteBtn").addEventListener("click",async()=>{
-  const pv=await sb.rpc("promote_preview");
-  if(pv.error){say("dmsg",String(pv.error.message).includes("FORBIDDEN")?"You are not allowed to promote students.":"Could not check the students. Run the roles SQL in Supabase first.","err");return}
-  const rows=pv.data||[];
-  const total=rows.filter(r=>!/^Not moved/.test(r.becomes)).reduce((n,r)=>n+Number(r.students),0);
-  if(!total){say("dmsg","There are no students to promote.","ok");return}
-  const lines=rows.map(r=>r.level+" → "+r.becomes+": "+r.students);
-  if(!confirm("Promote "+total+" student(s) for the "+session+" session?\n\n"+lines.join("\n")+"\n\nTheir dues amount changes with their new level. This can only be done once per session and cannot be undone."))return;
-  $("promoteBtn").disabled=true;
-  const {data,error}=await sb.rpc("promote_students");
-  if(error){
-    const m=String(error.message);
-    say("dmsg",m.includes("ALREADY_PROMOTED")?"Students were already promoted for this session. Change the session first.":m.includes("FORBIDDEN")?"You are not allowed to promote students.":"Could not promote students. Try again.","err");
-    loadPromote();return;
-  }
-  say("dmsg",(data&&data.moved!=null?data.moved:total)+" student(s) promoted.","ok");loadAdmin();
-});
 
 /* Already signed in on this device? Go straight to the dashboard. */
 (async()=>{try{const {data}=await sb.auth.getSession();if(data.session)afterAuth()}catch(e){}})();
