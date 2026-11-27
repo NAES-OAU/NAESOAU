@@ -1,8 +1,8 @@
 /* Executives page */
 fillDob($("eMonth"),$("eDay"));
 const ROLES={
-  generals:"Generals (Full Access)",
-  pro:"PRO",
+  generals:"The Generals",
+  pro/plo:"PRO/PLO",
   special:"Special",
   treasurer:"Treasurer",
   welfare:"Welfare"
