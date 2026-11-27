@@ -18,20 +18,22 @@
 </head>
 <body>
 <header>
-  <a href="home.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
-  <a class="brand" href="home.html">NAESOAU</a>
+  <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
+  <a class="brand" href="index.html"><b>NAESOAU</b><small>Entrepreneurship Students · Ile-Ife</small></a>
 <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
 <nav class="drawer" id="menu" aria-label="Pages">
   <div class="drawer-top"><b>Menu</b><button class="drawer-close" id="menuClose" type="button" aria-label="Close menu">&times;</button></div>
-  <a href="home.html">Home</a>
+  <a href="index.html">Home</a>
   <a href="welcome.html">Welcome</a>
   <a href="register.html">Register</a>
   <a href="pay.html">Pay Dues</a>
   <a href="receipt.html" aria-current="page">Receipt</a>
+  <a href="verify.html">Verify Receipt</a>
   <a href="speak.html">Speak Up</a>
   <a href="about.html">About</a>
+  <a class="btn signin" href="admin.html">Sign in</a>
   <div class="drawer-foot" id="menuWho"></div>
 </nav>
 <main class="wrap">
@@ -43,15 +45,15 @@
     <label class="check"><input type="checkbox" id="keepRc"><span>Remember my matric number and WhatsApp number on this device, so I do not have to type them again. Only tick this on your own phone.</span></label>
     <button class="btn" id="rcBtn" type="submit">Get Receipt</button>
     <div class="msg" id="rmsg" role="status"></div>
-    <canvas id="rcv" width="1000" height="1600" style="display:none;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"></canvas>
+    <canvas id="rcv" width="1000" height="1720" style="display:none;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)"></canvas>
     <button class="btn" id="rcDl" type="button" style="display:none">Download Receipt</button>
   </form>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="student.js"></script>
 <script src="common.js"></script>
-<script src="auth-guard.js"></script>
 <script src="receipt.js"></script>
 <script src="menu.js"></script>
 </body></html>
