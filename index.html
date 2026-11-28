@@ -20,20 +20,132 @@
 .exec a.wa:hover,.exec a.wa:focus-visible{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 </style>
 <style>
-body.home header{max-width:1100px}
-.hero{max-width:1100px;margin:0 auto;padding:0 20px;display:grid;gap:24px;align-items:center}
-.hero-text .pill{margin-top:20px}
-@media (min-width:820px){.hero{grid-template-columns:1fr 1.2fr;gap:44px;padding-top:12px}.hero-text .lead{max-width:30ch;margin-bottom:0}}
-.slides{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:20px;border:2px solid var(--gold);box-shadow:0 12px 36px var(--glow);background:var(--surface)}
-.slides::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(transparent,rgba(0,0,0,.45));pointer-events:none}
-.slides .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
-.slides .slide.on{opacity:1}
-.slides .dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:10px;z-index:2}
-.slides .dots button{width:14px;height:14px;padding:0;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.3);cursor:pointer}
-.slides .dots button[aria-current="true"]{background:#fff}
-.slides .pp{position:absolute;right:12px;bottom:8px;z-index:2;font:600 12px "Bricolage Grotesque",system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.45);border:1.5px solid #fff;border-radius:999px;padding:4px 10px;cursor:pointer}
-.slides button:focus-visible{outline:3px solid #fff;outline-offset:2px}
-@media (prefers-reduced-motion:reduce){.slides .slide{transition:none}}
+/* Full-width homepage header; keep the existing three-dot menu control */
+body.home header{
+  width:100%;
+  max-width:none;
+  box-sizing:border-box;
+  margin:0;
+  padding:10px clamp(18px,5vw,76px);
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+body.home header .brand{flex:1;min-width:0}
+body.home header .menu-btn{
+  display:flex;
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  align-items:center;
+  justify-content:center;
+  margin-left:auto;
+  position:relative;
+  z-index:45;
+  cursor:pointer;
+}
+body.home .scrim{z-index:50}
+body.home .drawer{z-index:60}
+
+/* Spacious hero: welcome copy on the left, larger photos on the right */
+body.home .hero{
+  width:100%;
+  max-width:1500px;
+  box-sizing:border-box;
+  margin:0 auto;
+  padding:clamp(28px,4vw,64px) clamp(20px,5vw,76px);
+  display:grid;
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(28px,4vw,64px);
+  align-items:center;
+}
+body.home .hero-text{min-width:0;max-width:620px}
+body.home .hero-text .pill{margin-top:0;margin-bottom:20px}
+body.home .hero-text h1{
+  font-size:clamp(42px,5.2vw,76px);
+  line-height:1.04;
+  letter-spacing:-.035em;
+  max-width:11ch;
+  margin:16px 0 20px;
+}
+body.home .hero-text .lead{
+  max-width:42ch;
+  font-size:clamp(17px,1.4vw,21px);
+  line-height:1.65;
+  margin-bottom:0;
+}
+body.home .slides{
+  position:relative;
+  width:100%;
+  min-width:0;
+  aspect-ratio:16/10;
+  max-height:650px;
+  overflow:hidden;
+  border-radius:22px;
+  border:2px solid var(--gold);
+  box-shadow:0 12px 36px var(--glow);
+  background:var(--surface);
+}
+body.home .slides::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:64px;
+  background:linear-gradient(transparent,rgba(0,0,0,.45));
+  pointer-events:none;
+}
+body.home .slides .slide{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  opacity:0;
+  transition:opacity .9s ease;
+}
+body.home .slides .slide.on{opacity:1}
+body.home .slides .dots{
+  position:absolute;left:0;right:0;bottom:12px;
+  display:flex;justify-content:center;gap:10px;z-index:2;
+}
+body.home .slides .dots button{
+  width:14px;height:14px;padding:0;border-radius:50%;
+  border:2px solid #fff;background:rgba(255,255,255,.3);cursor:pointer;
+}
+body.home .slides .dots button[aria-current="true"]{background:#fff}
+body.home .slides .pp{
+  position:absolute;right:12px;bottom:8px;z-index:2;
+  font:600 12px "Bricolage Grotesque",system-ui,sans-serif;
+  color:#fff;background:rgba(0,0,0,.45);
+  border:1.5px solid #fff;border-radius:999px;padding:4px 10px;cursor:pointer;
+}
+body.home .slides button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+
+/* Tablets */
+@media(max-width:900px){
+  body.home .hero{
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+    gap:24px;padding:32px 24px;
+  }
+  body.home .hero-text h1{font-size:clamp(38px,5vw,54px)}
+}
+/* Phones: stack the message and photo, preserve the menu button */
+@media(max-width:650px){
+  body.home header{padding:10px 16px}
+  body.home .hero{
+    grid-template-columns:1fr;
+    gap:22px;
+    padding:26px 18px;
+  }
+  body.home .hero-text{max-width:none}
+  body.home .hero-text h1{font-size:clamp(40px,10vw,54px);max-width:13ch}
+  body.home .hero-text .lead{font-size:17px}
+  body.home .slides{aspect-ratio:4/3;max-height:440px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.home .slides .slide{transition:none}
+}
 </style>
 </head>
 <body class="home">
