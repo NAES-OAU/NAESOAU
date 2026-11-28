@@ -9,7 +9,7 @@
 <meta property="og:site_name" content="NAES-OAU">
 <meta property="og:title" content="NAES-OAU – Entrepreneurship Students, OAU">
 <meta property="og:description" content="Register, pay your dues, download your receipt and speak up. The Home of Entrepreneurship Students in OAU.">
-<meta property="og:image" content="https://NAES-OAU1.vercel.app/og-image.png">
+<meta property="og:image" content="https://naesoau1.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -173,6 +173,47 @@ header .menu-btn{display:grid!important;flex:none!important;margin-left:auto!imp
 header .menu-btn span{display:block!important;width:20px!important;height:2px!important;border-radius:2px!important;background:var(--ink,#21194a)!important}
 @media(max-width:420px){header{gap:9px;padding-left:14px!important;padding-right:14px!important}header .logo{width:40px!important;height:40px!important;min-width:40px}header .brand,header .brand b{font-size:18px!important}header .brand small{font-size:10px!important}}
 </style>
+
+<style id="homepage-enhancements">
+body.home{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+body.home .hero{max-width:1560px;padding-top:clamp(38px,5vw,76px);padding-bottom:clamp(42px,5vw,76px)}
+.home-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:28px}
+.home-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 20px;border-radius:12px;text-decoration:none;font:700 14px 'Plus Jakarta Sans',sans-serif;transition:transform .18s ease,box-shadow .18s ease}
+.home-btn:hover{transform:translateY(-2px)}
+.home-btn-primary{background:var(--accent,#2a1a77);color:#fff;box-shadow:0 8px 20px rgba(42,26,119,.18)}
+.home-btn-secondary{background:var(--surface,#fff);color:var(--ink,#21194a);border:1px solid var(--line,#e8e5f0)}
+.home-text-link{padding:10px 4px;color:var(--accent,#2a1a77);font-weight:700;font-size:14px;text-decoration:none}
+.home-content{width:min(100% - 40px,1400px);max-width:1400px;margin:0 auto;padding:12px 0 60px}
+.home-section-heading{margin-bottom:24px}
+.home-eyebrow{display:inline-block;color:var(--accent,#2a1a77);font-size:11px;font-weight:800;letter-spacing:.13em;margin-bottom:9px}
+.home-section-heading h2,.home-announcements h2,.home-about h2,.home-coming-soon h2{margin:0 0 9px;font:800 clamp(25px,3vw,36px)/1.15 'Plus Jakarta Sans',sans-serif;letter-spacing:-.035em;color:var(--ink,#21194a)}
+.home-section-heading p,.home-announcements p,.home-about p,.home-coming-soon p{margin:0;color:var(--muted,#686477);font-size:15px;line-height:1.7;max-width:65ch}
+.home-quick{padding:28px 0 54px}
+.home-quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.home-quick-card{display:flex;min-height:205px;flex-direction:column;align-items:flex-start;padding:22px;border:1px solid var(--line,#e8e5f0);border-radius:18px;background:var(--surface,#fff);text-decoration:none;color:var(--ink,#21194a);box-shadow:0 5px 18px rgba(30,20,70,.045);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.home-quick-card:hover{transform:translateY(-4px);border-color:var(--gold,#c8a64b);box-shadow:0 12px 28px rgba(30,20,70,.09)}
+.home-card-icon{display:grid;place-items:center;width:42px;height:42px;margin-bottom:18px;border-radius:13px;background:rgba(42,26,119,.08);color:var(--accent,#2a1a77);font-size:22px;font-weight:800}
+.home-quick-card b{font-size:17px;margin-bottom:7px}.home-quick-card>span:not(.home-card-icon){font-size:13px;line-height:1.6;color:var(--muted,#686477)}
+.home-quick-card em{margin-top:auto;padding-top:16px;font-style:normal;color:var(--accent,#2a1a77);font-size:13px;font-weight:800}
+.home-announcements{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;margin:0 0 62px;padding:clamp(22px,4vw,42px);border-radius:22px;background:linear-gradient(120deg,rgba(42,26,119,.07),rgba(201,166,75,.12));border:1px solid rgba(42,26,119,.09)}
+.home-announcement-empty{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:22px;border:1px dashed rgba(42,26,119,.25);border-radius:16px;background:rgba(255,255,255,.72)}
+.home-announcement-empty>span{font-size:25px;color:var(--accent,#2a1a77)}.home-announcement-empty b{font-size:15px;color:var(--ink,#21194a)}.home-announcement-empty small{font-size:13px;line-height:1.55;color:var(--muted,#686477)}
+.home-executives{padding:0 0 54px}.home-executives .execs{margin-top:20px}
+.home-about{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:clamp(24px,4vw,42px);margin:0 0 22px;border:1px solid var(--line,#e8e5f0);border-radius:20px;background:var(--surface,#fff)}
+.home-about>div{max-width:760px}.home-about .home-btn{flex:none}
+.home-coming-soon{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 0 12px;border-top:1px solid var(--line,#e8e5f0)}
+.home-coming-soon h2{font-size:23px}.home-coming-soon p{font-size:14px}.home-coming-tag{white-space:nowrap;padding:8px 13px;border-radius:999px;background:rgba(42,26,119,.08);color:var(--accent,#2a1a77);font-size:12px;font-weight:800}
+.home-footer{width:100%;margin:0!important;padding:30px clamp(20px,5vw,76px)!important;background:#17113e;color:#fff;box-sizing:border-box}
+.home-footer-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:18px 30px;align-items:center}
+.home-footer-inner>div>b{font-size:20px;font-weight:800;letter-spacing:-.03em}.home-footer-inner p{margin:5px 0 0;color:rgba(255,255,255,.7);font-size:12px}
+.home-footer-inner nav{display:flex;flex-wrap:wrap;gap:10px 20px}.home-footer-inner nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:600}.home-footer-inner nav a:hover{text-decoration:underline}
+.home-footer-inner>small{grid-column:1/-1;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.65);font-size:11px}
+@media(max-width:950px){.home-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-announcements{grid-template-columns:1fr}.home-footer-inner{grid-template-columns:1fr}.home-footer-inner>small{grid-column:auto}}
+@media(max-width:650px){body.home .hero{padding-top:28px}.home-content{width:calc(100% - 32px);padding-bottom:38px}.home-hero-actions{gap:9px}.home-btn{min-height:46px;padding:0 15px}.home-text-link{width:100%;padding-left:2px}.home-quick{padding:16px 0 38px}.home-quick-grid{gap:11px}.home-quick-card{min-height:190px;padding:16px}.home-announcements{margin-bottom:42px;padding:20px;gap:18px}.home-executives{padding-bottom:38px}.home-about{align-items:flex-start;flex-direction:column;margin-bottom:20px}.home-coming-soon{align-items:flex-start;flex-direction:column}.home-footer{padding:26px 18px!important}.home-footer-inner nav{gap:12px 16px}}
+@media(max-width:390px){.home-quick-grid{grid-template-columns:1fr}.home-quick-card{min-height:150px}.home-hero-actions .home-btn{width:100%}}
+@media(prefers-reduced-motion:reduce){.home-btn,.home-quick-card{transition:none}}
+</style>
+
 </head>
 <body class="home">
 <header>
@@ -204,15 +245,47 @@ header .menu-btn span{display:block!important;width:20px!important;height:2px!im
   <div class="hero-text">
     <span class="pill">The Home of Entrepreneurship Students in OAU</span>
     <h1>Your Association, in One Place</h1>
-    <p class="lead">Register, pay your dues, get event tickets and share ideas with the executives. No more chasing anyone.</p>
+    <p class="lead">Register, pay your dues, get your receipt and share ideas with the executives — all in one place.</p>
+    <div class="home-hero-actions" aria-label="Quick actions">
+      <a class="home-btn home-btn-primary" href="register.html">Register as a Member <span aria-hidden="true">→</span></a>
+      <a class="home-btn home-btn-secondary" href="pay.html">Pay Dues</a>
+      <a class="home-text-link" href="receipt.html">Get Your Receipt</a>
+    </div>
   </div>
   <div class="slides" id="heroSlides" role="region" aria-roledescription="carousel" aria-label="NAES-OAU photos">
     <img class="slide on" src="hero.jpg" alt="Five entrepreneurship students reading together in front of the Institute for Entrepreneurship and Development Studies sign at OAU" width="1024" height="768" fetchpriority="high">
   </div>
 </section>
-<main class="wrap">
+<main class="wrap home-content">
+  <section class="home-quick" aria-labelledby="quickTitle">
+    <div class="home-section-heading">
+      <span class="home-eyebrow">GET STARTED</span>
+      <h2 id="quickTitle">What would you like to do?</h2>
+      <p>Access the services you need without searching through the menu.</p>
+    </div>
+    <div class="home-quick-grid">
+      <a class="home-quick-card" href="register.html"><span class="home-card-icon" aria-hidden="true">✦</span><b>Membership</b><span>Register and become part of NAES-OAU.</span><em>Register now →</em></a>
+      <a class="home-quick-card" href="pay.html"><span class="home-card-icon" aria-hidden="true">₦</span><b>Pay Dues</b><span>View payment details and submit your payment receipt.</span><em>Make payment →</em></a>
+      <a class="home-quick-card" href="receipt.html"><span class="home-card-icon" aria-hidden="true">▤</span><b>Receipts</b><span>Retrieve and download your payment receipt.</span><em>Get receipt →</em></a>
+      <a class="home-quick-card" href="speak.html"><span class="home-card-icon" aria-hidden="true">✉</span><b>Speak Up</b><span>Send a suggestion, question or feedback to the executives.</span><em>Share your thoughts →</em></a>
+    </div>
+  </section>
 
-    <h2>Meet the Executives</h2>
+  <section class="home-announcements" aria-labelledby="announcementsTitle">
+    <div class="home-announcement-copy">
+      <span class="home-eyebrow">STAY INFORMED</span>
+      <h2 id="announcementsTitle">Announcements &amp; Upcoming Events</h2>
+      <p>Check this space for official updates, important dates and information from the Central Executive Council.</p>
+    </div>
+    <div class="home-announcement-empty"><span aria-hidden="true">✧</span><b>Updates will appear here</b><small>There are no new announcements at the moment. Please check back soon.</small></div>
+  </section>
+
+  <section class="home-executives" aria-labelledby="executivesTitle">
+    <div class="home-section-heading">
+      <span class="home-eyebrow">TEAM IMPETUS ’26</span>
+      <h2 id="executivesTitle">Meet the Executives</h2>
+      <p>The Central Executive Council NAES-OAU 2026/2027. Reach out to your representatives.</p>
+    </div>
   <p class="sub">The Central Executive Council NAES-OAU 2026/2027. TEAM IMPETUS ’26.</p>
   <div class="execs">
     <div class="exec lead-exec"><img src="images/exec-ogundeji.jpg" alt="Ogundeji Samuel Oluwatimilehin" width="128" height="128" loading="lazy"><b>Ogundeji Samuel Oluwatimilehin</b><span>President</span><a class="wa" href="https://wa.me/2349063180604" target="_blank" rel="noopener" aria-label="Chat with Ogundeji Samuel Oluwatimilehin on WhatsApp">WhatsApp: 0906 318 0604</a></div>
@@ -228,11 +301,21 @@ header .menu-btn span{display:block!important;width:20px!important;height:2px!im
     <div class="exec"><img src="images/exec-akinduntire.jpg" alt="Akinduntire Olamide Emmanuel" width="88" height="88" loading="lazy"><b>Akinduntire Olamide Emmanuel</b><span>Public Liaison Officer</span><a class="wa" href="https://wa.me/2349154444175" target="_blank" rel="noopener" aria-label="Chat with Akinduntire Olamide Emmanuel on WhatsApp">WhatsApp: 0915 444 4175</a></div>
     <div class="exec"><img src="images/exec-omisade.jpg" alt="Omisade Oluwaseyifunmi Christianah" width="88" height="88" loading="lazy"><b>Omisade Oluwaseyifunmi Christianah</b><span>Librarian</span><a class="wa" href="https://wa.me/2348066957292" target="_blank" rel="noopener" aria-label="Chat with Omisade Oluwaseyifunmi Christianah on WhatsApp">WhatsApp: 0806 695 7292</a></div>
   </div>
+  </section>
 
-  <h2>Coming Soon</h2>
-  <div class="feat soon"><b>Event Tickets</b><span>Book seats for seminars, pitch nights and socials.</span></div>
+  <section class="home-about" aria-labelledby="homeAboutTitle">
+    <div><span class="home-eyebrow">WHO WE ARE</span><h2 id="homeAboutTitle">Building ideas. Creating opportunities.</h2><p>NAES-OAU brings entrepreneurship students together to learn, connect, develop ideas and create meaningful opportunities at Obafemi Awolowo University.</p></div>
+    <a class="home-btn home-btn-secondary" href="about.html">Discover NAES-OAU <span aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="home-coming-soon"><div><span class="home-eyebrow">COMING SOON</span><h2>Event Tickets</h2><p>We are preparing a simpler way to book seats for seminars, pitch nights and socials.</p></div><span class="home-coming-tag">Coming soon</span></section>
 </main>
-<footer class="wrap">© NAES-OAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a></footer>
+<footer class="home-footer">
+  <div class="home-footer-inner"><div><b>NAES-OAU</b><p>Entrepreneurship Students · Obafemi Awolowo University, Ile-Ife</p></div>
+    <nav aria-label="Footer navigation"><a href="about.html">About</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="speak.html">Speak Up</a><a href="privacy.html">Privacy Notice</a></nav>
+    <small>© NAES-OAU. All rights reserved.</small>
+  </div>
+</footer>
 <script src="student.js"></script>
 <script src="menu.js"></script>
 <script src="hero-slides.js"></script>
