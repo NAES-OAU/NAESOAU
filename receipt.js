@@ -1,4 +1,3 @@
-
 /* Receipt page */
 {const st=getStudent();if(st){$("rcReg").value=st.reg;$("rcPhone").value=st.phone;$("keepRc").checked=true}}
 const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src});
@@ -12,7 +11,7 @@ async function drawReceipt(d){
   x.fillStyle=NAVY;x.fillRect(0,0,W,230);
   x.fillStyle=GOLD;x.fillRect(0,230,W,8);
   try{const lg=await loadImg("logo.png");x.save();x.beginPath();x.arc(120,115,75,0,Math.PI*2);x.clip();x.drawImage(lg,45,40,150,150);x.restore()}catch(e){}
-  x.fillStyle="#fff";x.font=FONT("800",56);x.fillText("NAESOAU",230,115);
+  x.fillStyle="#fff";x.font=FONT("800",56);x.fillText("NAES-OAU",230,115);
   x.fillStyle="#e3b94f";x.font=FONT("600",24);x.fillText("National Association of Entrepreneurship Students, OAU",230,160);
   x.fillStyle=INK;x.font=FONT("800",58);x.fillText("Payment Receipt",80,330);
   x.fillStyle=MUTED;x.font=FONT("600",26);x.fillText("Evidence of dues payment",80,372);
@@ -36,7 +35,7 @@ async function drawReceipt(d){
   lab("Session",80,1150);val(d.session||"",80,1196,400);
   lab("Payment Method",540,1150);val(d.method==="cash"?"Cash":"Bank Transfer",540,1196,380);
   lab("Paid To",80,1260);val("National Association of Entrepreneurship Students",80,1306,840,34);
-  lab("Status",80,1370);val("Confirmed by NAESOAU Executives",80,1416,840,34);
+  lab("Status",80,1370);val("Confirmed by NAES-OAU Executives",80,1416,840,34);
   x.strokeStyle=LINE;x.lineWidth=2;x.beginPath();x.moveTo(80,1470);x.lineTo(920,1470);x.stroke();
   x.fillStyle=MUTED;x.font=FONT("400",22);
   x.fillText("This receipt is valid only for the person shown above.",80,1508);
@@ -59,5 +58,5 @@ $("rf").addEventListener("submit",async e=>{
   unlock("rcBtn");
 });
 $("rcDl").addEventListener("click",()=>{
-  $("rcv").toBlob(b=>{if(!b)return;const a=document.createElement("a");const url=URL.createObjectURL(b);a.href=url;a.download="NAESOAU-Receipt-"+receiptReg.replace(/[^A-Z0-9]/gi,"-")+".png";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},"image/png");
+  $("rcv").toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="NAES-OAU-Receipt-"+receiptReg.replace(/[^A-Z0-9]/gi,"-")+".png";a.click()},"image/png");
 });

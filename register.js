@@ -1,4 +1,3 @@
-
 /* Register page — image crop, zoom and rotation (no face or quality validation) */
 fillDob($("dobMonth"),$("dobDay"));
 
@@ -22,7 +21,7 @@ if(fullNameInput){
   if(nameLabel){
     for(const node of nameLabel.childNodes){
       if(node.nodeType===3 && node.textContent.trim()){
-        node.textContent="Full Name ";
+        node.textContent="Surname first, then other names ";
         break;
       }
     }
@@ -188,7 +187,7 @@ $("f").addEventListener("submit",async e=>{
     const ins=await sb.from("registrations").insert(v);
     if(ins.error){await sb.storage.from("photos").remove([path]).catch(()=>{});throw ins.error}
     done=true;$("submit").textContent="Done. Taking you to payment…";
-    say("msg","Registration received. Welcome to NAESOAU, "+v.full_name.split(" ")[0]+"! Taking you to the payment page...","ok");
+    say("msg","Registration received. Welcome to NAES-OAU, "+v.full_name.split(" ")[0]+"! Taking you to the payment page...","ok");
     try{sessionStorage.setItem("naes_reg",v.reg_no);sessionStorage.setItem("naes_phone",v.phone);sessionStorage.setItem("naes_keep",$("keep").checked?"1":"0")}catch(e){}if($("keep").checked)setStudent(v.reg_no,v.phone);
     $("f").reset();photoBlob=null;photoThumb=null;selectedPhoto=null;workingImage=null;photoEditRun++;$("photoEditor").hidden=true;$("prev").style.display="none";
     if(selectedPhotoUrl){URL.revokeObjectURL(selectedPhotoUrl);selectedPhotoUrl=null;}

@@ -1,22 +1,17 @@
-/* NAESOAU home page slideshow.
+/* NAES-OAU home page slideshow.
    To add a photo: upload it next to index.html, then add a line to SLIDES below.
    Photos that are missing are skipped quietly, so the list can be longer than what is uploaded. */
 (function(){
   var SLIDES=[
-    {src:"hero-2.jpg",alt:"A group of eight students standing together outside the Institute for Entrepreneurship and Development Studies"},
-    {src:"hero-3.jpg",alt:"Students seated in a lecture hall during an NAESOAU session"},
-    {src:"hero-4.jpg",alt:"Students gathered at the NAES-OAU Entrepreneurship Business Week 1.0 workshop"},
-    {src:"hero-5.jpg",alt:"A student making paper flower decorations at a craft workshop"},
-    {src:"hero-6.jpg",alt:"Batik and tie-dye fabrics, a patterned jacket and an artwork on display at a skills workshop"},
-    {src:"hero-7.jpg",alt:"A student holding up a blue adire tie-dye fabric made by students"},
-    {src:"hero-8.jpg",alt:"Students learning nail technician skills in a group workshop"},
-    {src:"hero-9.jpg",alt:"A trainer speaking to students at a mobile photography and videography session"},
-    {src:"hero-10.jpg",alt:"A student applying make-up during a make-up training session"},
-    {src:"hero-11.jpg",alt:"Bottles of green liquid soap made by students as a final product"},
-    {src:"hero-12.jpg",alt:"A student holding up a purple and teal tie-dye fabric at a workshop"},
-    {src:"hero-13.jpg",alt:"Students drawing and discussing designs in a fashion illustration session"},
-    {src:"hero-14.jpg",alt:"Students attending a mobile graphics design session"},
-    {src:"hero-15.jpg",alt:"Six people, students and staff, posing together in a classroom"}
+    {src:"hero-2.jpg",alt:"NAES-OAU members at an association event, photo 2"},
+    {src:"hero-3.jpg",alt:"NAES-OAU members at an association event, photo 3"},
+    {src:"hero-4.jpg",alt:"NAES-OAU members at an association event, photo 4"},
+    {src:"hero-5.jpg",alt:"NAES-OAU members at an association event, photo 5"},
+    {src:"hero-6.jpg",alt:"NAES-OAU members at an association event, photo 6"},
+    {src:"hero-7.jpg",alt:"NAES-OAU members at an association event, photo 7"},
+    {src:"hero-8.jpg",alt:"NAES-OAU members at an association event, photo 8"},
+    {src:"hero-9.jpg",alt:"NAES-OAU members at an association event, photo 9"},
+    {src:"hero-10.jpg",alt:"NAES-OAU members at an association event, photo 10"}
   ];
   var INTERVAL=5000; /* milliseconds each photo stays on screen */
 

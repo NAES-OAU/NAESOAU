@@ -12,10 +12,10 @@ function waLink(r,p){
   let d=(r.phone||"").replace(/\D/g,"");
   if(d.startsWith("0"))d="234"+d.slice(1);else if(d.length===10)d="234"+d;
   const fn=(r.full_name||"").split(" ")[0],url=location.origin+"/";let t;
-  if(p&&p.status==="approved")t="Hello "+fn+", your NAESOAU dues payment of "+naira(r.amount_due)+" has been confirmed. Download your receipt here: "+url+"receipt.html";
-  else if(p&&p.status==="pending")t="Hello "+fn+", we have received your NAESOAU dues receipt and will confirm it shortly.";
-  else if(p&&p.status==="rejected")t="Hello "+fn+", we could not confirm your NAESOAU dues receipt. Please upload a clear receipt again here: "+url+"pay.html";
-  else t="Hello "+fn+", a reminder to pay your NAESOAU dues of "+naira(r.amount_due)+" to "+BANK_NAME+", "+ACCOUNT_NAME+", "+ACCOUNT_NUMBER+". Then upload your receipt here: "+url+"pay.html";
+  if(p&&p.status==="approved")t="Hello "+fn+", your NAES-OAU dues payment of "+naira(r.amount_due)+" has been confirmed. Download your receipt here: "+url+"receipt.html";
+  else if(p&&p.status==="pending")t="Hello "+fn+", we have received your NAES-OAU dues receipt and will confirm it shortly.";
+  else if(p&&p.status==="rejected")t="Hello "+fn+", we could not confirm your NAES-OAU dues receipt. Please upload a clear receipt again here: "+url+"pay.html";
+  else t="Hello "+fn+", a reminder to pay your NAES-OAU dues of "+naira(r.amount_due)+" to "+BANK_NAME+", "+ACCOUNT_NAME+", "+ACCOUNT_NUMBER+". Then upload your receipt here: "+url+"pay.html";
   return "https://wa.me/"+d+"?text="+encodeURIComponent(t);
 }
 async function fetchAll(table){
@@ -282,15 +282,15 @@ function download(name,rows){
   const q=x=>'"'+safe(x).replace(/"/g,'""')+'"';
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"}));a.download=name;a.click();
 }
-$("csv").addEventListener("click",()=>download("naesoau-registrations.csv",[["Name","Reg/Matric No","Birthday","WhatsApp","Email","Level","Amount Due","Dues ("+session+")","Receipt No"]].concat(regs.map(r=>{const p=pays[r.reg_no];return [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level,r.amount_due,statusOf(r),p&&p.status==="approved"?recNo(p):""]}))));
+$("csv").addEventListener("click",()=>download("NAES-OAU-registrations.csv",[["Name","Reg/Matric No","Birthday","WhatsApp","Email","Level","Amount Due","Dues ("+session+")","Receipt No"]].concat(regs.map(r=>{const p=pays[r.reg_no];return [r.full_name,r.reg_no,bday(r),r.phone,r.email,r.level,r.amount_due,statusOf(r),p&&p.status==="approved"?recNo(p):""]}))));
 $("csvUnpaid").addEventListener("click",()=>{
   const list=regs.filter(r=>{const x=statusOf(r);return x==="Unpaid"||x==="Rejected"});
   if(!list.length){say("dmsg","Everyone has paid or has a receipt waiting.","ok");return}
-  download("naesoau-unpaid.csv",[["Name","Reg/Matric No","WhatsApp","Email","Level","Amount Due","Dues ("+session+")"]].concat(list.map(r=>[r.full_name,r.reg_no,r.phone,r.email,r.level,r.amount_due,statusOf(r)])));
+  download("NAES-OAU-unpaid.csv",[["Name","Reg/Matric No","WhatsApp","Email","Level","Amount Due","Dues ("+session+")"]].concat(list.map(r=>[r.full_name,r.reg_no,r.phone,r.email,r.level,r.amount_due,statusOf(r)])));
 });
 $("csvPay").addEventListener("click",()=>{
   const byReg={};regs.forEach(r=>byReg[r.reg_no]=r);
-  download("naesoau-payments.csv",[["Receipt No","Reg/Matric No","Name","Amount","Method","Session","Status","Name on Transfer","Submitted","Reviewed","Reviewed By"]].concat(allPays.map(p=>[recNo(p),p.reg_no,byReg[p.reg_no]?byReg[p.reg_no].full_name:"",p.amount_due,p.method,p.session,p.status,p.sender_name||"",p.created_at,p.reviewed_at||"",p.reviewed_by||""])));
+  download("NAES-OAU-payments.csv",[["Receipt No","Reg/Matric No","Name","Amount","Method","Session","Status","Name on Transfer","Submitted","Reviewed","Reviewed By"]].concat(allPays.map(p=>[recNo(p),p.reg_no,byReg[p.reg_no]?byReg[p.reg_no].full_name:"",p.amount_due,p.method,p.session,p.status,p.sender_name||"",p.created_at,p.reviewed_at||"",p.reviewed_by||""])));
 });
 /* ---------- 2-step verification ---------- */
 async function afterAuth(){
@@ -316,7 +316,7 @@ $("mfaSetup").addEventListener("click",async()=>{
   try{
     const lf=await sb.auth.mfa.listFactors();
     for(const f of ((lf.data&&lf.data.all)||[])){if(f.status!=="verified")await sb.auth.mfa.unenroll({factorId:f.id})}
-    const {data,error}=await sb.auth.mfa.enroll({factorType:"totp",friendlyName:"NAESOAU "+Date.now()});
+    const {data,error}=await sb.auth.mfa.enroll({factorType:"totp",friendlyName:"NAES-OAU "+Date.now()});
     if(error||!data){say("dmsg","2-step verification could not start. In Supabase, open Authentication, find Multi-Factor, and switch on TOTP (authenticator app).","err");return}
     mfaFactor=data.id;$("mfaQr").src=data.totp.qr_code;$("mfaSecret").textContent=data.totp.secret;$("mfaPanel").style.display="";
   }catch(e){say("dmsg","2-step verification could not start. Try again.","err")}
@@ -393,3 +393,4 @@ $("logRefresh").addEventListener("click",loadLog);
 
 /* Already signed in on this device? Go straight to the dashboard. */
 (async()=>{try{const {data}=await sb.auth.getSession();if(data.session)afterAuth()}catch(e){}})();
+
