@@ -103,6 +103,16 @@ header .menu-btn{display:grid!important;flex:none!important;margin-left:auto!imp
 header .menu-btn span{display:block!important;width:20px!important;height:2px!important;border-radius:2px!important;background:var(--ink,#21194a)!important}
 @media(max-width:420px){header{gap:9px;padding-left:14px!important;padding-right:14px!important}header .logo{width:40px!important;height:40px!important;min-width:40px}header .brand,header .brand b{font-size:18px!important}header .brand small{font-size:10px!important}}
 </style>
+<style>
+/* Shared NAES-OAU homepage footer */
+.home-footer{width:100%;margin:0!important;padding:30px clamp(20px,5vw,76px)!important;background:#17113e;color:#fff;box-sizing:border-box}
+.home-footer-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:18px 30px;align-items:center}
+.home-footer-inner>div>b{font-size:20px;font-weight:800;letter-spacing:-.03em}.home-footer-inner p{margin:5px 0 0;color:rgba(255,255,255,.7);font-size:12px}
+.home-footer-inner nav{display:flex;flex-wrap:wrap;gap:10px 20px}.home-footer-inner nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:600}.home-footer-inner nav a:hover{text-decoration:underline}
+.home-footer-inner>small{grid-column:1/-1;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.65);font-size:11px}
+@media(max-width:950px){.home-footer-inner{grid-template-columns:1fr}.home-footer-inner>small{grid-column:auto}}
+@media(max-width:650px){.home-footer{padding:26px 18px!important}.home-footer-inner nav{gap:12px 16px}}
+</style>
 </head>
 <body>
 <header>
@@ -179,7 +189,13 @@ header .menu-btn span{display:block!important;width:20px!important;height:2px!im
   </div>
 </main>
 
-<footer class="wrap">© NAES-OAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a></footer>
+<footer class="home-footer">
+  <div class="home-footer-inner">
+    <div><b>NAES-OAU</b><p>Entrepreneurship Students · Obafemi Awolowo University, Ile-Ife</p></div>
+    <nav aria-label="Footer navigation"><a href="about.html">About</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="speak.html">Speak Up</a><a href="privacy.html">Privacy Notice</a></nav>
+    <small>© NAES-OAU. All rights reserved.</small>
+  </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
 <script src="student.js"></script>
 <script src="common.js"></script>

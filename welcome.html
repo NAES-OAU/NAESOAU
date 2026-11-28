@@ -44,6 +44,16 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
 @media(max-width:640px){.welcome-main{padding:18px 14px 44px}.welcome-hero{grid-template-columns:1fr;padding:30px 23px;border-radius:22px}.welcome-art{min-height:180px}.welcome-emblem{width:190px;border-radius:24px}.welcome-emblem strong{font-size:58px}.welcome-intro{text-align:left}.welcome-cards,.welcome-purpose{grid-template-columns:1fr}.welcome-card{min-height:0}.welcome-bottom{align-items:flex-start;flex-direction:column}.welcome-bottom a{width:100%;text-align:center}.welcome-main+footer{padding:0 14px 24px}}
 @media(prefers-reduced-motion:no-preference){.welcome-card{transition:transform .2s ease,box-shadow .2s ease}.welcome-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(25,15,70,.09)}}
 </style>
+<style>
+/* Shared NAES-OAU homepage footer */
+.home-footer{width:100%;margin:0!important;padding:30px clamp(20px,5vw,76px)!important;background:#17113e;color:#fff;box-sizing:border-box}
+.home-footer-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:18px 30px;align-items:center}
+.home-footer-inner>div>b{font-size:20px;font-weight:800;letter-spacing:-.03em}.home-footer-inner p{margin:5px 0 0;color:rgba(255,255,255,.7);font-size:12px}
+.home-footer-inner nav{display:flex;flex-wrap:wrap;gap:10px 20px}.home-footer-inner nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:600}.home-footer-inner nav a:hover{text-decoration:underline}
+.home-footer-inner>small{grid-column:1/-1;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.65);font-size:11px}
+@media(max-width:950px){.home-footer-inner{grid-template-columns:1fr}.home-footer-inner>small{grid-column:auto}}
+@media(max-width:650px){.home-footer{padding:26px 18px!important}.home-footer-inner nav{gap:12px 16px}}
+</style>
 </head>
 <body>
 <header>
@@ -100,7 +110,13 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
 
   <section class="welcome-bottom"><div><h2>Your ideas deserve a place to grow.</h2><p>Become part of the NAES-OAU community and take your next step with fellow entrepreneurship students.</p></div><a href="register.html">Get Started</a></section>
 </main>
-<footer class="wrap">© NAES-OAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a>
+<footer class="home-footer">
+  <div class="home-footer-inner">
+    <div><b>NAES-OAU</b><p>Entrepreneurship Students · Obafemi Awolowo University, Ile-Ife</p></div>
+    <nav aria-label="Footer navigation"><a href="about.html">About</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="speak.html">Speak Up</a><a href="privacy.html">Privacy Notice</a></nav>
+    <small>© NAES-OAU. All rights reserved.</small>
+  </div>
+</footer>
 <script src="student.js"></script>
 <script src="menu.js"></script>
 </body>
