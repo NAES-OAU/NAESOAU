@@ -56,12 +56,44 @@ footer.wrap{padding:20px 0 30px!important;color:var(--rc-muted)}
 @media(max-width:560px){.wrap{width:calc(100% - 28px)!important}.receipt-hero{margin:18px 0;border-radius:18px}.receipt-panel,.receipt-preview-panel{padding:18px}}
 </style>
 
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style id="naes-oau-shared-header">
+/* Shared NAES-OAU header: matched to the Welcome page */
+header{
+  position:sticky!important;top:0!important;z-index:70!important;
+  width:100%!important;max-width:none!important;min-height:64px;
+  display:flex!important;align-items:center!important;gap:12px;
+  padding:calc(10px + env(safe-area-inset-top,0px)) clamp(18px,4vw,64px) 10px!important;
+  background:var(--bg,#fff)!important;border-bottom:1px solid var(--line,#e8e5f0)!important;
+}
+header>a:first-child{display:block!important;flex:none!important;line-height:0}
+header .logo{display:block!important;width:44px!important;height:44px!important;min-width:44px;object-fit:contain;border-radius:50%;flex:none!important}
+header .brand{
+  display:flex!important;flex:1 1 auto!important;flex-direction:column!important;
+  min-width:0;text-decoration:none!important;color:var(--ink,#21194a)!important;
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif!important;
+  font-size:20px!important;font-weight:800!important;line-height:1.15!important;
+  letter-spacing:-.035em!important;
+}
+header .brand b{font:800 20px/1.15 'Plus Jakarta Sans',system-ui,sans-serif!important;letter-spacing:-.035em!important}
+header .brand small{display:block!important;margin-top:3px!important;color:var(--muted,#686477)!important;font:600 11px/1.3 'Plus Jakarta Sans',system-ui,sans-serif!important;letter-spacing:0!important}
+header nav.top{display:none!important}
+header .menu-btn{display:grid!important;flex:none!important;margin-left:auto!important;width:44px!important;height:44px!important;padding:0!important;place-content:center!important;gap:5px!important;border:1px solid var(--line,#ddd6c4)!important;border-radius:12px!important;background:var(--surface,#fff)!important;cursor:pointer}
+header .menu-btn span{display:block!important;width:20px!important;height:2px!important;border-radius:2px!important;background:var(--ink,#21194a)!important}
+@media(max-width:420px){header{gap:9px;padding-left:14px!important;padding-right:14px!important}header .logo{width:40px!important;height:40px!important;min-width:40px}header .brand,header .brand b{font-size:18px!important}header .brand small{font-size:10px!important}}
+</style>
 </head>
 <body>
 <header>
   <a href="index.html" aria-label="NAES-OAU home"><img class="logo" alt="NAES-OAU logo" src="logo.png"></a>
-  <a class="brand" href="index.html">NAES-OAU</a>
-<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  <a class="brand" href="index.html"><b>NAES-OAU</b><small>Entrepreneurship Students · Ile-Ife</small></a>
+  <nav class="top" aria-label="Main">
+    <div class="dd"><button type="button" class="ddb">About</button><div class="ddm"><a href="welcome.html">Welcome</a><a href="about.html">About NAES-OAU</a></div></div>
+    <div class="dd"><button type="button" class="ddb">Students</button><div class="ddm"><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="verify.html">Verify Receipt</a></div></div>
+    <a href="speak.html">Speak Up</a>
+    <a class="btn signin" href="admin.html">Sign in</a>
+  </nav>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
 <nav class="drawer" id="menu" aria-label="Pages">
