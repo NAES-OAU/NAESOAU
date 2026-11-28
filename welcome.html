@@ -1,20 +1,49 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Welcome – NAES-OAU</title>
 <link rel="icon" href="logo.png">
-<meta name="description" content="What NAES-OAU is, what we do, and our vision and mission.">
+<meta name="description" content="Discover NAES-OAU, the National Association of Entrepreneurship Students at Obafemi Awolowo University.">
 <meta name="theme-color" content="#2a1a77">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NAES-OAU">
 <meta property="og:title" content="Welcome – NAES-OAU">
-<meta property="og:description" content="What NAES-OAU is, what we do, and our vision and mission.">
+<meta property="og:description" content="Discover the people, purpose and opportunities of NAES-OAU.">
 <meta property="og:image" content="https://naesoau1.vercel.app/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+/* Welcome page refresh */
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+.welcome-main{width:min(1440px,100%);max-width:1440px;margin:0 auto;padding:clamp(18px,4vw,54px) clamp(18px,5vw,76px) 64px}
+.welcome-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:clamp(24px,5vw,70px);align-items:center;padding:clamp(30px,5vw,72px);border-radius:30px;background:linear-gradient(125deg,#21145f 0%,#39258e 58%,#6248b5 100%);color:#fff;box-shadow:0 22px 55px rgba(42,26,119,.2)}
+.welcome-hero:before,.welcome-hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.13);border-radius:50%;pointer-events:none}
+.welcome-hero:before{width:420px;height:420px;right:-110px;top:-190px}.welcome-hero:after{width:300px;height:300px;right:30px;bottom:-210px}
+.welcome-copy,.welcome-art{position:relative;z-index:1}
+.welcome-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.welcome-eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#f4c94e}
+.welcome-hero h1{max-width:760px;margin:22px 0 16px;font-size:clamp(36px,5.3vw,68px);line-height:1.04;letter-spacing:-.055em;color:#fff}
+.welcome-hero p{max-width:660px;margin:0;color:rgba(255,255,255,.86);font-size:clamp(15px,1.35vw,18px);line-height:1.85}
+.welcome-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.welcome-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:12px;text-decoration:none;font-weight:800}
+.welcome-actions .primary-action{background:#f4c94e;color:#24165f}.welcome-actions .secondary-action{border:1px solid rgba(255,255,255,.45);color:#fff;background:rgba(255,255,255,.08)}
+.welcome-art{min-height:270px;display:grid;place-items:center}
+.welcome-emblem{width:min(100%,340px);aspect-ratio:1;border-radius:34px;display:grid;place-items:center;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px rgba(255,255,255,.2);transform:rotate(3deg)}
+.welcome-emblem-inner{transform:rotate(-3deg)}.welcome-emblem strong{display:block;font-size:clamp(56px,8vw,88px);line-height:1;letter-spacing:-.09em;color:#f4c94e}.welcome-emblem span{display:block;margin-top:14px;font-size:12px;letter-spacing:.17em;font-weight:800;color:#fff}
+.welcome-intro{max-width:930px;margin:clamp(42px,6vw,76px) auto 0;text-align:center}.section-kicker{color:#7258bd;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.welcome-intro h2,.welcome-section h2{margin:10px 0 14px;font-size:clamp(26px,3vw,38px);letter-spacing:-.04em;line-height:1.2}.welcome-intro p{margin:0;color:var(--muted,#666);font-size:16px;line-height:1.9}
+.welcome-section{margin-top:clamp(48px,7vw,86px)}.welcome-section-head{max-width:720px;margin-bottom:24px}.welcome-section-head p{color:var(--muted,#666);line-height:1.8;margin:0}
+.welcome-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.welcome-card{min-height:190px;padding:24px;border:1px solid var(--line,#e8e5f0);border-radius:18px;background:var(--surface,#fff);box-shadow:0 8px 24px rgba(25,15,70,.045)}
+.welcome-card .number{display:grid;place-items:center;width:38px;height:38px;margin-bottom:18px;border-radius:12px;background:#f0ecff;color:#4c369d;font-size:13px;font-weight:800}.welcome-card h3{margin:0 0 9px;font-size:17px}.welcome-card p{margin:0;color:var(--muted,#666);font-size:14px;line-height:1.75}
+.welcome-purpose{display:grid;grid-template-columns:1fr 1fr;gap:18px}.purpose-card{padding:clamp(24px,3vw,36px);border-radius:20px;background:var(--surface,#fff);border:1px solid var(--line,#e8e5f0)}.purpose-card h3{margin:0 0 12px;font-size:21px}.purpose-card p{margin:0;color:var(--muted,#666);line-height:1.85}.purpose-card.vision{border-top:4px solid #6d55b5}.purpose-card.mission{border-top:4px solid #e4b83c}
+.welcome-bottom{margin-top:clamp(44px,6vw,72px);padding:clamp(26px,4vw,42px);border-radius:22px;background:#f2effb;display:flex;align-items:center;justify-content:space-between;gap:24px}.welcome-bottom h2{margin:0 0 8px;font-size:clamp(22px,2.8vw,30px)}.welcome-bottom p{margin:0;color:#5e5871;line-height:1.7}.welcome-bottom a{flex:none;padding:13px 20px;border-radius:12px;background:#2a1a77;color:#fff;text-decoration:none;font-weight:800}
+.welcome-main+footer{max-width:1440px;margin:0 auto;padding:0 clamp(18px,5vw,76px) 28px}
+@media(max-width:900px){.welcome-hero{grid-template-columns:1fr .65fr}.welcome-art{min-height:220px}.welcome-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.welcome-main{padding:18px 14px 44px}.welcome-hero{grid-template-columns:1fr;padding:30px 23px;border-radius:22px}.welcome-art{min-height:180px}.welcome-emblem{width:190px;border-radius:24px}.welcome-emblem strong{font-size:58px}.welcome-intro{text-align:left}.welcome-cards,.welcome-purpose{grid-template-columns:1fr}.welcome-card{min-height:0}.welcome-bottom{align-items:flex-start;flex-direction:column}.welcome-bottom a{width:100%;text-align:center}.welcome-main+footer{padding:0 14px 24px}}
+@media(prefers-reduced-motion:no-preference){.welcome-card{transition:transform .2s ease,box-shadow .2s ease}.welcome-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(25,15,70,.09)}}
+</style>
 </head>
 <body>
 <header>
@@ -26,50 +55,53 @@
     <a href="speak.html">Speak Up</a>
     <a class="btn signin" href="admin.html">Sign in</a>
   </nav>
-<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
 <nav class="drawer" id="menu" aria-label="Pages">
   <div class="drawer-top"><b>Menu</b><button class="drawer-close" id="menuClose" type="button" aria-label="Close menu">&times;</button></div>
-  <a href="index.html">Home</a>
-  <a href="welcome.html" aria-current="page">Welcome</a>
-  <a href="register.html">Register</a>
-  <a href="pay.html">Pay Dues</a>
-  <a href="receipt.html">Receipt</a>
-  <a href="verify.html">Verify Receipt</a>
-  <a href="speak.html">Speak Up</a>
-  <a href="about.html">About</a>
+  <a href="index.html">Home</a><a href="welcome.html" aria-current="page">Welcome</a><a href="register.html">Register</a><a href="pay.html">Pay Dues</a><a href="receipt.html">Receipt</a><a href="verify.html">Verify Receipt</a><a href="speak.html">Speak Up</a><a href="about.html">About</a>
   <div class="drawer-foot" id="menuWho"></div>
 </nav>
-<main class="wrap">
-  <h1 class="page-title">Welcome to NAES-OAU</h1>
-  <p class="sub">The National Association of Entrepreneurship Students, Obafemi Awolowo University. Until 2024 it was called the Association of Entrepreneurship Students (AES).</p>
-  <div class="prose">
-    <p>NAES-OAU is run by students within the Institute for Entrepreneurship and Development Studies (IFEDS). It gives entrepreneurship students a place to sharpen their business skills, find mentors and team up on ventures, and it helps members turn ideas into real businesses.</p>
-  </div>
-  <a class="cta primary" href="https://aes.oauife.edu.ng" target="_blank" rel="noopener">Visit the Student Association Site</a>
-  <p class="hint">For events, workshops and mentorship, the association's own site is the best place to look.</p>
+<main class="welcome-main">
+  <section class="welcome-hero">
+    <div class="welcome-copy">
+      <span class="welcome-eyebrow">Obafemi Awolowo University · Ile-Ife</span>
+      <h1>Ideas grow here. <span style="color:#f4c94e">Entrepreneurs rise here.</span></h1>
+      <p>Welcome to the National Association of Entrepreneurship Students, OAU (NAES-OAU) — a student-led community for learning, collaboration and turning business ideas into practical ventures.</p>
+      <div class="welcome-actions"><a class="primary-action" href="register.html">Join the Association</a><a class="secondary-action" href="about.html">Discover Our Story</a></div>
+    </div>
+    <div class="welcome-art" aria-hidden="true"><div class="welcome-emblem"><div class="welcome-emblem-inner"><strong>NAES</strong><span>LEARN · BUILD · LEAD</span></div></div></div>
+  </section>
 
-  <h2>What We Do</h2>
-  <div class="grid">
-    <div class="feat"><b>Workshops</b><span>Skill-building sessions on starting and running a business.</span></div>
-    <div class="feat"><b>Pitch Competitions</b><span>Present your business idea and get feedback on it.</span></div>
-    <div class="feat"><b>Mentorship</b><span>Learn from people who have built something before you.</span></div>
-    <div class="feat"><b>Networking and Practical Experience</b><span>Meet other student entrepreneurs and try ideas in real situations.</span></div>
-  </div>
+  <section class="welcome-intro">
+    <span class="section-kicker">Who We Are</span>
+    <h2>A community built around possibility</h2>
+    <p>NAES-OAU brings together students of entrepreneurship within the Institute for Entrepreneurship and Development Studies (IFEDS). Formerly known as the Association of Entrepreneurship Students (AES), the association provides a space to develop business skills, connect with mentors, collaborate with peers and take ideas towards real-world impact.</p>
+  </section>
 
-  <h2>Vision and Mission</h2>
-  <div class="grid">
-    <div class="feat"><b>Vision</b><span>To be the leading student-driven association on the OAU campus, building a culture of entrepreneurship, innovation and leadership, and a strong network of young entrepreneurs who drive change at home and beyond.</span></div>
-    <div class="feat"><b>Mission</b><span>To represent and support entrepreneurship students through events, workshops, mentorship and advocacy, so they build skills, launch student-led ventures, and grow an ecosystem of innovation, leadership and social responsibility.</span></div>
-  </div>
+  <section class="welcome-section">
+    <div class="welcome-section-head"><span class="section-kicker">Our Activities</span><h2>Learn by doing. Grow together.</h2><p>We encourage members to build confidence, gain practical knowledge and connect with people who share their drive to create.</p></div>
+    <div class="welcome-cards">
+      <article class="welcome-card"><span class="number">01</span><h3>Workshops</h3><p>Build practical skills for developing, starting and managing a business.</p></article>
+      <article class="welcome-card"><span class="number">02</span><h3>Pitch Competitions</h3><p>Present business ideas, receive feedback and learn how to communicate your vision.</p></article>
+      <article class="welcome-card"><span class="number">03</span><h3>Mentorship</h3><p>Learn from experienced people and gain guidance as you develop your ideas.</p></article>
+      <article class="welcome-card"><span class="number">04</span><h3>Networking & Experience</h3><p>Meet fellow student entrepreneurs, share perspectives and explore ideas together.</p></article>
+    </div>
+  </section>
 
-    <h2>Learn More</h2>
-  <a class="feat" href="about.html"><b>Our Story, Leaders and Contact</b><span>How AES became NAES-OAU, our staff advisers and presidents, and how to reach us.</span></a>
+  <section class="welcome-section">
+    <div class="welcome-section-head"><span class="section-kicker">Our Direction</span><h2>What guides us</h2></div>
+    <div class="welcome-purpose">
+      <article class="purpose-card vision"><h3>Our Vision</h3><p>To be the leading student-driven association on the OAU campus, building a culture of entrepreneurship, innovation and leadership, and a strong network of young entrepreneurs who drive change at home and beyond.</p></article>
+      <article class="purpose-card mission"><h3>Our Mission</h3><p>To represent and support entrepreneurship students through events, workshops, mentorship and advocacy, so they build skills, launch student-led ventures, and grow an ecosystem of innovation, leadership and social responsibility.</p></article>
+    </div>
+  </section>
 
-
+  <section class="welcome-bottom"><div><h2>Your ideas deserve a place to grow.</h2><p>Become part of the NAES-OAU community and take your next step with fellow entrepreneurship students.</p></div><a href="register.html">Get Started</a></section>
 </main>
 <footer class="wrap">© NAES-OAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a>
 <script src="student.js"></script>
 <script src="menu.js"></script>
-</body></html>
+</body>
+</html>
