@@ -15,6 +15,53 @@
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+:root{--about-purple:#2a1a77;--about-deep:#1c1256;--about-gold:#e2b84f;--about-ink:#20184b;--about-muted:#6e6a83;--about-line:#e9e5f1;--about-bg:#f7f6fb}
+*{box-sizing:border-box}
+body.wide{margin:0;background:#fbfaff;color:var(--about-ink);font-family:'Bricolage Grotesque',system-ui,sans-serif}
+body.wide>header{width:100%;max-width:none;margin:0;padding:12px clamp(18px,5vw,76px);min-height:78px;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--about-line);position:relative;z-index:70}
+body.wide>header .logo{width:48px;height:48px;object-fit:contain}
+body.wide>header .brand{display:flex;flex-direction:column;text-decoration:none;color:var(--about-ink);line-height:1.1}
+body.wide>header .brand b{font-size:20px;letter-spacing:.02em}
+body.wide>header .brand small{font-size:11px;color:var(--about-muted);margin-top:5px}
+body.wide>header .menu-btn{margin-left:auto}
+.about-wrap{width:min(100% - 40px,1440px);margin:0 auto;padding:32px 0 70px}
+.about-hero{min-height:370px;padding:clamp(30px,6vw,78px);border-radius:28px;background:linear-gradient(115deg,#21145f 0%,#34218e 58%,#513bb0 100%);color:#fff;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;overflow:hidden;position:relative}
+.hero-copy{position:relative;z-index:2;max-width:690px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.19em;color:#bbaeff}
+.about-hero h1{font-size:clamp(42px,6vw,76px);line-height:1.02;letter-spacing:-.045em;margin:18px 0}
+.about-hero h1 em{font-style:normal;color:var(--about-gold)}
+.about-hero p{font-size:clamp(16px,1.6vw,20px);line-height:1.65;color:#e5e0ff;max-width:540px;margin:0}
+.hero-actions{display:flex;align-items:center;gap:25px;flex-wrap:wrap;margin-top:30px}
+.hero-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;text-decoration:none;font-weight:800;padding:14px 20px;border-radius:12px;transition:transform .2s}
+.hero-btn:hover{transform:translateY(-2px)}.hero-btn.primary{background:var(--about-gold);color:#21164e}.hero-link{color:#fff;text-decoration:none;font-weight:700;font-size:14px}
+.hero-art{min-height:260px;position:relative;display:grid;place-items:center}
+.orbit{position:absolute;border:1px solid rgba(255,255,255,.22);border-radius:50%;aspect-ratio:1}
+.orbit-one{width:min(29vw,310px)}.orbit-two{width:min(21vw,220px);border-style:dashed}
+.hero-mark{width:150px;height:150px;border-radius:42px;background:linear-gradient(145deg,#fff,#e6ddff);color:var(--about-purple);display:grid;place-items:center;font-size:104px;font-weight:800;box-shadow:0 25px 70px #120b3c66;transform:rotate(-8deg)}
+.hero-mark span{color:#d4a52f}.hero-caption{position:absolute;bottom:5px;right:5%;font-size:10px;letter-spacing:.24em;color:#d5ccff;font-weight:800}
+.content-section{padding:58px 0 10px}.section-heading{margin-bottom:24px}.section-heading .eyebrow{color:#806acb}.section-heading h2{font-size:clamp(27px,3vw,38px);margin:8px 0;color:var(--about-deep);letter-spacing:-.03em}.section-heading p{color:var(--about-muted);margin:0;font-size:15px}
+.timeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;counter-reset:journey}
+.timeline li{counter-increment:journey;position:relative;background:#fff;border:1px solid var(--about-line);border-radius:18px;padding:25px 22px 22px;box-shadow:0 8px 24px #24145d08;min-width:0}
+.timeline li:before{content:"0" counter(journey);display:inline-grid;place-items:center;width:37px;height:37px;border-radius:11px;background:#f0edff;color:#5d48ad;font-size:12px;font-weight:800;margin-bottom:18px}
+.timeline li b{display:block;font-size:17px;color:var(--about-deep);line-height:1.3}.timeline li p{font-size:14px;line-height:1.7;color:var(--about-muted);margin:10px 0 0}
+.people-grid{display:grid;gap:14px}.advisers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.presidents-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.person-card{min-width:0;display:flex;align-items:center;gap:16px;padding:18px;background:#fff;border:1px solid var(--about-line);border-radius:17px;position:relative;box-shadow:0 8px 24px #24145d08}
+.person-card img{width:76px;height:76px;border-radius:16px;object-fit:cover;background:#efedf5;flex:none}
+.person-card div{min-width:0;display:flex;flex-direction:column;gap:6px}.person-card b{font-size:15px;line-height:1.35;color:var(--about-deep)}.person-card span{font-size:13px;color:var(--about-muted)}
+.person-card.current{border-color:#d9c77e;background:linear-gradient(120deg,#fffdf5,#fff)}
+.current-tag{position:absolute;right:12px;top:12px;font-size:9px;font-weight:800;letter-spacing:.1em;color:#84620e;background:#f8edc8;padding:5px 7px;border-radius:6px}
+.contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.contact-card{display:flex;align-items:flex-start;gap:16px;padding:22px;background:#fff;border:1px solid var(--about-line);border-radius:17px}
+.contact-icon{width:42px;height:42px;display:grid;place-items:center;flex:none;background:#f0edff;color:#5d48ad;border-radius:12px;font-size:23px}
+.contact-card small{font-size:10px;font-weight:800;letter-spacing:.14em;color:#8b80b0}.contact-card p{font-size:15px;line-height:1.55;margin:7px 0;color:var(--about-ink)}.contact-card a{color:#5541a1;font-weight:700;text-decoration:none;overflow-wrap:anywhere}.contact-card a:hover{text-decoration:underline}
+.join-banner{margin-top:62px;padding:clamp(26px,4vw,48px);border-radius:24px;background:linear-gradient(110deg,#21145f,#4935a4);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.join-banner h2{font-size:clamp(28px,3vw,40px);margin:9px 0 5px}.join-banner p{margin:0;color:#ddd6ff}.join-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.hero-btn.light{background:#fff;color:var(--about-purple)}.join-pay{color:#fff;text-decoration:none;font-weight:800}
+body.wide>footer{width:min(100% - 40px,1440px);max-width:none;margin:0 auto;padding:22px 0 30px;color:var(--about-muted);font-size:13px;border-top:1px solid var(--about-line);line-height:2}
+body.wide>footer a{color:#5541a1;text-decoration:none}
+@media(max-width:1000px){.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.presidents-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-hero{grid-template-columns:1.2fr .8fr}}
+@media(max-width:680px){.about-wrap{width:min(100% - 28px,1440px);padding-top:18px}.about-hero{grid-template-columns:1fr;min-height:0;padding:34px 25px 25px;border-radius:21px}.hero-art{min-height:190px;margin-top:15px}.orbit-one{width:190px}.orbit-two{width:140px}.hero-mark{width:112px;height:112px;border-radius:30px;font-size:78px}.hero-caption{right:4%;bottom:0}.content-section{padding-top:40px}.timeline,.advisers-grid,.presidents-grid,.contact-grid{grid-template-columns:1fr}.timeline li{padding:20px}.person-card{padding:15px}.person-card img{width:66px;height:66px}.current-tag{position:static;margin-left:auto;align-self:flex-start}.join-banner{margin-top:42px;align-items:flex-start;flex-direction:column}.join-actions{gap:16px}body.wide>footer{width:calc(100% - 28px)}}
+@media(prefers-reduced-motion:reduce){.hero-btn{transition:none}}
+</style>
 </head>
 <body class="wide">
 <header>
@@ -36,44 +83,67 @@
   <a class="btn signin" href="admin.html">Sign in</a>
   <div class="drawer-foot" id="menuWho"></div>
 </nav>
-<main class="wrap">
-  <h1 class="page-title">About NAESOAU</h1>
-  <p class="sub">Our story, the people who guide us, and how to reach us.</p>
+<main class="about-wrap">
+  <section class="about-hero">
+    <div class="hero-copy">
+      <span class="eyebrow">WHO WE ARE</span>
+      <h1>About <em>NAESOAU</em></h1>
+      <p>Our story, the people who guide us, and how to reach us.</p>
+      <div class="hero-actions">
+        <a class="hero-btn primary" href="register.html">Become a Member <span aria-hidden="true">↗</span></a>
+        <a class="hero-link" href="#our-story">Explore our story ↓</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="hero-mark">N<span>•</span></div>
+      <div class="hero-caption">LEARN · BUILD · LEAD</div>
+    </div>
+  </section>
 
-  <h2>Our Story</h2>
-  <ol class="timeline">
-    <li><b>2017: AES Begins</b><p>Five students, one male and four female, found that their first department placements did not match their qualifications. They came together and laid the groundwork for IFEDS at OAU and for the Association of Entrepreneurship Students. IFEDS was the smallest institute on campus at the time.</p></li>
-    <li><b>Growth</b><p>More students, including Direct Entry students, joined. AES grew into a hub for creativity and entrepreneurial skills.</p></li>
-    <li><b>2024: AES Becomes NAESOAU</b><p>Under President Oyewole Samuel Segun, the association rebranded as the National Association of Entrepreneurship Students, OAU. Past presidents Badmus Taiwo Oluwaseun and Williams Olasubomi Samuel approved the change, which reflects a wider aim of uniting entrepreneurship students under one national body.</p></li>
-    <li><b>Today</b><p>NAESOAU focuses on hands-on experience, partnerships and capacity-building programmes for its members.</p></li>
-  </ol>
+  <section class="content-section story-section" id="our-story">
+    <div class="section-heading"><span class="eyebrow">OUR JOURNEY</span><h2>Our Story</h2><p>From a small beginning to a growing community of entrepreneurship students.</p></div>
+    <ol class="timeline">
+      <li><b>2017: AES Begins</b><p>Five students, one male and four female, found that their first department placements did not match their qualifications. They came together and laid the groundwork for IFEDS at OAU and for the Association of Entrepreneurship Students. IFEDS was the smallest institute on campus at the time.</p></li>
+      <li><b>Growth</b><p>More students, including Direct Entry students, joined. AES grew into a hub for creativity and entrepreneurial skills.</p></li>
+      <li><b>2024: AES Becomes NAESOAU</b><p>Under President Oyewole Samuel Segun, the association rebranded as the National Association of Entrepreneurship Students, OAU. Past presidents Badmus Taiwo Oluwaseun and Williams Olasubomi Samuel approved the change, which reflects a wider aim of uniting entrepreneurship students under one national body.</p></li>
+      <li><b>Today</b><p>NAESOAU focuses on hands-on experience, partnerships and capacity-building programmes for its members.</p></li>
+    </ol>
+  </section>
 
-  <h2>Staff Advisers</h2>
-  <div class="grid">
-    <div class="feat person"><img src="images/adviser-jiboye.jpg" alt="Dr. T. F. Jiboye" width="72" height="72" loading="lazy"><div><b>Dr. T. F. Jiboye</b><span class="role">Staff Adviser</span></div></div>
-    <div class="feat person"><img src="images/adviser-jegede.jpg" alt="Prof. C. T. Jegede" width="72" height="72" loading="lazy"><div><b>Prof. C. T. Jegede</b><span class="role">Staff Adviser</span></div></div>
-  </div>
+  <section class="content-section">
+    <div class="section-heading"><span class="eyebrow">GUIDANCE & SUPPORT</span><h2>Staff Advisers</h2><p>The staff advisers supporting the association.</p></div>
+    <div class="people-grid advisers-grid">
+      <article class="person-card"><img src="images/adviser-jiboye.jpg" alt="Dr. T. F. Jiboye" width="96" height="96" loading="lazy"><div><b>Dr. T. F. Jiboye</b><span>Staff Adviser</span></div></article>
+      <article class="person-card"><img src="images/adviser-jegede.jpg" alt="Prof. C. T. Jegede" width="96" height="96" loading="lazy"><div><b>Prof. C. T. Jegede</b><span>Staff Adviser</span></div></article>
+    </div>
+  </section>
 
-  <h2>Past and Present Presidents</h2>
-  <div class="grid">
-    <div class="feat person current"><img src="images/president-ogundeji.jpg" alt="Ogundeji Samuel Oluwatimilehin" width="72" height="72" loading="lazy"><div><b>Ogundeji Samuel Oluwatimilehin</b><span class="role">Current President, 2026/2027</span></div></div>
-    <div class="feat person"><img src="images/president-bakare.jpg" alt="Bakare Adeola Janet" width="72" height="72" loading="lazy"><div><b>Bakare Adeola Janet</b><span class="role">President, 2025/2026</span></div></div>
-    <div class="feat person"><img src="images/president-oyewole.jpg" alt="Oyewole Samuel Segun" width="72" height="72" loading="lazy"><div><b>Oyewole Samuel Segun</b><span class="role">President, 2024/2025</span></div></div>
-    <div class="feat person"><img src="images/president-williams.jpg" alt="Williams Olasubomi Samuel" width="72" height="72" loading="lazy"><div><b>Williams Olasubomi Samuel</b><span class="role">President, 2023/2024</span></div></div>
-    <div class="feat person"><img src="images/president-badmus.jpg" alt="Badmus Taiwo Oluwaseun" width="72" height="72" loading="lazy"><div><b>Badmus Taiwo Oluwaseun</b><span class="role">President, 2022/2023</span></div></div>
-  </div>
+  <section class="content-section">
+    <div class="section-heading"><span class="eyebrow">LEADERSHIP</span><h2>Past and Present Presidents</h2><p>Recognising the leaders who have served the association.</p></div>
+    <div class="people-grid presidents-grid">
+      <article class="person-card current"><img src="images/president-ogundeji.jpg" alt="Ogundeji Samuel Oluwatimilehin" width="96" height="96" loading="lazy"><div><b>Ogundeji Samuel Oluwatimilehin</b><span>Current President, 2026/2027</span></div><small class="current-tag">CURRENT</small></article>
+      <article class="person-card"><img src="images/president-bakare.jpg" alt="Bakare Adeola Janet" width="96" height="96" loading="lazy"><div><b>Bakare Adeola Janet</b><span>President, 2025/2026</span></div></article>
+      <article class="person-card"><img src="images/president-oyewole.jpg" alt="Oyewole Samuel Segun" width="96" height="96" loading="lazy"><div><b>Oyewole Samuel Segun</b><span>President, 2024/2025</span></div></article>
+      <article class="person-card"><img src="images/president-williams.jpg" alt="Williams Olasubomi Samuel" width="96" height="96" loading="lazy"><div><b>Williams Olasubomi Samuel</b><span>President, 2023/2024</span></div></article>
+      <article class="person-card"><img src="images/president-badmus.jpg" alt="Badmus Taiwo Oluwaseun" width="96" height="96" loading="lazy"><div><b>Badmus Taiwo Oluwaseun</b><span>President, 2022/2023</span></div></article>
+    </div>
+  </section>
 
-  <h2>Contact</h2>
-  <div class="feat contact">
-    <p><b>Address</b>Institute for Entrepreneurship &amp; Development Studies, Obafemi Awolowo University, Ile-Ife<small><a href="https://www.google.com/maps?q=7.511279,4.523009" target="_blank" rel="noopener">Open in Google Maps</a></small></p>
-    <p><b>Phone</b><a href="tel:07013929700">07013929700</a></p>
-    <p><b>Email</b><a href="mailto:aesoau@gmail.com">aesoau@gmail.com</a></p>
-    <p><b>Instagram</b><a href="https://www.instagram.com/naes_oau" target="_blank" rel="noopener">@Naes_Oau</a></p>
-  </div>
+  <section class="content-section contact-section">
+    <div class="section-heading"><span class="eyebrow">GET IN TOUCH</span><h2>Contact NAESOAU</h2><p>Reach the association through any of the channels below.</p></div>
+    <div class="contact-grid">
+      <article class="contact-card"><span class="contact-icon">⌖</span><div><small>ADDRESS</small><p>Institute for Entrepreneurship &amp; Development Studies, Obafemi Awolowo University, Ile-Ife</p><a href="https://www.google.com/maps?q=7.511279,4.523009" target="_blank" rel="noopener">Open in Google Maps ↗</a></div></article>
+      <article class="contact-card"><span class="contact-icon">☎</span><div><small>PHONE</small><p><a href="tel:07013929700">07013929700</a></p></div></article>
+      <article class="contact-card"><span class="contact-icon">✉</span><div><small>EMAIL</small><p><a href="mailto:aesoau@gmail.com">aesoau@gmail.com</a></p></div></article>
+      <article class="contact-card"><span class="contact-icon">◎</span><div><small>INSTAGRAM</small><p><a href="https://www.instagram.com/naes_oau" target="_blank" rel="noopener">@Naes_Oau</a></p></div></article>
+    </div>
+  </section>
 
-  <h2>Ready to Join?</h2>
-  <a class="cta primary" href="register.html">Register</a>
-  <a class="cta secondary" href="pay.html">Pay Dues</a>
+  <section class="join-banner">
+    <div><span class="eyebrow">YOUR JOURNEY STARTS HERE</span><h2>Ready to Join?</h2><p>Become part of the NAESOAU community.</p></div>
+    <div class="join-actions"><a class="hero-btn light" href="register.html">Register Now ↗</a><a class="join-pay" href="pay.html">Pay Dues</a></div>
+  </section>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="student.js"></script>
