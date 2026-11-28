@@ -180,296 +180,35 @@ label.check a,.hint a,.sub a{color:var(--goldtext)}
 .page-title:has(+ .sub){margin-bottom:8px}
 
 
-/* =========================================================
-   NAESOAU RESPONSIVE WIDE LAYOUT
-   Wider desktop layout with responsive tablet and phone rules.
-   Existing colours, components and page functionality retained.
-   ========================================================= */
-
-:root { --w: 1440px; }
-
-html, body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: clip;
+/* NAES-OAU subtle association-logo watermark — shared across pages */
+body {
+  position: relative;
+  isolation: isolate;
 }
 
-body { min-width: 320px; }
-
-.wrap,
-body.wide .wrap,
-body.home .wrap,
-footer.wrap {
-  width: 100%;
-  max-width: 1440px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: clamp(16px, 3vw, 48px);
-  padding-right: clamp(16px, 3vw, 48px);
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("logo.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: min(58vw, 520px) auto;
+  opacity: 0.045;
 }
 
-.hero {
-  width: 100%;
-  max-width: 1440px;
-  padding-left: clamp(16px, 3vw, 48px);
-  padding-right: clamp(16px, 3vw, 48px);
-}
-
-.lead, .sub, .prose p { max-width: 70ch; }
-
-form {
-  width: 100%;
-  min-width: 0;
-  padding: clamp(18px, 2.5vw, 32px);
-}
-
-.grid, .execs, .bar, .contact { min-width: 0; }
-.grid { gap: clamp(12px, 1.5vw, 22px); }
-.feat { min-width: 0; overflow-wrap: anywhere; }
-
-.scroll {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-table { min-width: 100%; }
-
-header {
-  width: 100%;
-  padding-left: max(clamp(16px, 3vw, 48px), calc((100% - 1344px) / 2));
-  padding-right: max(clamp(16px, 3vw, 48px), calc((100% - 1344px) / 2));
-}
-
-@media (min-width: 600px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (min-width: 900px) {
-  .wrap, body.wide .wrap, body.home .wrap, .hero, footer.wrap {
-    max-width: 1440px;
-  }
-  .page-title { font-size: clamp(38px, 4vw, 54px); }
-  .grid, body.wide .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+/* Keep the watermark subtle and appropriately sized on smaller screens */
+@media (max-width: 700px) {
+  body::before {
+    background-size: min(78vw, 360px) auto;
+    opacity: 0.035;
   }
 }
-
-@media (min-width: 1280px) {
-  .wrap, body.wide .wrap, body.home .wrap, .hero, footer.wrap {
-    max-width: 1600px;
-  }
-  .grid { gap: 22px; }
-}
-
-@media (max-width: 599px) {
-  .wrap, body.wide .wrap, body.home .wrap, .hero, footer.wrap {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  h1 { font-size: clamp(34px, 10vw, 48px); }
-  .page-title { font-size: clamp(30px, 8vw, 40px); }
-  form { padding: 16px; }
-  .bar > * { flex: 1 1 100%; min-width: 0; }
-  .execs { gap: 10px; }
-  .exec { flex-basis: calc(50% - 5px); }
-  .scroll table { min-width: 640px; }
-}
-
-.wrap *, .hero *, footer.wrap * { min-width: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-/* NAESOAU FULL-WIDTH HEADER FIX */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-  margin: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-
-  padding:
-    calc(10px + env(safe-area-inset-top, 0px))
-    clamp(20px, calc((100% - 1200px) / 2), 80px)
-    10px;
-
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
-  box-sizing: border-box;
-}
-
-header > a:has(.logo) {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-header .brand {
-  flex: 1;
-  min-width: 0;
-}
-
-header .menu-btn {
-  flex: 0 0 44px;
-  margin-left: auto;
-}
-
-@media (max-width: 600px) {
-  header {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-
-/* =====================================
-   NAESOAU HEADER, HERO AND WELCOME FIX
-   ===================================== */
-
-/* Full-width navigation header */
-header {
-  width: 100%;
-  max-width: none !important;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: calc(10px + env(safe-area-inset-top, 0px))
-    clamp(20px, 5vw, 80px) 10px;
-  gap: 16px;
-}
-
-header .brand {
-  flex: 1;
-  min-width: 0;
-}
-
-header .menu-btn {
-  display: grid !important;
-  flex: 0 0 44px;
-  margin-left: auto;
-  position: relative;
-  z-index: 25;
-  cursor: pointer;
-}
-
-/* Keep the sidebar above the page */
-.drawer {
-  z-index: 40;
-}
-
-.scrim {
-  z-index: 30;
-}
-
-/* Wider homepage hero */
-body.home .hero {
-  width: 100%;
-  max-width: 1500px;
-  box-sizing: border-box;
-  margin: 0 auto;
-  padding: 36px clamp(24px, 5vw, 80px);
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  align-items: center;
-  gap: clamp(30px, 5vw, 76px);
-}
-
-/* Welcome message */
-body.home .hero-text {
-  min-width: 0;
-  max-width: 620px;
-}
-
-body.home .hero-text .pill {
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-body.home .hero-text h1 {
-  font-size: clamp(46px, 5vw, 78px);
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-  max-width: 11ch;
-  margin: 18px 0;
-}
-
-body.home .hero-text .lead {
-  font-size: clamp(17px, 1.45vw, 22px);
-  line-height: 1.65;
-  max-width: 42ch;
-}
-
-/* Larger right-hand image carousel */
-body.home .slides {
-  width: 100%;
-  max-width: none;
-  aspect-ratio: 16 / 10;
-  max-height: 620px;
-  min-width: 0;
-  border-radius: 22px;
-}
-
-body.home .slides .slide {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Tablet layout */
-@media (max-width: 900px) {
-  body.home .hero {
-    grid-template-columns: 1fr 1.1fr;
-    gap: 28px;
-    padding: 28px 24px;
-  }
-
-  body.home .hero-text h1 {
-    font-size: clamp(38px, 5vw, 54px);
-  }
-}
-
-/* Mobile layout */
-@media (max-width: 650px) {
-  header {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  body.home .hero {
-    grid-template-columns: 1fr;
-    padding: 24px 18px;
-    gap: 24px;
-  }
-
-  body.home .hero-text {
-    max-width: none;
-  }
-
-  body.home .hero-text h1 {
-    font-size: clamp(40px, 10vw, 54px);
-    max-width: 13ch;
-  }
-
-  body.home .hero-text .lead {
-    font-size: 17px;
-  }
-
-  body.home .slides {
-    aspect-ratio: 4 / 3;
-    max-height: 420px;
+  body::before {
+    background-attachment: scroll;
   }
 }
