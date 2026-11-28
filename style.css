@@ -178,3 +178,111 @@ footer.wrap a{display:inline-block;padding:6px 2px}
 label.check a,.hint a,.sub a{color:var(--goldtext)}
 .page-title{margin-bottom:20px}
 .page-title:has(+ .sub){margin-bottom:8px}
+
+
+/* =========================================================
+   NAESOAU RESPONSIVE WIDE LAYOUT
+   Wider desktop layout with responsive tablet and phone rules.
+   Existing colours, components and page functionality retained.
+   ========================================================= */
+
+:root { --w: 1440px; }
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body { min-width: 320px; }
+
+.wrap,
+body.wide .wrap,
+body.home .wrap,
+footer.wrap {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 3vw, 48px);
+  padding-right: clamp(16px, 3vw, 48px);
+}
+
+.hero {
+  width: 100%;
+  max-width: 1440px;
+  padding-left: clamp(16px, 3vw, 48px);
+  padding-right: clamp(16px, 3vw, 48px);
+}
+
+.lead, .sub, .prose p { max-width: 70ch; }
+
+form {
+  width: 100%;
+  min-width: 0;
+  padding: clamp(18px, 2.5vw, 32px);
+}
+
+.grid, .execs, .bar, .contact { min-width: 0; }
+.grid { gap: clamp(12px, 1.5vw, 22px); }
+.feat { min-width: 0; overflow-wrap: anywhere; }
+
+.scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table { min-width: 100%; }
+
+header {
+  width: 100%;
+  padding-left: max(clamp(16px, 3vw, 48px), calc((100% - 1344px) / 2));
+  padding-right: max(clamp(16px, 3vw, 48px), calc((100% - 1344px) / 2));
+}
+
+@media (min-width: 600px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 900px) {
+  .wrap, body.wide .wrap, body.home .wrap, .hero, footer.wrap {
+    max-width: 1440px;
+  }
+  .page-title { font-size: clamp(38px, 4vw, 54px); }
+  .grid, body.wide .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .wrap, body.wide .wrap, body.home .wrap, .hero, footer.wrap {
+    max-width: 1600px;
+  }
+  .grid { gap: 22px; }
+}
+
+@media (max-width: 599px) {
+  .wrap, body.wide .wrap, body.home .wrap, .hero, footer.wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  h1 { font-size: clamp(34px, 10vw, 48px); }
+  .page-title { font-size: clamp(30px, 8vw, 40px); }
+  form { padding: 16px; }
+  .bar > * { flex: 1 1 100%; min-width: 0; }
+  .execs { gap: 10px; }
+  .exec { flex-basis: calc(50% - 5px); }
+  .scroll table { min-width: 640px; }
+}
+
+.wrap *, .hero *, footer.wrap * { min-width: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
