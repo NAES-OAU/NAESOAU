@@ -15,11 +15,56 @@
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<style>
+:root{--pay-ink:#211b45;--pay-muted:#68647d;--pay-purple:#35218c;--pay-line:#e8e5f2;--pay-bg:#f7f6fc;--pay-green:#16845b}
+body{background:var(--pay-bg);color:var(--pay-ink)}
+header{width:100%;max-width:none!important;margin:0!important;padding:12px clamp(18px,4vw,64px)!important;box-sizing:border-box;min-height:76px;background:#fff;border-bottom:1px solid var(--pay-line);display:flex;align-items:center;gap:14px}
+header .logo{width:46px;height:46px;object-fit:contain}
+header .brand{font-weight:800;font-size:1.15rem;color:var(--pay-ink);text-decoration:none}
+.menu-btn{margin-left:auto}
+.wrap{width:min(1440px,100% - 48px)!important;max-width:1440px!important;margin:0 auto!important;padding:0!important;box-sizing:border-box}
+.pay-hero{margin:30px 0 24px;padding:clamp(24px,4vw,48px);border-radius:24px;background:linear-gradient(120deg,#24146f,#4936a8 62%,#7667c8);color:#fff;position:relative;overflow:hidden}
+.pay-hero:after{content:"";position:absolute;width:300px;height:300px;border:1px solid #ffffff2c;border-radius:50%;right:-70px;top:-120px;box-shadow:0 0 0 34px #ffffff0b,0 0 0 68px #ffffff08}
+.pay-hero .eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#d9d2ff}
+.pay-hero h1{font-size:clamp(2rem,4vw,3.25rem);line-height:1.06;margin:10px 0 12px;color:#fff}
+.pay-hero p{max-width:720px;margin:0;color:#eeeaff;line-height:1.65}
+.pay-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.75fr);gap:24px;align-items:start;margin-bottom:38px}
+.pay-panel,.pay-side{background:#fff;border:1px solid var(--pay-line);border-radius:20px;padding:clamp(20px,3vw,32px);box-shadow:0 10px 30px #211b4508}
+.pay-panel h2,.pay-side h2{font-size:1.22rem;margin:0 0 8px;color:var(--pay-ink)}
+.pay-sub{color:var(--pay-muted);font-size:.93rem;line-height:1.6;margin:0 0 22px}
+.acct{margin:0 0 22px;padding:22px;border-radius:16px;background:linear-gradient(135deg,#f0edff,#f8f7ff);border:1px solid #ded8ff;color:var(--pay-ink)}
+.acct>b{display:block;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:#55469e}
+.acct .num{font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;letter-spacing:.06em;margin:10px 0 4px;color:#24146f}
+.acct #acctName,.acct #acctBank{color:#514b6d;font-weight:600}
+#pf{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#pf .hint{grid-column:1/-1;padding:16px;border-radius:12px;background:#f7f6fc;border:1px solid var(--pay-line);color:#55516c;line-height:1.65;margin:0 0 4px}
+#pf label{display:flex;flex-direction:column;gap:8px;font-weight:700;font-size:.9rem;color:#383252}
+#pf input:not([type=checkbox]){width:100%;box-sizing:border-box;border:1px solid #dcd8e9;border-radius:11px;padding:13px 14px;background:#fff;color:var(--pay-ink);font:inherit;min-height:48px}
+#pf input:focus{outline:3px solid #ded8ff;border-color:#7667c8}
+#pf label:nth-of-type(4){grid-column:1/-1}
+#rprev{grid-column:1/-1;max-height:300px!important;background:#faf9ff;padding:8px}
+#pf .check{grid-column:1/-1;flex-direction:row;align-items:flex-start;font-weight:500;color:var(--pay-muted);line-height:1.5}
+#pf .check input{margin-top:4px;accent-color:var(--pay-purple)}
+#pf .btn{border:0;border-radius:12px;min-height:50px;padding:12px 18px;font-weight:800;cursor:pointer;background:var(--pay-purple);color:white}
+#pf .btn.alt{background:#efedfa;color:#34247f}
+#pmsg{grid-column:1/-1}
+.pay-side{position:sticky;top:20px}
+.pay-side .step{display:flex;gap:13px;margin:20px 0}
+.pay-side .step-no{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#efedfa;color:#35218c;font-weight:800}
+.pay-side .step b{display:block;margin:1px 0 4px}
+.pay-side .step span{display:block;color:var(--pay-muted);font-size:.88rem;line-height:1.5}
+.pay-note{margin-top:20px;padding:15px;border-radius:13px;background:#eff9f4;color:#28664e;font-size:.88rem;line-height:1.55}
+footer.wrap{padding:20px 0 30px!important;color:var(--pay-muted)}
+@media(max-width:850px){.pay-layout{grid-template-columns:1fr}.pay-side{position:static}}
+@media(max-width:560px){.wrap{width:calc(100% - 28px)!important}.pay-hero{margin:18px 0;border-radius:18px}#pf{grid-template-columns:1fr}#pf .hint,#pf label:nth-of-type(4),#rprev,#pf .check,#pmsg{grid-column:1}#pf .btn{grid-column:1}.pay-panel,.pay-side{padding:18px}.acct{padding:18px}}
+</style>
+
 </head>
 <body>
 <header>
   <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
-  <a class="brand" href="index.html"><b>NAESOAU</b><small>Entrepreneurship Students · Ile-Ife</small></a>
+  <a class="brand" href="index.html">NAESOAU</a>
 <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
@@ -30,32 +75,52 @@
   <a href="register.html">Register</a>
   <a href="pay.html" aria-current="page">Pay Dues</a>
   <a href="receipt.html">Receipt</a>
-  <a href="verify.html">Verify Receipt</a>
   <a href="speak.html">Speak Up</a>
   <a href="about.html">About</a>
-  <a class="btn signin" href="admin.html">Sign in</a>
   <div class="drawer-foot" id="menuWho"></div>
 </nav>
 <main class="wrap">
-  <h1 class="page-title">Pay Dues</h1>
-  <div class="feat acct">
-    <b>Transfer to This Account</b>
-    <div class="num" id="acctNum"></div>
-    <span id="acctName"></span><br><span id="acctBank"></span><br>
-    <button class="btn alt sm" id="copy" type="button" style="margin-top:10px">Copy Account Number</button>
+  <section class="pay-hero">
+    <div class="eyebrow">NAESOAU · Membership</div>
+    <h1>Pay Your Dues</h1>
+    <p>Complete your membership payment securely by bank transfer, then submit your receipt for executive verification.</p>
+  </section>
+
+  <div class="pay-layout">
+    <section class="pay-panel">
+      <h2>Bank Transfer & Receipt</h2>
+      <p class="pay-sub">Use the account details below, then complete the form with the same contact information you used during registration.</p>
+
+      <div class="feat acct">
+        <b>Transfer to This Account</b>
+        <div class="num" id="acctNum"></div>
+        <span id="acctName"></span><br><span id="acctBank"></span><br>
+        <button class="btn alt sm" id="copy" type="button" style="margin-top:10px">Copy Account Number</button>
+      </div>
+
+      <form id="pf" novalidate>
+        <p class="hint">Dues for the <b id="sessTxt">current</b> session. 100 Level and 200 Level (DE) pay ₦17,000. 200 Level (Regular), 300 Level and 400 Level pay ₦4,000. Register first, transfer, then upload your receipt screenshot here with the WhatsApp number you registered with. Executives approve it after checking the account.</p>
+        <label>Registration Number / Matric Number<input id="payReg" placeholder="ERT/2022/041 or JAMB number" autocapitalize="characters" autocomplete="off"></label>
+        <label>WhatsApp Number<input id="payPhone" type="tel" autocomplete="tel" placeholder="Use the number from registration"></label>
+        <label>Name on the Transfer<input id="paySender" placeholder="Enter the sender's name"></label>
+        <label>Receipt Screenshot<input id="receipt" type="file" accept="image/*"></label>
+        <img id="rprev" alt="Preview of your receipt screenshot" style="display:none;max-width:100%;max-height:200px;object-fit:contain;border-radius:10px;border:1px solid var(--line)">
+        <label class="check"><input type="checkbox" id="keepPay"><span>Remember my matric number and WhatsApp number on this device, so I do not have to type them again. Only tick this on your own phone.</span></label>
+        <button class="btn" id="payBtn" type="submit">Submit Receipt</button>
+        <button class="btn alt" id="statusBtn" type="button">Check My Status</button>
+        <div class="msg" id="pmsg" role="status"></div>
+      </form>
+    </section>
+
+    <aside class="pay-side">
+      <h2>What happens next?</h2>
+      <p class="pay-sub">Follow these three steps to complete your dues payment.</p>
+      <div class="step"><div class="step-no">1</div><div><b>Make the transfer</b><span>Transfer the correct amount to the NAESOAU account details shown here.</span></div></div>
+      <div class="step"><div class="step-no">2</div><div><b>Upload your receipt</b><span>Enter your matric number and registered WhatsApp number, then attach a clear screenshot of the transaction.</span></div></div>
+      <div class="step"><div class="step-no">3</div><div><b>Wait for confirmation</b><span>The executives will verify the payment. Return to this page and select “Check My Status” if you need an update.</span></div></div>
+      <div class="pay-note"><b>Important:</b> Make sure the transfer name and receipt details are clear. Keep your receipt screenshot until your payment has been approved.</div>
+    </aside>
   </div>
-  <form id="pf" novalidate>
-    <p class="hint">Dues for the <b id="sessTxt">current</b> session. 100 Level and 200 Level (DE) pay ₦17,000. 200 Level (Regular), 300 Level and 400 Level pay ₦4,000. Register first, transfer, then upload your receipt screenshot here with the WhatsApp number you registered with. Executives approve it after checking the account.</p>
-    <label>Registration Number/Matric Number<input id="payReg" placeholder="ERT/2022/041 or JAMB number" autocapitalize="characters" autocomplete="off"></label>
-    <label>WhatsApp Number (the one you registered with)<input id="payPhone" type="tel" autocomplete="tel"></label>
-    <label>Name on the Transfer<input id="paySender"></label>
-    <label>Receipt Screenshot<input id="receipt" type="file" accept="image/*"></label>
-    <img id="rprev" alt="Preview of your receipt screenshot" style="display:none;max-width:100%;max-height:200px;object-fit:contain;border-radius:10px;border:1px solid var(--line)">
-    <label class="check"><input type="checkbox" id="keepPay"><span>Remember my matric number and WhatsApp number on this device, so I do not have to type them again. Only tick this on your own phone.</span></label>
-    <button class="btn" id="payBtn" type="submit">Submit Receipt</button>
-    <button class="btn alt" id="statusBtn" type="button">Check My Status</button>
-    <div class="msg" id="pmsg" role="status"></div>
-  </form>
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
