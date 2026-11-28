@@ -48,7 +48,7 @@
     <label>Level<select id="level"><option>100 Level</option><option>200 Level (Regular)</option><option>200 Level (DE)</option><option>300 Level</option><option>400 Level</option></select></label>
     <label>Profile photograph
       <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
-      <small>Choose a clear photograph showing exactly one face. You can crop and rotate it before submitting.</small>
+      <small>You can crop, zoom and rotate your photograph before submitting.</small>
     </label>
     <div id="photoEditor" hidden style="margin:12px 0;padding:14px;border:1px solid #d8d5e8;border-radius:12px">
       <p style="margin:0 0 10px"><strong>Adjust your photograph</strong></p>
@@ -67,8 +67,8 @@
       <label>Vertical position
         <input id="photoY" type="range" min="-1" max="1" step="0.05" value="0">
       </label>
-      <p id="photoCheck" class="msg" role="status" aria-live="polite">Select a photograph to begin checking it.</p>
-      <small>Face detection runs in your browser. A photo is accepted only when one face is detected and the image passes basic quality checks. If detection is uncertain, try a clearer, well-lit photo.</small>
+      <p id="photoCheck" class="msg" role="status" aria-live="polite">Select a photograph to adjust it.</p>
+      <small>Use the controls to frame your photograph the way you want it to appear.</small>
     </div>
     <img id="prev" alt="Final photograph preview" style="display:none;width:96px;height:96px;object-fit:cover;border-radius:50%">
     <label class="check"><input type="checkbox" id="consent"><span>I agree that NAESOAU may store my details, image and phone number to manage membership, dues and receipts. See the <a href="privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span></label>
@@ -80,7 +80,6 @@
 </main>
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.js" crossorigin="anonymous"></script>
 <script src="student.js"></script>
 <script src="common.js"></script>
 <script src="register.js"></script>
