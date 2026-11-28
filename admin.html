@@ -96,13 +96,7 @@
         <form id="execAdd" novalidate>
           <p class="hint">First create the person's login in Supabase under Authentication, then Users, then Add user (tick Auto Confirm User). Then add their email here and choose a role.</p>
           <label>Email of the Account<input id="xEmail" type="email" autocomplete="off"></label>
-          <select id="xRole">
-  <option value="generals">The Generals</option>
-  <option value="pro/plo ">PRO/PLO</option>
-  <option value="special">Special</option>
-  <option value="Fin sec/treasurer">Financial Secretary/Treasurer</option>
-  <option value="welfare">Welfare</option>
-</select>
+          <label>Role<select id="xRole"><option value="generals">The General</option><option value="pro">PRO/PLO</option><option value="special">Special</option><option value="treasurer">Financial Secretary/Treasurer</option><option value="welfare">Welfare</option></select></label>
           <button class="btn" type="submit">Add Executive</button>
         </form>
         <div class="msg" id="xmsg" role="status" style="margin-top:12px"></div>
