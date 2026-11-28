@@ -16,7 +16,7 @@ function formatApplicantName(value, keepTrailingSpace=false){
 
 const fullNameInput=$("fullName");
 if(fullNameInput){
-  fullNameInput.";
+  fullNameInput.placeholder="";
   fullNameInput.setAttribute("aria-label","Surname first, then other names");
   const nameLabel=fullNameInput.closest("label");
   if(nameLabel){
