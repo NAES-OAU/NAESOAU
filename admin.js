@@ -1,13 +1,6 @@
 /* Executives page */
 fillDob($("eMonth"),$("eDay"));
-
-const ROLES={
-  generals:"The General",
-  pro:"PRO/PLO",
-  special:"Special",
-  treasurer:"Financial Secretary/Treasurer",
-  welfare:"Welfare"
-};
+const ROLES={generals:"The General",pro:"PRO/PLO",special:"Special",treasurer:"Financial Secretary/Treasurer",welfare:"Welfare"};
 const ALL_PERMS=["students_read","students_write","payments_read","payments_write","feedback_read","feedback_write","settings","admins"];
 let access={role:"",perms:[]},meId="",meEmail="",mfaFactor=null;
 const can=p=>access.perms.includes(p);
@@ -66,7 +59,7 @@ async function loadAdmin(){
   const acc=await sb.rpc("my_access");
   const row=first(acc.data);
   const legacy=acc.error&&/my_access|PGRST202/.test(String(acc.error.message||"")+String(acc.error.code||""));
-  if(legacy)access={role:"super",perms:ALL_PERMS.slice()};
+  if(legacy)access={role:"generals",perms:ALL_PERMS.slice()};
   else if(acc.error||!row){
     say("amsg","This account is not an executive, or its access has been switched off.","err");
     showEl("login",true);showEl("mfaForm",false);showEl("data",false);
@@ -341,9 +334,9 @@ $("mfaVerify").addEventListener("click",async()=>{
 function execErr(m){
   m=String(m||"");
   return m.includes("NO_SUCH_USER")?"No account with that email. Create it first in Supabase under Authentication, then Users, then add it here.":
-    m.includes("LAST_SUPER")?"At least one active Super Admin must remain.":
+    m.includes("LAST_SUPER")?"At least one active General must remain.":
     m.includes("NO_MFA_FACTOR")?"That person has not set up 2-step verification yet.":
-    m.includes("FORBIDDEN")?"Only a Super Admin can do this.":"Could not save. Try again.";
+    m.includes("FORBIDDEN")?"Only The General can do this.":"Could not save. Try again.";
 }
 const tick=(cell,on,label)=>{const c=document.createElement("input");c.type="checkbox";c.checked=on;c.style.cssText="width:auto;padding:0;margin:0 6px 0 0";cell.appendChild(c);cell.appendChild(document.createTextNode(label));return c};
 async function loadExecs(){
@@ -365,7 +358,7 @@ async function loadExecs(){
 }
 async function saveExec(id,role,active,req){
   const {error}=await sb.rpc("admin_update",{p_user_id:id,p_role:role,p_active:active,p_require_mfa:req});
- if(error){say("xmsg","Save failed: "+error.message+" ["+(error.code||"no code")+"]","err");loadExecs();return}
+  if(error){say("xmsg",execErr(error.message),"err");loadExecs();return}
   say("xmsg","Saved.","ok");loadExecs();loadLog();
   if(id===meId)afterAuth();
 }
@@ -400,4 +393,3 @@ $("logRefresh").addEventListener("click",loadLog);
 
 /* Already signed in on this device? Go straight to the dashboard. */
 (async()=>{try{const {data}=await sb.auth.getSession();if(data.session)afterAuth()}catch(e){}})();
-
