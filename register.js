@@ -22,7 +22,7 @@ if(fullNameInput){
   if(nameLabel){
     for(const node of nameLabel.childNodes){
       if(node.nodeType===3 && node.textContent.trim()){
-        node.textContent="Surname first, then other names ";
+        node.textContent="Full Name ";
         break;
       }
     }
