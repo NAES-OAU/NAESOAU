@@ -1,26 +1,88 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Speak Up – NAESOAU</title>
-<link rel="icon" href="logo.png">
-<meta name="description" content="Send feedback or ideas to the NAESOAU executives without your name.">
-<meta name="theme-color" content="#2a1a77">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="NAESOAU">
-<meta property="og:title" content="Speak Up – NAESOAU">
-<meta property="og:description" content="Send feedback or ideas to the NAESOAU executives without your name.">
-<meta property="og:image" content="https://naesoau1.vercel.app/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Speak Up – NAESOAU</title>
+  <link rel="icon" href="logo.png">
+  <meta name="description" content="Send feedback or ideas to the NAESOAU executives.">
+  <meta name="theme-color" content="#2a1a77">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NAESOAU">
+  <meta property="og:title" content="Speak Up – NAESOAU">
+  <meta property="og:description" content="Share your feedback and ideas with the NAESOAU executives.">
+  <meta property="og:image" content="https://naesoau1.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root{--speak-ink:#17143b;--speak-muted:#6d6a83;--speak-purple:#38228d;--speak-line:#e8e5f2;--speak-soft:#f6f4fc}
+    *{box-sizing:border-box}
+    body{margin:0;background:#f8f9fd;color:var(--speak-ink);font-family:"DM Sans",Arial,sans-serif}
+    header{width:100%;max-width:none!important;min-height:82px;padding:12px clamp(18px,4vw,64px);display:flex;align-items:center;gap:13px;background:#fff;border-bottom:1px solid #eeedf5;position:relative;z-index:70}
+    header .logo{width:48px;height:48px;object-fit:contain}
+    header .brand{display:flex;flex-direction:column;text-decoration:none;color:var(--speak-ink);line-height:1.2}
+    header .brand b{font-family:Manrope,sans-serif;font-size:18px;letter-spacing:.03em}
+    header .brand small{font-size:11px;color:var(--speak-muted);margin-top:4px}
+    .menu-btn{margin-left:auto;width:46px;height:46px;border:1px solid var(--speak-line);border-radius:13px;background:#fff;display:grid;align-content:center;justify-content:center;gap:5px;cursor:pointer}
+    .menu-btn span{display:block;width:19px;height:2px;border-radius:2px;background:#30236e}
+    .scrim{position:fixed;inset:0;background:#17133380;z-index:80;opacity:0;visibility:hidden;transition:.2s}
+    .drawer{position:fixed;z-index:90;right:0;top:0;height:100dvh;width:min(340px,88vw);padding:22px;background:#fff;box-shadow:-18px 0 50px #17133320;transform:translateX(105%);transition:transform .25s;display:flex;flex-direction:column;gap:7px;overflow:auto}
+    body.menu-open .scrim{opacity:1;visibility:visible}
+    body.menu-open .drawer{transform:translateX(0)}
+    .drawer-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:8px;border-bottom:1px solid var(--speak-line)}
+    .drawer-top b{font-family:Manrope,sans-serif;font-size:20px}
+    .drawer-close{border:0;background:var(--speak-soft);width:38px;height:38px;border-radius:10px;font-size:25px;cursor:pointer}
+    .drawer>a{padding:12px 13px;border-radius:10px;text-decoration:none;color:#292546;font-weight:600}
+    .drawer>a:hover,.drawer>a[aria-current=page]{background:#f0edfc;color:var(--speak-purple)}
+    .drawer .signin{margin-top:8px;text-align:center;background:var(--speak-purple);color:#fff}
+    .drawer-foot{margin-top:auto;padding-top:20px;color:var(--speak-muted);font-size:12px}
+    main.wrap{width:min(1180px,calc(100% - 40px));max-width:none;margin:0 auto;padding:42px 0 58px}
+    .speak-hero{position:relative;overflow:hidden;border-radius:26px;padding:clamp(28px,5vw,56px);color:#fff;background:linear-gradient(120deg,#24145f 0%,#4530a0 58%,#755bd0 100%);box-shadow:0 18px 45px #30207820}
+    .speak-hero:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #ffffff25;border-radius:50%;right:-95px;top:-160px;box-shadow:0 0 0 35px #ffffff09,0 0 0 75px #ffffff08}
+    .hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #ffffff45;border-radius:99px;background:#ffffff12;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .speak-hero h1{font-family:Manrope,sans-serif;font-size:clamp(34px,5vw,56px);line-height:1.05;letter-spacing:-.04em;margin:18px 0 12px;max-width:680px;color:#fff}
+    .speak-hero p{max-width:650px;margin:0;color:#eeeaff;font-size:clamp(15px,1.6vw,18px);line-height:1.7}
+    .speak-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.75fr);gap:24px;margin-top:26px;align-items:start}
+    .panel{background:#fff;border:1px solid var(--speak-line);border-radius:20px;padding:clamp(22px,3vw,34px);box-shadow:0 10px 30px #20174b08}
+    .panel h2{font-family:Manrope,sans-serif;font-size:23px;letter-spacing:-.025em;margin:0 0 7px}
+    .panel-intro{margin:0 0 24px;color:var(--speak-muted);line-height:1.6;font-size:14px}
+    #sf{display:grid;gap:18px}
+    #sf label{display:grid;gap:8px;font-weight:700;font-size:14px;color:#292546}
+    #sf select,#sf textarea,#sf input:not([type=hidden]){width:100%;border:1px solid #dedbea;border-radius:12px;padding:13px 14px;background:#fff;color:var(--speak-ink);font:500 15px "DM Sans",sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
+    #sf select:focus,#sf textarea:focus,#sf input:focus{border-color:#7966c8;box-shadow:0 0 0 3px #7966c820}
+    #sf textarea{min-height:190px;resize:vertical;line-height:1.6}
+    #sf input{min-height:48px}
+    .field-note{font-size:12px;color:var(--speak-muted);font-weight:400;line-height:1.5}
+    .message-meta{display:flex;justify-content:space-between;gap:12px;color:var(--speak-muted);font-size:12px;font-weight:500}
+    .btn#sBtn{border:0;border-radius:12px;min-height:52px;padding:13px 22px;background:linear-gradient(100deg,#35217f,#6046bd);color:#fff;font:700 15px "DM Sans",sans-serif;cursor:pointer;box-shadow:0 8px 20px #49349b2b}
+    .btn#sBtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+    .btn#sBtn:disabled{opacity:.65;cursor:wait;transform:none}
+    #smsg{min-height:22px;font-size:14px;line-height:1.5}
+    .side-card{background:linear-gradient(155deg,#fff,#f5f2ff);border:1px solid #e7e1fa;border-radius:20px;padding:25px}
+    .side-icon{width:48px;height:48px;border-radius:15px;background:#eae5fc;color:#4a35a0;display:grid;place-items:center;font-size:23px;margin-bottom:16px}
+    .side-card h3{font-family:Manrope,sans-serif;font-size:19px;margin:0 0 9px}
+    .side-card p{font-size:14px;line-height:1.65;color:var(--speak-muted);margin:0}
+    .side-list{display:grid;gap:16px;margin-top:24px}
+    .side-item{display:flex;gap:12px;align-items:flex-start}
+    .side-item b{display:block;font-size:13px;margin-bottom:3px}
+    .side-item span{display:block;font-size:12px;line-height:1.5;color:var(--speak-muted)}
+    .step{flex:0 0 28px;width:28px;height:28px;border-radius:9px;background:#eae5fc;color:#49359b;display:grid;place-items:center;font-weight:800;font-size:12px}
+    .privacy-note{margin-top:18px;padding:14px;border-radius:12px;background:#f2effb;color:#51477a;font-size:12px;line-height:1.6}
+    footer.wrap{width:min(1180px,calc(100% - 40px));max-width:none;margin:0 auto;padding:0 0 28px;text-align:center;color:var(--speak-muted);font-size:12px;line-height:1.8}
+    footer a{color:var(--speak-purple);font-weight:600;text-decoration:none}
+    @media(max-width:800px){.speak-layout{grid-template-columns:1fr}.side-card{order:2}}
+    @media(max-width:560px){header{min-height:72px}header .logo{width:42px;height:42px}main.wrap{width:calc(100% - 28px);padding:22px 0 38px}.speak-hero{border-radius:19px;padding:27px 22px}.panel{padding:22px 18px;border-radius:17px}.side-card{padding:22px}footer.wrap{width:calc(100% - 28px)}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
 </head>
 <body>
 <header>
   <a href="index.html" aria-label="NAESOAU home"><img class="logo" alt="NAESOAU logo" src="logo.png"></a>
   <a class="brand" href="index.html"><b>NAESOAU</b><small>Entrepreneurship Students · Ile-Ife</small></a>
-<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
 <div class="scrim" id="scrim"></div>
 <nav class="drawer" id="menu" aria-label="Pages">
@@ -36,22 +98,71 @@
   <a class="btn signin" href="admin.html">Sign in</a>
   <div class="drawer-foot" id="menuWho"></div>
 </nav>
+
 <main class="wrap">
-  <h1 class="page-title">Speak Up</h1>
-  <form id="sf" novalidate>
-    <p class="hint">Tell the executives what you think. Your name is not collected, so they will not know who sent it. Executives review every message.</p>
-    <label>Category<select id="sCat"><option>Suggestion</option><option>Complaint</option><option>Question</option><option>Appreciation</option></select></label>
-    <label>Your Message<textarea id="sMsg" maxlength="1000"></textarea></label>
-    <label>Contact (Only if You Want a Reply)<input id="sContact" maxlength="100" autocomplete="off"></label>
-    <input id="sWeb" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
-    <button class="btn" id="sBtn" type="submit">Send Message</button>
-    <div class="msg" id="smsg" role="status"></div>
-  </form>
+  <section class="speak-hero">
+    <span class="hero-kicker">Your voice matters</span>
+    <h1>Speak up. Make a difference.</h1>
+    <p>Share an idea, raise a concern, ask a question or appreciate someone. Your feedback helps the NAESOAU leadership serve the association better.</p>
+  </section>
+
+  <div class="speak-layout">
+    <section class="panel">
+      <h2>Send your message</h2>
+      <p class="panel-intro">Your name is not requested or collected by this form. Choose a category and tell us what is on your mind.</p>
+      <form id="sf" novalidate>
+        <label for="sCat">Category
+          <select id="sCat">
+            <option>Suggestion</option>
+            <option>Complaint</option>
+            <option>Question</option>
+            <option>Appreciation</option>
+          </select>
+        </label>
+        <label for="sMsg">Your message
+          <textarea id="sMsg" maxlength="1000" placeholder="Write your message here..." required></textarea>
+          <span class="message-meta"><span>Please write at least 10 characters.</span><span id="charCount">0 / 1000</span></span>
+        </label>
+        <label for="sContact">Contact (optional)
+          <input id="sContact" maxlength="100" autocomplete="off" placeholder="Email or phone number, only if you want a reply">
+          <span class="field-note">Leave this blank if you want to remain completely anonymous. If you provide contact details, the executives may use them to reply.</span>
+        </label>
+        <input id="sWeb" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+        <button class="btn" id="sBtn" type="submit">Send Message</button>
+        <div class="msg" id="smsg" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <aside class="side-card">
+      <div class="side-icon" aria-hidden="true">✦</div>
+      <h3>A safe space to be heard</h3>
+      <p>Honest and constructive feedback helps us identify what is working and what needs attention.</p>
+      <div class="side-list">
+        <div class="side-item"><span class="step">1</span><div><b>Share openly</b><span>Explain your idea, concern or question clearly.</span></div></div>
+        <div class="side-item"><span class="step">2</span><div><b>Choose your privacy</b><span>Your name is not asked for. Add contact details only if you want a response.</span></div></div>
+        <div class="side-item"><span class="step">3</span><div><b>Executives review it</b><span>Your message is submitted for the association's leadership to review.</span></div></div>
+      </div>
+      <div class="privacy-note">Please keep messages respectful. Avoid including passwords, financial details or other sensitive personal information.</div>
+    </aside>
+  </div>
 </main>
+
 <footer class="wrap">© NAESOAU · Obafemi Awolowo University, Ile-Ife<br><a href="privacy.html">Privacy Notice</a> · <a href="admin.html">Executive Login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
 <script src="student.js"></script>
 <script src="common.js"></script>
 <script src="speak.js"></script>
 <script src="menu.js"></script>
-</body></html>
+<script>
+  (function(){
+    const message=document.getElementById("sMsg");
+    const count=document.getElementById("charCount");
+    if(message&&count){
+      const update=()=>count.textContent=message.value.length+" / 1000";
+      message.addEventListener("input",update);
+      update();
+    }
+  })();
+</script>
+</body>
+</html>
